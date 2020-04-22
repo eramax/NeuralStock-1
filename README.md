@@ -5,3 +5,5 @@ At the moment, the program can train/predict price movements for stocks listed o
 
 ![alt text](http://i.imgur.com/NlRF2ab.png "NeuralStock")
 ![alt text](http://i.imgur.com/aMj8XO6.png "NeuralStock")
+
+You can download the latest version (v1.0) [here](https://github.com/cesarioalmeida/NeuralStock/releases/download/v1.0/NeuralStock.msi).
