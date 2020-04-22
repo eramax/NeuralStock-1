@@ -9,7 +9,6 @@
     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
     xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
     xmlns:enums1="clr-namespace:twentySix.NeuralStock.Core.Enums;assembly=twentySix.NeuralStock.Core"
-    dx:ThemeManager.ThemeName="MetropolisDark"
     DataContext="{dxmvvm:ViewModelSource Type=dashboard:DashboardViewModel}">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -81,7 +80,6 @@
             <dxg:GridControl
                 x:Name="StocksTable"
                 Grid.Row="1"
-                dx:ThemeManager.ThemeName="MetropolisDark"
                 ItemsSource="{Binding Predictions}"
                 ShowLoadingPanel="{Binding IsBusy}">
                 <dxmvvm:Interaction.Behaviors>
