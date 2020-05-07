@@ -23,8 +23,7 @@
             this._downloadService = new DownloaderService(
                null,
                 new YahooFinanceDataSource(),
-                new GoogleFinanceDataSource(),
-                new MorningStarDataSource());
+               new MorningStarDataSource());
 
             this._stock = new Stock
             {
