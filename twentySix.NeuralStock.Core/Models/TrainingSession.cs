@@ -348,7 +348,7 @@
             net.ActivationFunctionHidden = ActivationFunction.ELLIOT;
             net.ActivationFunctionOutput = ActivationFunction.LINEAR;
 
-            net.TrainOnData(trainData, 800, 0, 0.00001f);
+            net.TrainOnData(trainData, (uint)RandomGenerator.NextInteger(200, 2000), 0, 0.00001f);
 
             trainData.Dispose();
 

@@ -105,6 +105,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Data\Countries\ICountry.cs" />
+    <Compile Include="Data\Countries\Others.cs" />
     <Compile Include="Data\Sources\MorningStarDataSource.cs" />
     <Compile Include="Data\Sources\IDataSource.cs" />
     <Compile Include="Data\Countries\Portugal.cs" />

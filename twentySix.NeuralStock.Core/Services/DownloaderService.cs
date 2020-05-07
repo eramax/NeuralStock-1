@@ -23,7 +23,6 @@
         public DownloaderService(
             ILoggingService loggingService,
             [Import("YahooFinanceDataSource")]IDataSource yahooDataSource,
-            [Import("GoogleFinanceDataSource")]IDataSource googleDataSource,
             [Import("MorningStarDataSource")]IDataSource morningStarDataSource)
         {
             this._loggingService = loggingService;
@@ -39,7 +38,12 @@
         {
             try
             {
-                return await Task.Run(() => this._morningStarDataSource.GetName(stock));
+                if (stock.Country.Id != 999)
+                {
+                    return await Task.Run(() => this._morningStarDataSource.GetName(stock));
+                }
+
+                return stock.Symbol;
             }
             catch (Exception ex)
             {
@@ -80,7 +84,7 @@
             }
             catch (Exception ex)
             {
-                _loggingService?.Warn($"{nameof(this.GetName)}: {ex}");
+                this._loggingService?.Warn($"{nameof(this.GetName)}: {ex}");
                 return null;
             }
         }

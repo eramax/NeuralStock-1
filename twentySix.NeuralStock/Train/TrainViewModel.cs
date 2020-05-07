@@ -1,6 +1,7 @@
 ﻿namespace twentySix.NeuralStock.Train
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.Composition;
     using System.Linq;
@@ -56,7 +57,10 @@
 
         public virtual SeverityEnum StatusSeverity { get; set; }
 
-        public virtual bool IsCountrySingapore { get; set; } = true;
+        [ImportMany]
+        public virtual IEnumerable<ICountry> AvailableCountries { get; set; }
+
+        public virtual ICountry SelectedCountry { get; set; }
 
         public virtual Quote LastQuote => this.Stock?.HistoricalData?.Quotes.LastOrDefault().Value;
 
@@ -93,7 +97,7 @@
                 this.Stock = new Stock
                 {
                     Symbol = this.StockSymbol,
-                    Country = this.IsCountrySingapore ? new Singapore() as ICountry : new Portugal()
+                    Country = this.SelectedCountry
                 };
                 this.Stock.Id = this.Stock.GetUniqueId();
 
@@ -109,8 +113,7 @@
 
                 if (name.Equals(this.Stock.Symbol))
                 {
-                    Messenger.Default.Send(new TrainStatusMessage($"Could not download data for stock {this.Stock.Symbol}", SeverityEnum.Error));
-                    return;
+                    Messenger.Default.Send(new TrainStatusMessage($"Could not get the name for the stock {this.Stock.Symbol}", SeverityEnum.Warning));
                 }
 
                 this.Stock.Name = name;
@@ -222,7 +225,7 @@
             {
                 this.Stock = dashboardPrediction.TrainingSession.Stock;
                 this.StockSymbol = this.Stock.Symbol;
-                this.IsCountrySingapore = this.Stock.Country is Singapore;
+                this.SelectedCountry = this.Stock.Country;
                 this.TrainingSession = dashboardPrediction.TrainingSession;
                 this.TrainingData = this.TrainingSession.TrainingHistoricalData;
                 this.TestingData = this.TrainingSession.TestingHistoricalData;
@@ -237,6 +240,7 @@
                     this.ClearStatus();
                     this.StockSymbol = string.Empty;
                     this.Stock = null;
+                    this.SelectedCountry = this.AvailableCountries.FirstOrDefault();
                     this.TrainingSession = null;
                     this.RaisePropertyChanged(() => this.LastQuote);
                 }

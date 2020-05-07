@@ -34,7 +34,6 @@
 
         public HistoricalData GetHistoricalData(Stock stock, DateTime startDate, DateTime endDate)
         {
-
             var rawHistoricalData = new List<HistoryPrice>();
 
             var numberOfTries = 0;

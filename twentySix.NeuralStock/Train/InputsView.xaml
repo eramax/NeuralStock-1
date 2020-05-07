@@ -55,15 +55,24 @@
                             <dxmvvm:KeyToCommand Command="{Binding DownloadDataCommand}" KeyGesture="Enter" />
                         </dxmvvm:Interaction.Behaviors>
                     </dxe:ButtonEdit>
-                    <dxe:ToggleSwitch
+
+                    <dxe:ListBoxEdit
                         Margin="20,0,0,0"
-                        HorizontalAlignment="Left"
-                        CheckedStateContent="Singapore"
-                        ContentPlacement="Far"
-                        EnableAnimation="False"
-                        IsChecked="{Binding IsCountrySingapore}"
+                        Background="Transparent"
+                        DisplayMember="Name"
                         IsReadOnly="{Binding IsBusy}"
-                        UncheckedStateContent="Portugal" />
+                        ItemsSource="{Binding AvailableCountries}"
+                        SelectedItem="{Binding SelectedCountry}"
+                        ShowBorder="False">
+                        <dxe:ListBoxEdit.StyleSettings>
+                            <dxe:RadioListBoxEditStyleSettings />
+                        </dxe:ListBoxEdit.StyleSettings>
+                        <dxe:ListBoxEdit.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </dxe:ListBoxEdit.ItemsPanel>
+                    </dxe:ListBoxEdit>
                 </StackPanel>
             </dxlc:LayoutItem>
 

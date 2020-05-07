@@ -17,5 +17,7 @@
         public int NumberHiddenLayers { get; set; }
 
         public int NumberNeuronsHiddenLayer { get; set; }
+
+        public int MaxEpochs { get; set; }
     }
 }
