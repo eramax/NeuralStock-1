@@ -8,7 +8,7 @@
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
     xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
-    xmlns:enums1="clr-namespace:twentySix.NeuralStock.Core.Enums;assembly=twentySix.NeuralStock.Core"
+    xmlns:enums="clr-namespace:twentySix.NeuralStock.Core.Enums;assembly=twentySix.NeuralStock.Core"
     DataContext="{dxmvvm:ViewModelSource Type=dashboard:DashboardViewModel}">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -23,15 +23,21 @@
             </Style>
 
             <dxmvvm:ObjectToObjectConverter x:Key="SeverityToColourConverter">
-                <dxmvvm:MapItem Source="{x:Static enums1:SeverityEnum.Info}" Target="{x:Static Colors.Black}" />
-                <dxmvvm:MapItem Source="{x:Static enums1:SeverityEnum.Warning}" Target="{x:Static Colors.DarkGoldenrod}" />
-                <dxmvvm:MapItem Source="{x:Static enums1:SeverityEnum.Error}" Target="{x:Static Colors.Red}" />
+                <dxmvvm:MapItem Source="{x:Static enums:SeverityEnum.Info}" Target="{x:Static Colors.Black}" />
+                <dxmvvm:MapItem Source="{x:Static enums:SeverityEnum.Warning}" Target="{x:Static Colors.DarkGoldenrod}" />
+                <dxmvvm:MapItem Source="{x:Static enums:SeverityEnum.Error}" Target="{x:Static Colors.Red}" />
             </dxmvvm:ObjectToObjectConverter>
 
-            <dxmvvm:ObjectToObjectConverter x:Key="SignalToTextConverter">
-                <dxmvvm:MapItem Source="{x:Static enums1:SignalEnum.Buy}" Target="B" />
-                <dxmvvm:MapItem Source="{x:Static enums1:SignalEnum.Neutral}" Target="-" />
-                <dxmvvm:MapItem Source="{x:Static enums1:SignalEnum.Sell}" Target="S" />
+            <dxmvvm:ObjectToObjectConverter x:Key="SignalToImageConverter">
+                <dxmvvm:MapItem Source="{x:Static enums:SignalEnum.Buy}" Target="../Resources/Up.png" />
+                <dxmvvm:MapItem Source="{x:Static enums:SignalEnum.Neutral}" Target="../Resources/Neutral.png" />
+                <dxmvvm:MapItem Source="{x:Static enums:SignalEnum.Sell}" Target="../Resources/Down.png" />
+            </dxmvvm:ObjectToObjectConverter>
+
+            <dxmvvm:ObjectToObjectConverter x:Key="SignalToColourConverter">
+                <dxmvvm:MapItem Source="{x:Static enums:SignalEnum.Buy}" Target="{x:Static Colors.Green}" />
+                <dxmvvm:MapItem Source="{x:Static enums:SignalEnum.Neutral}" Target="{x:Static Colors.DeepSkyBlue}" />
+                <dxmvvm:MapItem Source="{x:Static enums:SignalEnum.Sell}" Target="{x:Static Colors.Red}" />
             </dxmvvm:ObjectToObjectConverter>
 
         </ResourceDictionary>
@@ -146,26 +152,30 @@
                             <DataTemplate>
                                 <DataTemplate.Resources>
                                     <Style TargetType="Rectangle">
-                                        <Setter Property="Height" Value="18" />
-                                        <Setter Property="Width" Value="18" />
+                                        <Setter Property="Height" Value="16" />
+                                        <Setter Property="Width" Value="16" />
+                                        <Setter Property="Margin" Value="1,0,0,0" />
                                     </Style>
                                 </DataTemplate.Resources>
                                 <StackPanel
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Orientation="Horizontal">
-                                    <dxe:TextEdit
-                                        EditValue="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.ThirdLastSignal, Converter={StaticResource SignalToTextConverter}, Mode=OneWay}"
-                                        IsReadOnly="True"
-                                        ShowBorder="False" />
-                                    <dxe:TextEdit
-                                        EditValue="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.SecondLastSignal, Converter={StaticResource SignalToTextConverter}, Mode=OneWay}"
-                                        IsReadOnly="True"
-                                        ShowBorder="False" />
-                                    <dxe:TextEdit
-                                        EditValue="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.LatestSignal, Converter={StaticResource SignalToTextConverter}, Mode=OneWay}"
-                                        IsReadOnly="True"
-                                        ShowBorder="False" />
+                                    <Rectangle Fill="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.ThirdLastSignal, Converter={StaticResource SignalToColourConverter}}">
+                                        <Rectangle.OpacityMask>
+                                            <ImageBrush ImageSource="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.ThirdLastSignal, Converter={StaticResource SignalToImageConverter}}" />
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                    <Rectangle Fill="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.SecondLastSignal, Converter={StaticResource SignalToColourConverter}}">
+                                        <Rectangle.OpacityMask>
+                                            <ImageBrush ImageSource="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.SecondLastSignal, Converter={StaticResource SignalToImageConverter}}" />
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                    <Rectangle Fill="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.LatestSignal, Converter={StaticResource SignalToColourConverter}}">
+                                        <Rectangle.OpacityMask>
+                                            <ImageBrush ImageSource="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.LatestSignal, Converter={StaticResource SignalToImageConverter}}" />
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
                                 </StackPanel>
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
