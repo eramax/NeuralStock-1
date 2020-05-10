@@ -193,7 +193,22 @@
                         NavigationStyle="Row"
                         RowMinHeight="26"
                         ShowGroupPanel="False"
-                        ShowIndicator="False" />
+                        ShowIndicator="False">
+                        <dxg:TableView.FormatConditions>
+                            <dxg:FormatCondition
+                                ApplyToRow="True"
+                                FieldName="TrainingSession.BestProfitLossCalculator.LatestSignal"
+                                PredefinedFormatName="LightRedFill"
+                                Value1="{x:Static enums:SignalEnum.Sell}"
+                                ValueRule="Equal" />
+                            <dxg:FormatCondition
+                                ApplyToRow="True"
+                                FieldName="TrainingSession.BestProfitLossCalculator.LatestSignal"
+                                PredefinedFormatName="LightGreenFill"
+                                Value1="{x:Static enums:SignalEnum.Buy}"
+                                ValueRule="Equal" />
+                        </dxg:TableView.FormatConditions>
+                    </dxg:TableView>
                 </dxg:GridControl.View>
             </dxg:GridControl>
 
