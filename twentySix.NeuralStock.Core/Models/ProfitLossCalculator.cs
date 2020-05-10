@@ -52,6 +52,12 @@
                 x => x.Date,
                 x => this.Portfolio.GetValue(x.Date));
 
+        public Dictionary<DateTime, double> PortfolioSellSignals => this.CompleteTransactions
+            .ToDictionary(x => x.SellTrade.Date, x => this.Portfolio.GetValue(x.SellTrade.Date));
+
+        public Dictionary<DateTime, double> PortfolioBuySignals => this.CompleteTransactions
+            .ToDictionary(x => x.BuyTrade.Date, x => this.Portfolio.GetValue(x.BuyTrade.Date));
+
         public List<CompleteTransaction> CompleteTransactions { get; } = new List<CompleteTransaction>();
 
         public double PL => this.Portfolio.GetValue(this.TrainingSession.TestingHistoricalData.EndDate) - this.Portfolio.GetValue(this.TrainingSession.TestingHistoricalData.BeginDate);

@@ -536,6 +536,28 @@
                                     <dxc:LineStyle Thickness="2" />
                                 </dxc:LineSeries2D.LineStyle>
                             </dxc:LineSeries2D>
+                            <dxc:PointSeries2D
+                                ArgumentDataMember="Key"
+                                DataSource="{Binding TrainingSession.BestProfitLossCalculator.PortfolioSellSignals}"
+                                LabelsVisibility="False"
+                                MarkerSize="8"
+                                ShowInLegend="False"
+                                ValueDataMember="Value">
+                                <dxc:PointSeries2D.MarkerModel>
+                                    <dxc:SimpleMarker2DModel />
+                                </dxc:PointSeries2D.MarkerModel>
+                            </dxc:PointSeries2D>
+                            <dxc:PointSeries2D
+                                ArgumentDataMember="Key"
+                                DataSource="{Binding TrainingSession.BestProfitLossCalculator.PortfolioBuySignals}"
+                                LabelsVisibility="False"
+                                MarkerSize="8"
+                                ShowInLegend="False"
+                                ValueDataMember="Value">
+                                <dxc:PointSeries2D.MarkerModel>
+                                    <dxc:SimpleMarker2DModel />
+                                </dxc:PointSeries2D.MarkerModel>
+                            </dxc:PointSeries2D>
                         </dxc:XYDiagram2D.Series>
                     </dxc:XYDiagram2D>
                 </dxc:ChartControl.Diagram>
