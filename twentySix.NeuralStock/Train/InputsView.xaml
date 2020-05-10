@@ -159,7 +159,6 @@
                         Value="{Binding TrainingSession.Progress}" />
                     <TextBlock
                         HorizontalAlignment="Center"
-                        FontFamily="Titillium Web"
                         FontSize="12"
                         Text="{Binding TrainingSession.TimeLeft, StringFormat={}{0:mm}m {0:ss}s}" />
                 </StackPanel>
