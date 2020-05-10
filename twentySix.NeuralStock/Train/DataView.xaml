@@ -239,7 +239,7 @@
                                         ArgumentDataMember="Key"
                                         DataSource="{Binding TrainingSession.BestProfitLossCalculator.SellSignals}"
                                         LabelsVisibility="False"
-                                        MarkerSize="6"
+                                        MarkerSize="5"
                                         ShowInLegend="False"
                                         ValueDataMember="Value">
                                         <dxc:PointSeries2D.MarkerModel>
@@ -250,7 +250,7 @@
                                         ArgumentDataMember="Key"
                                         DataSource="{Binding TrainingSession.BestProfitLossCalculator.BuySignals}"
                                         LabelsVisibility="False"
-                                        MarkerSize="6"
+                                        MarkerSize="5"
                                         ShowInLegend="False"
                                         ValueDataMember="Value">
                                         <dxc:PointSeries2D.MarkerModel>

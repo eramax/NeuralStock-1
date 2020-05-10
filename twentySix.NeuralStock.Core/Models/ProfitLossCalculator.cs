@@ -65,7 +65,7 @@
         public double BuyHold => (this.TrainingSession.TestingHistoricalData.Quotes.LastOrDefault().Value.Close
                                  - this.TrainingSession.TestingHistoricalData.Quotes.FirstOrDefault().Value.Close) / this.TrainingSession.TestingHistoricalData.Quotes.FirstOrDefault().Value.Close;
 
-        public double BuyHoldDifference => this.BuyHold != 0 ? this.PLPercentage / this.BuyHold : 0d;
+        public double BuyHoldDifference => this.BuyHold != 0d ? this.PLPercentage / this.BuyHold : 0d;
 
         public int NumberBuySignals => this.Signals.Count(x => x.Value == SignalEnum.Buy);
 
