@@ -161,12 +161,12 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Orientation="Horizontal">
-                                    <Rectangle Fill="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.ThirdLastSignal, Converter={StaticResource SignalToColourConverter}}">
+                                    <Rectangle Fill="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.ThirdLastSignal, Converter={StaticResource SignalToColourConverter}}" Opacity="0.2">
                                         <Rectangle.OpacityMask>
                                             <ImageBrush ImageSource="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.ThirdLastSignal, Converter={StaticResource SignalToImageConverter}}" />
                                         </Rectangle.OpacityMask>
                                     </Rectangle>
-                                    <Rectangle Fill="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.SecondLastSignal, Converter={StaticResource SignalToColourConverter}}">
+                                    <Rectangle Fill="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.SecondLastSignal, Converter={StaticResource SignalToColourConverter}}" Opacity="0.4">
                                         <Rectangle.OpacityMask>
                                             <ImageBrush ImageSource="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.SecondLastSignal, Converter={StaticResource SignalToImageConverter}}" />
                                         </Rectangle.OpacityMask>
