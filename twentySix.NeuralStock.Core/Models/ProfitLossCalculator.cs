@@ -12,7 +12,7 @@
     {
         private readonly IStatisticsService _statisticsService;
 
-        public ProfitLossCalculator(StockPortfolio portfolio, TrainingSession trainingSession, SortedList<DateTime, SignalEnum> signals)
+        public ProfitLossCalculator(StockPortfolio portfolio, TrainingSession trainingSession, Dictionary<DateTime, SignalEnum> signals)
         {
             this._statisticsService = ApplicationHelper.CurrentCompositionContainer.GetExportedValue<IStatisticsService>();
 
@@ -27,7 +27,7 @@
 
         public TrainingSession TrainingSession { get; }
 
-        public SortedList<DateTime, SignalEnum> Signals { get; }
+        public Dictionary<DateTime, SignalEnum> Signals { get; }
 
         public Dictionary<DateTime, double> SellSignals => this.Signals
             .Zip(

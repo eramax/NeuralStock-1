@@ -272,7 +272,7 @@
             return Tuple.Create(splitData.Item1, splitData.Item2);
         }
 
-        private Tuple<SortedList<DateTime, SignalEnum>, double, double> Predict(Tuple<List<AnnDataPoint>, List<AnnDataPoint>> trainingTestingData, NeuralNet net, bool resetLevels = true)
+        private Tuple<Dictionary<DateTime, SignalEnum>, double, double> Predict(Tuple<List<AnnDataPoint>, List<AnnDataPoint>> trainingTestingData, NeuralNet net, bool resetLevels = true)
         {
             double buyLevel = this.BuyLevel;
             double sellLevel = this.SellLevel;
@@ -283,7 +283,7 @@
                 sellLevel = RandomGenerator.NextGaussian(-0.65d, 0.05d);
             }
 
-            var result = new SortedList<DateTime, SignalEnum>();
+            var result = new Dictionary<DateTime, SignalEnum>();
             var testingData = trainingTestingData.Item2;
 
             foreach (var annDataPoint in testingData)
