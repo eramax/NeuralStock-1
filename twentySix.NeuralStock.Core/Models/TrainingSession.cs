@@ -12,7 +12,6 @@
     using FANNCSharp;
     using FANNCSharp.Double;
 
-    using twentySix.NeuralStock.Core.Common;
     using twentySix.NeuralStock.Core.DTOs;
     using twentySix.NeuralStock.Core.Enums;
     using twentySix.NeuralStock.Core.Extensions;
@@ -29,7 +28,7 @@
 
         private readonly IStatisticsService _statisticsService;
 
-        private readonly SortedList<double, Prediction> _cachedPredictions = new SortedList<double, Prediction>(new DuplicateKeyComparer<double>());
+        private readonly List<Prediction> _cachedPredictions = new List<Prediction>();
 
         private volatile int _numberPredictionsComplete;
 
@@ -76,7 +75,7 @@
 
             var prediction = this.Predict(trainingTestingData, net, false);
             var profitLossCalculator = new ProfitLossCalculator(this.Portfolio.Reset(), this, prediction.Item1);
-            this._cachedPredictions.Add(profitLossCalculator.PL, new Prediction(profitLossCalculator, strategy, net, prediction.Item2, prediction.Item3));
+            this._cachedPredictions.Add(new Prediction(profitLossCalculator, strategy, net, prediction.Item2, prediction.Item3));
         }
 
         public int NumberAnns { get; set; } = 10;
@@ -127,7 +126,7 @@
             set => this.SetProperty(() => this.TimeLeft, value);
         }
 
-        public IEnumerable<Prediction> CachePredictions => this._cachedPredictions.Values;
+        public IEnumerable<Prediction> CachePredictions => this._cachedPredictions;
 
         public ProfitLossCalculator BestProfitLossCalculator
         {
@@ -135,14 +134,14 @@
             {
                 lock (Locker)
                 {
-                    return this._cachedPredictions.LastOrDefault().Value?.ProfitLossCalculator;
+                    return this._cachedPredictions?.OrderByDescending(x => x.ProfitLossCalculator.PL).FirstOrDefault()?.ProfitLossCalculator;
                 }
             }
         }
 
-        public Prediction BestPrediction => this._cachedPredictions.LastOrDefault().Value;
+        public Prediction BestPrediction => this._cachedPredictions.OrderByDescending(x => x.ProfitLossCalculator.PL).FirstOrDefault();
 
-        public Dictionary<string, int> AllNetworksPLs => this._statisticsService.Bucketize(this._cachedPredictions.Keys.ToArray(), 14);
+        public Dictionary<string, int> AllNetworksPLs => this._statisticsService.Bucketize(this._cachedPredictions.ToList().Select(x => x.ProfitLossCalculator.PL).ToArray(), 14);
 
         public List<Tuple<double, double>> AllNetworksPLsStdDevs
         {
@@ -150,7 +149,7 @@
             {
                 lock (Locker)
                 {
-                    return this._cachedPredictions.Values.ToList().Select(x => Tuple.Create(x.ProfitLossCalculator.PL, x.ProfitLossCalculator.StandardDeviationPL)).ToList();
+                    return this._cachedPredictions.Select(x => Tuple.Create(x.ProfitLossCalculator.PL, x.ProfitLossCalculator.StandardDeviationPL)).ToList();
                 }
             }
         }
@@ -310,7 +309,7 @@
 
         private void AddBestNeuralNet(ProfitLossCalculator profitLossCalculator, StrategyI strategy, NeuralNet net, double buyLevel, double sellLevel)
         {
-            this._cachedPredictions.Add(profitLossCalculator.PL, new Prediction(profitLossCalculator, strategy, net, buyLevel, sellLevel));
+            this._cachedPredictions.Add(new Prediction(profitLossCalculator, strategy, net, buyLevel, sellLevel));
         }
 
         private Tuple<List<AnnDataPoint>, List<AnnDataPoint>> PrepareAnnData(StrategyI strategy, bool recalculateMeans = true)

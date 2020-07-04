@@ -46,7 +46,7 @@
       <Aliases>global</Aliases>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.Mvvm.v19.2, Version=19.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Mvvm.v19.2, Version=19.2.8.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="FANNCSharp">
       <HintPath>..\Libraries\FANNCSharp.dll</HintPath>
       <Aliases>global</Aliases>
