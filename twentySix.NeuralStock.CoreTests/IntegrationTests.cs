@@ -29,7 +29,7 @@
         [SetUp]
         public void SetUp()
         {
-            this._startDate = new DateTime(2017, 2, 11);
+            this._startDate = new DateTime(2014, 1, 1);
 
             this._downloadService = new DownloaderService(
                 null,
@@ -39,7 +39,7 @@
             this._stock = new Stock
             {
                 Country = new Singapore(),
-                Symbol = "S63"
+                Symbol = "Y92"
             };
 
             this._portfolio = new StockPortfolio(this._startDate, 50000);
@@ -60,7 +60,7 @@
 
         [Test]
 
-        [TestCase(2, 9)]
+        [TestCase(1, 15)]
         public async Task FullTest(int numberOfHiddenLayers, int numberOfNeurons)
         {
             this._stock.Name = await this._downloadService.GetName(this._stock);
@@ -70,9 +70,10 @@
             this._trainingSession =
                 new TrainingSession(this._portfolio, this._stock)
                 {
-                    NumberAnns = 1500,
+                    NumberAnns = 5000,
                     NumberHiddenLayers = numberOfHiddenLayers,
-                    NumberNeuronsPerHiddenLayer = numberOfNeurons
+                    NumberNeuronsPerHiddenLayer = numberOfNeurons,
+                    TrainSamplePercentage = 0.55
                 };
 
             var timer = new Stopwatch();
@@ -80,13 +81,15 @@
 
             this._trainingSession.PropertyChanged += (sender, args) =>
                 {
-                    if (args.PropertyName == "BestProfitLossCalculator" && timer.ElapsedMilliseconds > 15000)
+                    if (args.PropertyName == "BestProfitLossCalculator" && timer.ElapsedMilliseconds > 7000)
                     {
                         Trace.Write($"\n{this._trainingSession.AllNetworksPLsStdDevs.Count:N0}");
                         Trace.Write($" -> PL: {this._trainingSession.BestProfitLossCalculator.PL:C2}");
                         Trace.Write($" ({this._trainingSession.BestProfitLossCalculator.PLPercentage:P2})");
                         Trace.Write($" | median: {this._trainingSession.AllNetworksPL:C2}");
                         Trace.Write($" | acc: {this._trainingSession.BestProfitLossCalculator.PercentageWinningTransactions:P2}");
+                        Trace.Write($" | study1: {this._trainingSession.BestPrediction.BuyLevel}");
+                        Trace.Write($" | study2: {this._trainingSession.BestPrediction.SellLevel}");
 
                         timer.Restart();
                     }

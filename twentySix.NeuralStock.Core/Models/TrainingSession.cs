@@ -22,8 +22,6 @@
 
     public class TrainingSession : BindableBase
     {
-        private static readonly Random RandomGenerator = new Random();
-
         private static readonly object Locker = new object();
 
         private readonly IStatisticsService _statisticsService;
@@ -279,8 +277,8 @@
 
             if (resetLevels)
             {
-                buyLevel = RandomGenerator.NextGaussian(0.8d, 0.05d);
-                sellLevel = RandomGenerator.NextGaussian(-0.65d, 0.05d);
+                buyLevel = RandomExtensions.BetterRandomDouble(0.83, 0.99);
+                sellLevel = RandomExtensions.BetterRandomDouble(-0.55, -0.30);
             }
 
             var result = new Dictionary<DateTime, SignalEnum>();
@@ -347,7 +345,7 @@
             net.ActivationFunctionHidden = ActivationFunction.ELLIOT;
             net.ActivationFunctionOutput = ActivationFunction.LINEAR;
 
-            net.TrainOnData(trainData, (uint)RandomGenerator.NextInteger(200, 2000), 0, 0.00001f);
+            net.TrainOnData(trainData, (uint)RandomExtensions.BetterRandomInteger(500, 1500), 0, 0.00001f);
 
             trainData.Dispose();
 

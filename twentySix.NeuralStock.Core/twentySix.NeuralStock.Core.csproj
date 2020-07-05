@@ -95,7 +95,8 @@
       <HintPath>..\twentySix.NeuralStock\packages\TA-Lib.0.5.0.3\lib\TA-Lib-Core.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
-    <Reference Include="YahooFinanceAPI">
+    <Reference Include="YahooFinanceAPI, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libraries\YahooFinanceAPI.dll</HintPath>
     </Reference>
   </ItemGroup>

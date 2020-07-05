@@ -42,9 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\twentySix.NeuralStock\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
-      <Aliases>global</Aliases>
-      <Private>True</Private>
+      <HintPath>..\twentySix.NeuralStock\packages\Castle.Core.4.4.0\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Mvvm.v19.2, Version=19.2.8.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="FANNCSharp">
@@ -59,10 +57,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Moq, Version=4.7.145.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>..\twentySix.NeuralStock\packages\Moq.4.7.145\lib\net45\Moq.dll</HintPath>
-      <Aliases>global</Aliases>
-      <Private>True</Private>
+    <Reference Include="Moq, Version=4.14.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\twentySix.NeuralStock\packages\Moq.4.14.5\lib\net45\Moq.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\twentySix.NeuralStock\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
@@ -78,6 +74,12 @@
     <Reference Include="System.Configuration">
       <Aliases>global</Aliases>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\twentySix.NeuralStock\packages\System.Runtime.CompilerServices.Unsafe.4.5.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\twentySix.NeuralStock\packages\System.Threading.Tasks.Extensions.4.5.1\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="TA-Lib-Core, Version=1.0.4998.21369, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\twentySix.NeuralStock\packages\TA-Lib.0.5.0.3\lib\TA-Lib-Core.dll</HintPath>

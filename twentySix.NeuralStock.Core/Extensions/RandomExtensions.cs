@@ -3,9 +3,32 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Security.Cryptography;
 
     public static class RandomExtensions
     {
+        private static readonly RNGCryptoServiceProvider CryptoServiceProvider = new RNGCryptoServiceProvider();
+
+        public static int BetterRandomInteger(int minimumValue, int maximumValue)
+        {
+            var randomNumber = new byte[1];
+            CryptoServiceProvider.GetBytes(randomNumber);
+            var asciiValueOfRandomCharacter = Convert.ToDouble(randomNumber[0]);
+            var multiplier = Math.Max(0, (asciiValueOfRandomCharacter / 255d) - 0.00000000001d);
+            var range = maximumValue - minimumValue + 1;
+            var randomValueInRange = Math.Floor(multiplier * range);
+
+            return (int)(minimumValue + randomValueInRange);
+        }
+
+        public static double BetterRandomDouble(double minimumValue, double maximumValue)
+        {
+            var data = new byte[sizeof(uint)];
+            CryptoServiceProvider.GetBytes(data);
+            var randUint = BitConverter.ToUInt32(data, 0);
+            return minimumValue + ((randUint / (uint.MaxValue + 1.0)) * (maximumValue - minimumValue));
+        }
+
         public static double NextGaussian(this Random r, double mu = 0, double sigma = 1)
         {
             var u1 = r.NextDouble();
@@ -31,6 +54,40 @@
             return randNormal;
         }
 
+        public static double NextGaussianLimited(this Random r, double mu = 0, double sigma = 1, double? min = null, double? max = null)
+        {
+            var randNormal = NextGaussian(r, mu, sigma);
+
+            if (min == null && max == null)
+            {
+                return randNormal;
+            }
+
+            if (min != null && max == null)
+            {
+                while (randNormal < min)
+                {
+                    randNormal = NextGaussian(r, mu, sigma);
+                }
+            }
+            else if (min == null)
+            {
+                while (randNormal > max)
+                {
+                    randNormal = NextGaussian(r, mu, sigma);
+                }
+            }
+            else
+            {
+                while (randNormal < min || randNormal > max)
+                {
+                    randNormal = NextGaussian(r, mu, sigma);
+                }
+            }
+
+            return randNormal;
+        }
+
         public static int NextGaussianPositiveInteger(this Random r, double mu = 0, double sigma = 1)
         {
             var randNormal = (int)NextGaussian(r, mu, sigma);
@@ -41,6 +98,11 @@
             }
 
             return randNormal;
+        }
+
+        public static int NextGaussianIntegerLimited(this Random r, double mu = 0, double sigma = 1, int? min = null, int? max = null)
+        {
+            return (int)NextGaussianLimited(r, mu, sigma, min, max);
         }
 
         public static double NextTriangular(this Random r, double a, double b, double c)

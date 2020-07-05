@@ -45,7 +45,7 @@
             var fitClose = this.DataProcessorService.CalculateMovingLinearFit(close, this.Settings.FitClose);
             var fitOfFit = this.DataProcessorService.CalculateMovingLinearFit(fitClose.Item2, this.Settings.FitOfFit);
             var fitRSI = this.DataProcessorService.CalculateMovingLinearFit(this.DataProcessorService.CalculateRSI(close, this.Settings.RSI1Fit), this.Settings.RSI2Fit);
-            
+
             int fwdDays = this.Settings.FwdDays;
             int yesterdayStep = 1;
 
@@ -92,7 +92,9 @@
                                              {
                                                  yesterday.Close, yesterday.High, yesterday.Open, yesterday.Low, yesterday.Volume,
                                                  rsi[yesterdayIndex], cci[yesterdayIndex], macD.Item2[yesterdayIndex]
-                                             })
+                                             }),
+                                     (today.Close * yesterday.Volume - yesterday.Close * today.Volume) * today.Dividend,
+                                     (double)today.Date.DayOfWeek
                                  },
                     Outputs = new[]
                                   {
