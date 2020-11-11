@@ -116,18 +116,19 @@
                 var indexTomorrow = indexOfToday < this.TrainingSession.TestingHistoricalData.Quotes.Count - 2
                                         ? indexOfToday + 1
                                         : indexOfToday;
-                var transactionPrice = this.TrainingSession.TestingHistoricalData.Quotes.ElementAt(indexTomorrow).Value.Open;
+                var transactionBuyPrice = this.TrainingSession.TestingHistoricalData.Quotes.ElementAt(indexTomorrow).Value.Close;
+                var transactionSellPrice = this.TrainingSession.TestingHistoricalData.Quotes.ElementAt(indexOfToday).Value.Close;
 
-                if (this.Signals[quote.Key] == SignalEnum.Buy && this.Portfolio.GetMaxPurchaseVolume(this.TrainingSession.Stock, quote.Key, transactionPrice) > 1)
+                if (this.Signals[quote.Key] == SignalEnum.Buy && this.Portfolio.GetMaxPurchaseVolume(this.TrainingSession.Stock, quote.Key, transactionBuyPrice) > 1)
                 {
-                    var maxPurchaseVolume = this.Portfolio.GetMaxPurchaseVolume(this.TrainingSession.Stock, quote.Key, transactionPrice);
+                    var maxPurchaseVolume = this.Portfolio.GetMaxPurchaseVolume(this.TrainingSession.Stock, quote.Key, transactionBuyPrice);
                     var trade = new Trade
                     {
                         Type = TransactionEnum.Buy,
                         Stock = this.TrainingSession.Stock,
                         Date = quote.Key,
                         NumberOfShares = maxPurchaseVolume,
-                        Price = transactionPrice
+                        Price = transactionBuyPrice
                     };
 
                     this.Portfolio.Add(trade);
@@ -141,7 +142,7 @@
                         Stock = this.TrainingSession.Stock,
                         Date = quote.Key,
                         NumberOfShares = this.Portfolio.GetHoldings(quote.Key)[this.TrainingSession.Stock],
-                        Price = transactionPrice
+                        Price = transactionSellPrice
                     };
 
                     this.CompleteTransactions.Add(new CompleteTransaction(this.Portfolio.Trades.Last().Value, trade));

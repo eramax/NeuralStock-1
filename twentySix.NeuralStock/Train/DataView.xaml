@@ -7,6 +7,8 @@
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    xmlns:enums="clr-namespace:twentySix.NeuralStock.Core.Enums;assembly=twentySix.NeuralStock.Core"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="clr-namespace:twentySix.NeuralStock.Train"
     Name="this"
@@ -19,6 +21,19 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Shared.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <dxmvvm:ObjectToObjectConverter x:Key="SignalToColourConverter">
+                <dxmvvm:MapItem Source="{x:Static enums:SignalEnum.Buy}" Target="{x:Static Colors.Green}" />
+                <dxmvvm:MapItem Source="{x:Static enums:SignalEnum.Neutral}" Target="{x:Static Colors.DeepSkyBlue}" />
+                <dxmvvm:MapItem Source="{x:Static enums:SignalEnum.Sell}" Target="{x:Static Colors.Red}" />
+            </dxmvvm:ObjectToObjectConverter>
+
+            <dxmvvm:ObjectToObjectConverter x:Key="SignalToImageConverter">
+                <dxmvvm:MapItem Source="{x:Static enums:SignalEnum.Buy}" Target="../Resources/Up.png" />
+                <dxmvvm:MapItem Source="{x:Static enums:SignalEnum.Neutral}" Target="../Resources/Neutral.png" />
+                <dxmvvm:MapItem Source="{x:Static enums:SignalEnum.Sell}" Target="../Resources/Down.png" />
+            </dxmvvm:ObjectToObjectConverter>
+
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -476,6 +491,77 @@
                                 PredefinedFormatName="LightGreenFill"
                                 Value1="0"
                                 ValueRule="GreaterOrEqual" />
+                        </dxg:TableView.FormatConditions>
+                    </dxg:TableView>
+                </dxg:GridControl.View>
+            </dxg:GridControl>
+        </dxlc:LayoutGroup>
+
+        <dxlc:LayoutGroup
+            DataContext="{Binding TrainingSession.BestProfitLossCalculator}"
+            Header="Signals"
+            Orientation="Vertical">
+            <dxg:GridControl ItemsSource="{Binding Signals}">
+                <dxg:GridControl.Columns>
+                    <dxg:GridColumn
+                        AllowSorting="True"
+                        FieldName="Key"
+                        Header="date"
+                        ReadOnly="True"
+                        SortOrder="Descending">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextSettings DisplayFormat="d" />
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn
+                        FieldName="Value"
+                        Header="signal"
+                        ReadOnly="True">
+                        <dxg:GridColumn.CellTemplate>
+                            <DataTemplate>
+                                <DataTemplate.Resources>
+                                    <Style TargetType="Rectangle">
+                                        <Setter Property="Height" Value="16" />
+                                        <Setter Property="Width" Value="16" />
+                                        <Setter Property="Margin" Value="1,0,0,0" />
+                                    </Style>
+                                </DataTemplate.Resources>
+                                <StackPanel
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                                    <Rectangle Fill="{Binding RowData.Row.Value, Converter={StaticResource SignalToColourConverter}}">
+                                        <Rectangle.OpacityMask>
+                                            <ImageBrush ImageSource="{Binding RowData.Row.Value, Converter={StaticResource SignalToImageConverter}}" />
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                </StackPanel>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellTemplate>
+                    </dxg:GridColumn>
+                </dxg:GridControl.Columns>
+                <dxg:GridControl.View>
+                    <dxg:TableView
+                        AllowCascadeUpdate="False"
+                        AllowScrollAnimation="True"
+                        AutoWidth="True"
+                        HeaderPanelMinHeight="30"
+                        NavigationStyle="Row"
+                        RowMinHeight="24"
+                        ShowGroupPanel="False">
+                        <dxg:TableView.FormatConditions>
+                            <dxg:FormatCondition
+                                ApplyToRow="True"
+                                FieldName="Value"
+                                PredefinedFormatName="LightRedFill"
+                                Value1="{x:Static enums:SignalEnum.Sell}"
+                                ValueRule="Equal" />
+                            <dxg:FormatCondition
+                                ApplyToRow="True"
+                                FieldName="Value"
+                                PredefinedFormatName="LightGreenFill"
+                                Value1="{x:Static enums:SignalEnum.Buy}"
+                                ValueRule="Equal" />
                         </dxg:TableView.FormatConditions>
                     </dxg:TableView>
                 </dxg:GridControl.View>
