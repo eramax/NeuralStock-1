@@ -61,6 +61,13 @@
                             MaskType="Numeric"
                             MaskUseAsDisplayFormat="True" />
                     </dxlc:LayoutItem>
+                    <dxlc:LayoutItem Label="number days between transactions">
+                        <dxe:TextEdit
+                            EditValue="{Binding Settings.NumberDaysBetweenTransactions}"
+                            Mask="d"
+                            MaskType="Numeric"
+                            MaskUseAsDisplayFormat="True" />
+                    </dxlc:LayoutItem>
                 </dxlc:LayoutGroup>
                 <dxlc:LayoutGroup
                     Header="Data"

@@ -94,7 +94,7 @@
                                                  rsi[yesterdayIndex], cci[yesterdayIndex], macD.Item2[yesterdayIndex]
                                              }),
                                      (today.Close * yesterday.Volume - yesterday.Close * today.Volume) * today.Dividend,
-                                     (double)today.Date.DayOfWeek
+                                     today.Date.DayOfYear
                                  },
                     Outputs = new[]
                                   {

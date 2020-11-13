@@ -138,6 +138,13 @@
                     </dxlc:LayoutItem>
                 </dxlc:LayoutGroup>
                 <dxlc:LayoutGroup Orientation="Horizontal">
+                    <dxlc:LayoutItem Label="profit/yr">
+                        <dxe:TextEdit
+                            EditValue="{Binding PLYear, Mode=OneWay}"
+                            Mask="c"
+                            MaskType="Numeric"
+                            MaskUseAsDisplayFormat="True" />
+                    </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="buy">
                         <dxe:TextEdit
                             EditValue="{Binding NumberBuySignals, Mode=OneWay}"

@@ -8,10 +8,10 @@
     {
         public StrategySettings()
         {
-            this.FwdDays = RandomExtensions.BetterRandomInteger(6, 9);
+            this.FwdDays = RandomExtensions.BetterRandomInteger(11, 15);
 
-            this.PercentageChangeHigh = RandomExtensions.BetterRandomDouble(0.5, 2.0);
-            this.PercentageChangeLow = RandomExtensions.BetterRandomDouble(-1.4, -0.7);
+            this.PercentageChangeHigh = RandomExtensions.BetterRandomDouble(1.0, 2.0);
+            this.PercentageChangeLow = RandomExtensions.BetterRandomDouble(-2.0, -0.7);
 
             this.MovingAverageCloseFast = RandomExtensions.BetterRandomInteger(15, 21);
             this.MovingAverageCloseSlow = RandomExtensions.BetterRandomInteger(63, 74);

@@ -19,5 +19,7 @@
         public int NumberNeuronsHiddenLayer { get; set; }
 
         public int MaxEpochs { get; set; }
+
+        public int NumberDaysBetweenTransactions { get; set; }
     }
 }

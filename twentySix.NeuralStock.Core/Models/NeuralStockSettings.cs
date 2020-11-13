@@ -22,6 +22,8 @@
 
         public int NumberNeuronsHiddenLayer { get; set; }
 
+        public int NumberDaysBetweenTransactions { get; set; }
+
         public static NeuralStockSettings FromDTO(NeuralStockSettingsDTO dto)
         {
             if (dto == null)
@@ -37,7 +39,8 @@
                 PercentageTraining = dto.PercentageTraining,
                 NumberANNs = dto.NumberANNs,
                 NumberHiddenLayers = dto.NumberHiddenLayers,
-                NumberNeuronsHiddenLayer = dto.NumberNeuronsHiddenLayer
+                NumberNeuronsHiddenLayer = dto.NumberNeuronsHiddenLayer,
+                NumberDaysBetweenTransactions = dto.NumberDaysBetweenTransactions
             };
         }
 
@@ -50,7 +53,8 @@
                 PercentageTraining = 0.6,
                 NumberANNs = 100,
                 NumberHiddenLayers = 1,
-                NumberNeuronsHiddenLayer = 15
+                NumberNeuronsHiddenLayer = 15,
+                NumberDaysBetweenTransactions = 3
             };
 
             return obj;
@@ -66,7 +70,8 @@
                 PercentageTraining = this.PercentageTraining,
                 NumberANNs = this.NumberANNs,
                 NumberHiddenLayers = this.NumberHiddenLayers,
-                NumberNeuronsHiddenLayer = this.NumberNeuronsHiddenLayer
+                NumberNeuronsHiddenLayer = this.NumberNeuronsHiddenLayer,
+                NumberDaysBetweenTransactions = this.NumberDaysBetweenTransactions
             };
         }
     }

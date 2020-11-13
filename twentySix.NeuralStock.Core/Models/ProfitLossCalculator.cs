@@ -68,6 +68,10 @@
                                           * (365d / (this.TrainingSession.TestingHistoricalData.EndDate
                                                      - this.TrainingSession.TestingHistoricalData.BeginDate).TotalDays);
 
+        public double PLYear => this.PL
+                                          * (365d / (this.TrainingSession.TestingHistoricalData.EndDate
+                                                     - this.TrainingSession.TestingHistoricalData.BeginDate).TotalDays);
+
         public double BuyHold => (this.TrainingSession.TestingHistoricalData.Quotes.LastOrDefault().Value.Close
                                  - this.TrainingSession.TestingHistoricalData.Quotes.FirstOrDefault().Value.Close) / this.TrainingSession.TestingHistoricalData.Quotes.FirstOrDefault().Value.Close;
 
@@ -110,6 +114,8 @@
                 return;
             }
 
+            Trade lastSellTrade = null;
+
             foreach (var quote in this.TrainingSession.TestingHistoricalData.Quotes)
             {
                 var indexOfToday = this.TrainingSession.TestingHistoricalData.Quotes.IndexOfKey(quote.Key);
@@ -119,24 +125,31 @@
                 var transactionBuyPrice = this.TrainingSession.TestingHistoricalData.Quotes.ElementAt(indexTomorrow).Value.Close;
                 var transactionSellPrice = this.TrainingSession.TestingHistoricalData.Quotes.ElementAt(indexOfToday).Value.Close;
 
-                if (this.Signals[quote.Key] == SignalEnum.Buy && this.Portfolio.GetMaxPurchaseVolume(this.TrainingSession.Stock, quote.Key, transactionBuyPrice) > 1)
+                if (lastSellTrade == null || (quote.Key.Date - lastSellTrade.Date.Date).Days >=
+                    this.TrainingSession.NumberDaysBetweenTransactions)
                 {
-                    var maxPurchaseVolume = this.Portfolio.GetMaxPurchaseVolume(this.TrainingSession.Stock, quote.Key, transactionBuyPrice);
-                    var trade = new Trade
+                    if (this.Signals[quote.Key] == SignalEnum.Buy &&
+                        this.Portfolio.GetMaxPurchaseVolume(this.TrainingSession.Stock, quote.Key,
+                            transactionBuyPrice) > 1)
                     {
-                        Type = TransactionEnum.Buy,
-                        Stock = this.TrainingSession.Stock,
-                        Date = quote.Key,
-                        NumberOfShares = maxPurchaseVolume,
-                        Price = transactionBuyPrice
-                    };
+                        var maxPurchaseVolume = this.Portfolio.GetMaxPurchaseVolume(this.TrainingSession.Stock,
+                            quote.Key, transactionBuyPrice);
+                        var trade = new Trade
+                        {
+                            Type = TransactionEnum.Buy,
+                            Stock = this.TrainingSession.Stock,
+                            Date = quote.Key,
+                            NumberOfShares = maxPurchaseVolume,
+                            Price = transactionBuyPrice
+                        };
 
-                    this.Portfolio.Add(trade);
+                        this.Portfolio.Add(trade);
+                    }
                 }
 
                 if (this.Signals[quote.Key] == SignalEnum.Sell && this.Portfolio.GetHoldings(quote.Key).ContainsKey(this.TrainingSession.Stock))
                 {
-                    var trade = new Trade
+                    lastSellTrade = new Trade
                     {
                         Type = TransactionEnum.Sell,
                         Stock = this.TrainingSession.Stock,
@@ -145,8 +158,8 @@
                         Price = transactionSellPrice
                     };
 
-                    this.CompleteTransactions.Add(new CompleteTransaction(this.Portfolio.Trades.Last().Value, trade));
-                    this.Portfolio.Add(trade);
+                    this.CompleteTransactions.Add(new CompleteTransaction(this.Portfolio.Trades.Last().Value, lastSellTrade));
+                    this.Portfolio.Add(lastSellTrade);
                 }
             }
 

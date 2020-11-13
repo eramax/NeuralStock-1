@@ -50,6 +50,7 @@
             this.NumberAnns = settings.NumberANNs;
             this.NumberHiddenLayers = settings.NumberHiddenLayers;
             this.NumberNeuronsPerHiddenLayer = settings.NumberNeuronsHiddenLayer;
+            this.NumberDaysBetweenTransactions = settings.NumberDaysBetweenTransactions;
 
             this.BuyLevel = dto.BuyLevel;
             this.SellLevel = dto.SellLevel;
@@ -83,6 +84,8 @@
         public int NumberHiddenLayers { get; set; } = 1;
 
         public int NumberNeuronsPerHiddenLayer { get; set; } = 10;
+
+        public int NumberDaysBetweenTransactions { get; set; } = 3;
 
         public double BuyLevel
         {
