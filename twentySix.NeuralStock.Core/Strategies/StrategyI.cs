@@ -1,4 +1,6 @@
-﻿namespace twentySix.NeuralStock.Core.Strategies
+﻿using CoordinateSharp;
+
+namespace twentySix.NeuralStock.Core.Strategies
 {
     using System;
     using System.Collections.Generic;
@@ -10,6 +12,9 @@
 
     public class StrategyI : StrategyBase
     {
+        private static Tuple<double, double> coordinates = new Tuple<double, double>(38.766667, -9.15);
+        private static Dictionary<DateTime, Coordinate> coordinatesCache = new Dictionary<DateTime, Coordinate>();
+
         private static readonly object Locker = new object();
 
         public StrategyI(StrategySettings settings)
@@ -62,6 +67,15 @@
 
                 var percentageChange = ((future.Close - today.Close) / today.Close) * 100d;
 
+                if (!coordinatesCache.ContainsKey(today.Date))
+                {
+                    coordinatesCache.Add(today.Date, new Coordinate(coordinates.Item1, coordinates.Item2, new DateTime(today.Date.Year, today.Date.Month, today.Date.Day, 10, 0, 0)));
+                }
+                if (!coordinatesCache.ContainsKey(yesterday.Date))
+                {
+                    coordinatesCache.Add(yesterday.Date, new Coordinate(coordinates.Item1, coordinates.Item2, new DateTime(yesterday.Date.Year, yesterday.Date.Month, yesterday.Date.Day, 10, 0, 0)));
+                }
+
                 var annDataPoint = new AnnDataPoint
                 {
                     Date = today.Date,
@@ -82,19 +96,10 @@
                                      fitClose.Item2[i],
                                      fitOfFit.Item2[i],
                                      fitRSI.Item2[i],
-                                     MathNet.Numerics.Distance.Pearson(
-                                         new[]
-                                             {
-                                                 today.Close, today.High, today.Open, today.Low, today.Volume,
-                                                 rsi[i], cci[i], macD.Item2[i]
-                                             },
-                                         new[]
-                                             {
-                                                 yesterday.Close, yesterday.High, yesterday.Open, yesterday.Low, yesterday.Volume,
-                                                 rsi[yesterdayIndex], cci[yesterdayIndex], macD.Item2[yesterdayIndex]
-                                             }),
                                      (today.Close * yesterday.Volume - yesterday.Close * today.Volume) * today.Dividend,
-                                     today.Date.DayOfYear
+                                     coordinatesCache[today.Date].CelestialInfo.SunAltitude,
+                                     coordinatesCache[today.Date].CelestialInfo.SunAzimuth,
+                                     coordinatesCache[yesterday.Date].CelestialInfo.SunAltitude
                                  },
                     Outputs = new[]
                                   {
@@ -108,4 +113,6 @@
             return result;
         }
     }
+
+    
 }

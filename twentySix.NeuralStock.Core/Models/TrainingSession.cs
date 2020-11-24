@@ -216,6 +216,7 @@
                             this.RaisePropertyChanged(() => this.AllNetworksStdDev);
                             this.RaisePropertyChanged(() => this.AllNetworksMin);
                             this.RaisePropertyChanged(() => this.AllNetworksSigma);
+                            this.RaisePropertyChanged(() => this.BestPrediction);
                         }
                     });
 
@@ -280,8 +281,8 @@
 
             if (resetLevels)
             {
-                buyLevel = RandomExtensions.BetterRandomDouble(0.83, 0.99);
-                sellLevel = RandomExtensions.BetterRandomDouble(-0.55, -0.30);
+                buyLevel = RandomExtensions.BetterRandomDouble(0.86, 0.96);
+                sellLevel = RandomExtensions.BetterRandomDouble(-0.65, -0.55);
             }
 
             var result = new Dictionary<DateTime, SignalEnum>();
@@ -348,7 +349,7 @@
             net.ActivationFunctionHidden = ActivationFunction.ELLIOT;
             net.ActivationFunctionOutput = ActivationFunction.LINEAR;
 
-            net.TrainOnData(trainData, (uint)RandomExtensions.BetterRandomInteger(500, 1500), 0, 0.00001f);
+            net.TrainOnData(trainData, (uint)RandomExtensions.BetterRandomInteger(700, 1300), 0, 0.00001f);
 
             trainData.Dispose();
 

@@ -122,7 +122,7 @@
                 var indexTomorrow = indexOfToday < this.TrainingSession.TestingHistoricalData.Quotes.Count - 2
                                         ? indexOfToday + 1
                                         : indexOfToday;
-                var transactionBuyPrice = this.TrainingSession.TestingHistoricalData.Quotes.ElementAt(indexTomorrow).Value.Close;
+                var transactionBuyPrice = this.TrainingSession.TestingHistoricalData.Quotes.ElementAt(indexOfToday).Value.Close;
                 var transactionSellPrice = this.TrainingSession.TestingHistoricalData.Quotes.ElementAt(indexOfToday).Value.Close;
 
                 if (lastSellTrade == null || (quote.Key.Date - lastSellTrade.Date.Date).Days >=
