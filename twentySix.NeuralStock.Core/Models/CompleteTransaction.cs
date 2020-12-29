@@ -4,8 +4,8 @@
     {
         public CompleteTransaction(Trade buyTrade, Trade sellTrade)
         {
-            this.BuyTrade = buyTrade;
-            this.SellTrade = sellTrade;
+            BuyTrade = buyTrade;
+            SellTrade = sellTrade;
         }
 
         public Trade BuyTrade { get; }

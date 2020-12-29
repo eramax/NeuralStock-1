@@ -25,9 +25,9 @@
             [Import("YahooFinanceDataSource")]IDataSource yahooDataSource,
             [Import("MorningStarDataSource")]IDataSource morningStarDataSource)
         {
-            this._loggingService = loggingService;
-            this._yahooFinanceDataSource = yahooDataSource as YahooFinanceDataSource;
-            this._morningStarDataSource = morningStarDataSource as MorningStarDataSource;
+            _loggingService = loggingService;
+            _yahooFinanceDataSource = yahooDataSource as YahooFinanceDataSource;
+            _morningStarDataSource = morningStarDataSource as MorningStarDataSource;
         }
 
         public void Dispose()
@@ -40,14 +40,14 @@
             {
                 if (stock.Country.Id != 999)
                 {
-                    return await Task.Run(() => this._morningStarDataSource.GetName(stock));
+                    return await Task.Run(() => _morningStarDataSource.GetName(stock));
                 }
 
                 return stock.Symbol;
             }
             catch (Exception ex)
             {
-                this._loggingService?.Warn($"{nameof(this.GetName)}: {ex}");
+                _loggingService?.Warn($"{nameof(GetName)}: {ex}");
                 return string.Empty;
             }
         }
@@ -58,40 +58,40 @@
             {
                 if (refresh || stock.HistoricalData == null || !stock.HistoricalData.Quotes.Any())
                 {
-                    var historicalData = await Task.Run(() => this._yahooFinanceDataSource.GetHistoricalData(stock, startDate, endDate ?? DateTime.Now));
-                    await this.PopulateDividends(stock, historicalData);
+                    var historicalData = await Task.Run(() => _yahooFinanceDataSource.GetHistoricalData(stock, startDate, endDate ?? DateTime.Now));
+                    await PopulateDividends(stock, historicalData);
                     return historicalData;
                 }
 
                 HistoricalData preHistoricalData = null;
                 if (startDate < stock.HistoricalData.BeginDate)
                 {
-                    preHistoricalData = await Task.Run(() => this._yahooFinanceDataSource.GetHistoricalData(stock, startDate, stock.HistoricalData.BeginDate));
+                    preHistoricalData = await Task.Run(() => _yahooFinanceDataSource.GetHistoricalData(stock, startDate, stock.HistoricalData.BeginDate));
                 }
 
                 // always download latest quote
                 HistoricalData postHistoricalData = null;
                 if (endDate == null || endDate >= stock.HistoricalData.EndDate)
                 {
-                    postHistoricalData = await Task.Run(() => this._yahooFinanceDataSource.GetHistoricalData(stock, stock.HistoricalData.EndDate, endDate ?? DateTime.Now));
+                    postHistoricalData = await Task.Run(() => _yahooFinanceDataSource.GetHistoricalData(stock, stock.HistoricalData.EndDate, endDate ?? DateTime.Now));
                 }
 
                 var currentHistoricalData = stock.HistoricalData;
 
                 var result = currentHistoricalData + preHistoricalData + postHistoricalData;
-                await this.PopulateDividends(stock, result);
+                await PopulateDividends(stock, result);
                 return result;
             }
             catch (Exception ex)
             {
-                this._loggingService?.Warn($"{nameof(this.GetName)}: {ex}");
+                _loggingService?.Warn($"{nameof(GetName)}: {ex}");
                 return null;
             }
         }
 
         public async Task PopulateDividends(Stock stock, HistoricalData historicalData)
         {
-            var dividendsHistory = await Task.Run(() => this._yahooFinanceDataSource.GetDividendsData(stock, historicalData.BeginDate, historicalData.EndDate));
+            var dividendsHistory = await Task.Run(() => _yahooFinanceDataSource.GetDividendsData(stock, historicalData.BeginDate, historicalData.EndDate));
             dividendsHistory.ForEach(dividend =>
                 {
                     historicalData.Quotes.FirstOrDefault(x => x.Key >= dividend.Date).Value.Dividend = dividend.Div;

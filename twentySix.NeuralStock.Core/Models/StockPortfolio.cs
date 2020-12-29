@@ -14,7 +14,7 @@
 
         public StockPortfolio(DateTime startDate, double initialCash)
         {
-            this.Add(startDate, initialCash);
+            Add(startDate, initialCash);
         }
 
         public SortedList<DateTime, double> CashTransactions { get; } = new SortedList<DateTime, double>(new DuplicateKeyComparer<DateTime>());
@@ -25,35 +25,35 @@
 
         public double GetCash(DateTime date)
         {
-            return this.CashTransactions.Where(x => x.Key <= date).Select(x => x.Value).Sum();
+            return CashTransactions.Where(x => x.Key <= date).Select(x => x.Value).Sum();
         }
 
         public void Add(Trade trade)
         {
-            if (this.GetCash(trade.Date) - trade.TotalValue < 0)
+            if (GetCash(trade.Date) - trade.TotalValue < 0)
             {
                 throw new InvalidOperationException("Not enough cash");
             }
 
             // adjust cash
-            this.Add(trade.Date, -trade.TotalValue);
+            Add(trade.Date, -trade.TotalValue);
 
-            this.Trades.Add(trade.Date, trade);
+            Trades.Add(trade.Date, trade);
         }
 
         public void Add(DateTime date, double value)
         {
-            if (this.GetCash(date) + value < 0)
+            if (GetCash(date) + value < 0)
             {
                 throw new InvalidOperationException("Not enough cash");
             }
 
-            this.CashTransactions.Add(date, value);
+            CashTransactions.Add(date, value);
         }
 
         public int GetMaxPurchaseVolume(Stock stock, DateTime date, double price)
         {
-            var cashAtDate = this.GetCash(date);
+            var cashAtDate = GetCash(date);
 
             int adjVolume = (int)(cashAtDate / price);
 
@@ -78,7 +78,7 @@
 
         public Dictionary<Stock, int> GetHoldings(DateTime date)
         {
-            return this.Trades
+            return Trades
                 .Where(x => x.Key <= date)
                 .Select(x => new { stock = x.Value.Stock, volume = (x.Value.Type == TransactionEnum.Buy ? 1 : -1) * x.Value.NumberOfShares })
                 .GroupBy(x => x.stock)
@@ -89,8 +89,8 @@
 
         public double GetValue(DateTime date)
         {
-            var cashValue = this.GetCash(date);
-            var sharesValue = -this.GetHoldings(date).Sum(
+            var cashValue = GetCash(date);
+            var sharesValue = -GetHoldings(date).Sum(
                                   holding => new Trade
                                   {
                                       Date = date,
@@ -106,8 +106,8 @@
         public StockPortfolio Reset()
         {
             return new StockPortfolio(
-                this.CashTransactions.FirstOrDefault().Key,
-                this.CashTransactions.FirstOrDefault().Value);
+                CashTransactions.FirstOrDefault().Key,
+                CashTransactions.FirstOrDefault().Value);
         }
     }
 }

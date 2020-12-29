@@ -2,36 +2,36 @@
 {
     using Newtonsoft.Json;
 
-    using twentySix.NeuralStock.Core.Extensions;
+    using Extensions;
 
     public class StrategySettings
     {
         public StrategySettings()
         {
-            this.FwdDays = RandomExtensions.BetterRandomInteger(11, 19);
+            FwdDays = RandomExtensions.BetterRandomInteger(7, 29);
 
-            this.PercentageChangeHigh = RandomExtensions.BetterRandomDouble(0.6, 1.6);
-            this.PercentageChangeLow = RandomExtensions.BetterRandomDouble(-2.0, -0.8);
+            PercentageChangeHigh = RandomExtensions.BetterRandomDouble(0.6, 1.6);
+            PercentageChangeLow = RandomExtensions.BetterRandomDouble(-2.0, -0.8);
 
-            this.MovingAverageCloseFast = RandomExtensions.BetterRandomInteger(12, 21);
-            this.MovingAverageCloseSlow = RandomExtensions.BetterRandomInteger(33, 64);
-            this.MovingAverageHighFast = RandomExtensions.BetterRandomInteger(7, 13);
+            MovingAverageCloseFast = RandomExtensions.BetterRandomInteger(10, 21);
+            MovingAverageCloseSlow = RandomExtensions.BetterRandomInteger(33, 64);
+            MovingAverageHighFast = RandomExtensions.BetterRandomInteger(3, 21);
 
-            this.CCI = RandomExtensions.BetterRandomInteger(7, 19);
-            this.RSI = RandomExtensions.BetterRandomInteger(4, 13);
-            this.RSI2 = RandomExtensions.BetterRandomInteger(9, 15);
+            CCI = RandomExtensions.BetterRandomInteger(6, 21);
+            RSI = RandomExtensions.BetterRandomInteger(3, 21);
+            RSI2 = RandomExtensions.BetterRandomInteger(3, 21);
 
-            this.MacdFast = RandomExtensions.BetterRandomInteger(3, 8);
-            this.MacdSlow = RandomExtensions.BetterRandomInteger(26, 42);
-            this.MacdSignal = RandomExtensions.BetterRandomInteger(24, 32);
+            MacdFast = RandomExtensions.BetterRandomInteger(3, 8);
+            MacdSlow = RandomExtensions.BetterRandomInteger(26, 42);
+            MacdSignal = RandomExtensions.BetterRandomInteger(24, 36);
 
-            this.Hv1 = RandomExtensions.BetterRandomInteger(15, 50);
+            Hv1 = RandomExtensions.BetterRandomInteger(5, 50);
 
-            this.FitClose = RandomExtensions.BetterRandomInteger(9, 21);
-            this.FitOfFit = RandomExtensions.BetterRandomInteger(7, 17);
+            FitClose = RandomExtensions.BetterRandomInteger(9, 21);
+            FitOfFit = RandomExtensions.BetterRandomInteger(7, 17);
 
-            this.RSI1Fit = RandomExtensions.BetterRandomInteger(7, 14);
-            this.RSI2Fit = RandomExtensions.BetterRandomInteger(9, 15);
+            RSI1Fit = RandomExtensions.BetterRandomInteger(7, 14);
+            RSI2Fit = RandomExtensions.BetterRandomInteger(9, 15);
         }
 
         public int FwdDays { get; set; }

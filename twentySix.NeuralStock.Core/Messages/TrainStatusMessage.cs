@@ -6,8 +6,8 @@
     {
         public TrainStatusMessage(string message, SeverityEnum severity = SeverityEnum.Info)
         {
-            this.Message = message;
-            this.Severity = severity;
+            Message = message;
+            Severity = severity;
         }
 
         public string Message { get; }

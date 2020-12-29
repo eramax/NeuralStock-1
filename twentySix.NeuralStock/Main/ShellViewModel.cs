@@ -14,15 +14,15 @@
 
         public bool IsBusy
         {
-            get { return this.GetProperty(() => this.IsBusy); }
-            set { this.SetProperty(() => this.IsBusy, value); }
+            get { return GetProperty(() => IsBusy); }
+            set { SetProperty(() => IsBusy, value); }
         }
 
         protected virtual INavigationService NavigationService => null;
 
         public void NavigateTo(string view)
         {
-            this.NavigationService.Navigate(view, null, this);
+            NavigationService.Navigate(view, null, this);
         }
     }
 }

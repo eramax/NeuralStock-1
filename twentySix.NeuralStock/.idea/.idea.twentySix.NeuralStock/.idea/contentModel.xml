@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\Cesario\AppData\Local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Cesario\AppData\Local\JetBrains\Rider2020.2\resharper-host\Local\Transient\Rider\v202\SolutionCaches\_twentySix.NeuralStock.-1170018843.00" t="ExcludeRecursive" />
+    <e p="D:\Development\CS\Completed Projects\NeuralStock\twentySix.NeuralStock" t="IncludeRecursive">
+      <e p="app.config" t="Include" />
+      <e p="App.xaml" t="Include" />
+      <e p="App.xaml.cs" t="Include" />
+      <e p="bin" t="ExcludeRecursive" />
+      <e p="Bootstrapper.cs" t="Include" />
+      <e p="Common" t="Include">
+        <e p="ComposedViewModelBase.cs" t="Include" />
+      </e>
+      <e p="Dashboard" t="Include">
+        <e p="DashboardPrediction.cs" t="Include" />
+        <e p="DashboardView.xaml" t="Include" />
+        <e p="DashboardView.xaml.cs" t="Include" />
+        <e p="DashboardViewModel.cs" t="Include" />
+      </e>
+      <e p="fanndouble.dll" t="Include" />
+      <e p="Main" t="Include">
+        <e p="Shell.xaml" t="Include" />
+        <e p="Shell.xaml.cs" t="Include" />
+        <e p="ShellViewModel.cs" t="Include" />
+      </e>
+      <e p="obj" t="ExcludeRecursive">
+        <e p="Release" t="Include">
+          <e p="App.g.cs" t="Include" />
+          <e p="Dashboard" t="Include">
+            <e p="DashboardView.g.cs" t="Include" />
+          </e>
+          <e p="GeneratedInternalTypeHelper.g.cs" t="Include" />
+          <e p="Main" t="Include">
+            <e p="Shell.g.cs" t="Include" />
+          </e>
+          <e p="Settings" t="Include">
+            <e p="SettingsView.g.cs" t="Include" />
+          </e>
+          <e p="Train" t="Include">
+            <e p="DataView.g.cs" t="Include" />
+            <e p="InputsView.g.cs" t="Include" />
+            <e p="TrainView.g.cs" t="Include" />
+          </e>
+          <e p="twentySix.NeuralStock_Content.g.cs" t="Include" />
+        </e>
+      </e>
+      <e p="packages" t="ExcludeRecursive">
+        <e p="NUnit3TestAdapter.3.13.0\build\net35\nunit.engine.api.dll" t="Include" />
+        <e p="NUnit3TestAdapter.3.13.0\build\net35\nunit.engine.dll" t="Include" />
+        <e p="NUnit3TestAdapter.3.13.0\build\net35\NUnit3.TestAdapter.dll" t="Include" />
+        <e p="NUnit3TestAdapter.3.13.0\build\net35\NUnit3.TestAdapter.pdb" t="Include" />
+      </e>
+      <e p="packages.config" t="Include" />
+      <e p="Properties" t="Include">
+        <e p="AssemblyInfo.cs" t="Include" />
+      </e>
+      <e p="Resources" t="Include">
+        <e p="Down.png" t="Include" />
+        <e p="NeuralStock.ico" t="Include" />
+        <e p="Neutral.png" t="Include" />
+        <e p="Pause.png" t="Include" />
+        <e p="Save.png" t="Include" />
+        <e p="Settings.png" t="Include" />
+        <e p="Shared.xaml" t="Include" />
+        <e p="Train.png" t="Include" />
+        <e p="Up.png" t="Include" />
+      </e>
+      <e p="Settings" t="Include">
+        <e p="SettingsView.xaml" t="Include" />
+        <e p="SettingsView.xaml.cs" t="Include" />
+        <e p="SettingsViewModel.cs" t="Include" />
+      </e>
+      <e p="Train" t="Include">
+        <e p="DataView.xaml" t="Include" />
+        <e p="DataView.xaml.cs" t="Include" />
+        <e p="InputsView.xaml" t="Include" />
+        <e p="InputsView.xaml.cs" t="Include" />
+        <e p="Shared.xaml" t="Include" />
+        <e p="TrainView.xaml" t="Include" />
+        <e p="TrainView.xaml.cs" t="Include" />
+        <e p="TrainViewModel.cs" t="Include" />
+      </e>
+      <e p="twentySix.NeuralStock.csproj" t="IncludeRecursive" />
+      <e p="twentySix.NeuralStock.sln" t="IncludeFlat" />
+    </e>
+    <e p="D:\Development\CS\Completed Projects\NeuralStock\twentySix.NeuralStock.Core" t="IncludeRecursive">
+      <e p="app.config" t="Include" />
+      <e p="bin" t="ExcludeRecursive" />
+      <e p="Common" t="Include">
+        <e p="DuplicateKeyComparer.cs" t="Include" />
+        <e p="WebClientExtended.cs" t="Include" />
+      </e>
+      <e p="Data" t="Include">
+        <e p="Countries" t="Include">
+          <e p="ICountry.cs" t="Include" />
+          <e p="Others.cs" t="Include" />
+          <e p="Portugal.cs" t="Include" />
+          <e p="Singapore.cs" t="Include" />
+        </e>
+        <e p="Sources" t="Include">
+          <e p="GoogleFinanceDataSource.cs" t="Include" />
+          <e p="IDataSource.cs" t="Include" />
+          <e p="MorningStarDataSource.cs" t="Include" />
+          <e p="YahooFinanceDataSource.cs" t="Include" />
+        </e>
+      </e>
+      <e p="DTOs" t="Include">
+        <e p="BestNetworkDTO.cs" t="Include" />
+        <e p="FavouriteDTO.cs" t="Include" />
+        <e p="HistoricalDataDTO.cs" t="Include" />
+        <e p="NeuralStockSettingsDTO.cs" t="Include" />
+        <e p="StockDTO.cs" t="Include" />
+      </e>
+      <e p="Enums" t="Include">
+        <e p="SeverityEnum.cs" t="Include" />
+        <e p="SignalEnum.cs" t="Include" />
+      </e>
+      <e p="Extensions" t="Include">
+        <e p="RandomExtensions.cs" t="Include" />
+      </e>
+      <e p="Helpers" t="Include">
+        <e p="ApplicationHelper.cs" t="Include" />
+      </e>
+      <e p="Messages" t="Include">
+        <e p="TrainStatusMessage.cs" t="Include" />
+      </e>
+      <e p="Models" t="Include">
+        <e p="AnnDataPoint.cs" t="Include" />
+        <e p="CompleteTransaction.cs" t="Include" />
+        <e p="HistoricalData.cs" t="Include" />
+        <e p="NeuralStockSettings.cs" t="Include" />
+        <e p="Prediction.cs" t="Include" />
+        <e p="ProfitLossCalculator.cs" t="Include" />
+        <e p="Quote.cs" t="Include" />
+        <e p="Stock.cs" t="Include" />
+        <e p="StockPortfolio.cs" t="Include" />
+        <e p="Trade.cs" t="Include" />
+        <e p="TrainingSession.cs" t="Include" />
+      </e>
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="packages.config" t="Include" />
+      <e p="Properties" t="Include">
+        <e p="AssemblyInfo.cs" t="Include" />
+        <e p="Settings.Designer.cs" t="Include" />
+        <e p="Settings.settings" t="Include" />
+      </e>
+      <e p="Services" t="Include">
+        <e p="DataProcessorService.cs" t="Include" />
+        <e p="DownloaderService.cs" t="Include" />
+        <e p="Interfaces" t="Include">
+          <e p="IDataProcessorService.cs" t="Include" />
+          <e p="IDownloaderService.cs" t="Include" />
+          <e p="ILoggingService.cs" t="Include" />
+          <e p="IPersistenceService.cs" t="Include" />
+          <e p="IStatisticsService.cs" t="Include" />
+        </e>
+        <e p="LoggingService.cs" t="Include" />
+        <e p="PersistenceService.cs" t="Include" />
+        <e p="StatisticsService.cs" t="Include" />
+      </e>
+      <e p="Settings.cs" t="Include" />
+      <e p="Strategies" t="Include">
+        <e p="IStrategy.cs" t="Include" />
+        <e p="StrategyBase.cs" t="Include" />
+        <e p="StrategyI.cs" t="Include" />
+        <e p="StrategySettings.cs" t="Include" />
+      </e>
+      <e p="twentySix.NeuralStock.Core.csproj" t="IncludeRecursive" />
+    </e>
+    <e p="D:\Development\CS\Completed Projects\NeuralStock\twentySix.NeuralStock.CoreTests" t="IncludeRecursive">
+      <e p="app.config" t="Include" />
+      <e p="bin" t="ExcludeRecursive" />
+      <e p="fanndouble.dll" t="Include" />
+      <e p="IntegrationTests.cs" t="Include" />
+      <e p="Models" t="Include">
+        <e p="StockPortfolioTests.cs" t="Include" />
+      </e>
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="packages.config" t="Include" />
+      <e p="Properties" t="Include">
+        <e p="AssemblyInfo.cs" t="Include" />
+        <e p="Settings.Designer.cs" t="Include" />
+        <e p="Settings.settings" t="Include" />
+      </e>
+      <e p="Services" t="Include">
+        <e p="DownloadServiceTests.cs" t="Include" />
+        <e p="StatisticsServiceTests.cs" t="Include" />
+      </e>
+      <e p="twentySix.NeuralStock.CoreTests.csproj" t="IncludeRecursive" />
+    </e>
+  </component>
+</project>

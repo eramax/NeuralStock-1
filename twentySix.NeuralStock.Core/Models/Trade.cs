@@ -19,8 +19,8 @@
 
         public double Price { get; set; }
 
-        public double Fees => this.Stock.Country.GetFees(this.Price * this.NumberOfShares);
+        public double Fees => Stock.Country.GetFees(Price * NumberOfShares);
 
-        public double TotalValue => ((this.Type == TransactionEnum.Sell ? -1d : 1d) * this.NumberOfShares * this.Price) + this.Fees;
+        public double TotalValue => ((Type == TransactionEnum.Sell ? -1d : 1d) * NumberOfShares * Price) + Fees;
     }
 }

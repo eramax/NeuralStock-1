@@ -15,9 +15,9 @@
         {
             base.OnStartup(e);
 
-            this.DispatcherUnhandledException += this.App_DispatcherUnhandledException;
-            AppDomain.CurrentDomain.UnhandledException += this.CurrentDomain_UnhandledException;
-            TaskScheduler.UnobservedTaskException += this.TaskScheduler_UnobservedTaskException;
+            DispatcherUnhandledException += App_DispatcherUnhandledException;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
 
             try
             {

@@ -39,7 +39,7 @@
             var numberOfTries = 0;
             while (rawHistoricalData.Count == 0 && numberOfTries < 4)
             {
-                rawHistoricalData = Historical.GetPriceAsync(this.GetSymbol(stock), startDate, endDate).Result;
+                rawHistoricalData = Historical.GetPriceAsync(GetSymbol(stock), startDate, endDate).Result;
                 numberOfTries++;
             }
 
@@ -64,7 +64,7 @@
 
         public List<Dividend> GetDividendsData(Stock stock, DateTime startDate, DateTime endDate)
         {
-            return Historical.GetDividendAsync(this.GetSymbol(stock), startDate, endDate).Result;
+            return Historical.GetDividendAsync(GetSymbol(stock), startDate, endDate).Result;
         }
     }
 }

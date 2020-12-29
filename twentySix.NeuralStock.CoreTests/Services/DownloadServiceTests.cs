@@ -20,12 +20,12 @@
         [SetUp]
         public void SetUp()
         {
-            this._downloadService = new DownloaderService(
+            _downloadService = new DownloaderService(
                null,
                 new YahooFinanceDataSource(),
                new MorningStarDataSource());
 
-            this._stock = new Stock
+            _stock = new Stock
             {
                 Country = new Singapore(),
                 Symbol = "C31"
@@ -35,14 +35,14 @@
         [TearDown]
         public void TearDown()
         {
-            this._downloadService = null;
-            this._stock = null;
+            _downloadService = null;
+            _stock = null;
         }
 
         [Test]
         public async Task GetName_ValidSymbol_ReturnsName()
         {
-            var name = await this._downloadService.GetName(this._stock);
+            var name = await _downloadService.GetName(_stock);
 
             Assert.IsFalse(string.IsNullOrEmpty(name));
             StringAssert.StartsWith("Cap", name);
@@ -51,9 +51,9 @@
         [Test]
         public async Task GetName_InvalidSymbol_ReturnsNull()
         {
-            //this._stock.Symbol = "000";
+            //_stock.Symbol = "000";
 
-            var name = await this._downloadService.GetName(this._stock);
+            var name = await _downloadService.GetName(_stock);
 
             Assert.IsFalse(string.IsNullOrEmpty(name));
             Assert.AreEqual("000", name);
@@ -62,7 +62,7 @@
         [Test]
         public async Task GetHistoricalData_ValidSymbol_ReturnsData()
         {
-            var data = await this._downloadService.GetHistoricalData(this._stock, DateTime.Now.AddDays(-10), refresh: true);
+            var data = await _downloadService.GetHistoricalData(_stock, DateTime.Now.AddDays(-10), refresh: true);
 
             Assert.NotNull(data);
             //Assert.IsTrue(data.Quotes.Any());

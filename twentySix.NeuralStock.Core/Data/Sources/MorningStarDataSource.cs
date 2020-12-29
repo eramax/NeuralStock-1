@@ -35,7 +35,7 @@
 
         public string GetName(Stock stock)
         {
-            var url = Settings.Default.MorningStarQuote.Replace("{symbol}", this.GetSymbol(stock).Replace(":", "/"));
+            var url = Settings.Default.MorningStarQuote.Replace("{symbol}", GetSymbol(stock).Replace(":", "/"));
 
             try
             {

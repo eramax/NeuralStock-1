@@ -29,20 +29,20 @@
         [SetUp]
         public void SetUp()
         {
-            this._startDate = new DateTime(2014, 1, 1);
+            _startDate = new DateTime(2014, 1, 1);
 
-            this._downloadService = new DownloaderService(
+            _downloadService = new DownloaderService(
                 null,
                 new YahooFinanceDataSource(),
                 new MorningStarDataSource());
 
-            this._stock = new Stock
+            _stock = new Stock
             {
                 Country = new Singapore(),
                 Symbol = "Y92"
             };
 
-            this._portfolio = new StockPortfolio(this._startDate, 50000);
+            _portfolio = new StockPortfolio(_startDate, 50000);
 
             var callingAssemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var aggCatalog = new AggregateCatalog();
@@ -54,8 +54,8 @@
         [TearDown]
         public void TearDown()
         {
-            this._downloadService = null;
-            this._stock = null;
+            _downloadService = null;
+            _stock = null;
         }
 
         [Test]
@@ -63,12 +63,12 @@
         [TestCase(1, 15)]
         public async Task FullTest(int numberOfHiddenLayers, int numberOfNeurons)
         {
-            this._stock.Name = await this._downloadService.GetName(this._stock);
+            _stock.Name = await _downloadService.GetName(_stock);
 
-            this._stock.HistoricalData = await this._downloadService.GetHistoricalData(this._stock, this._startDate, refresh: true);
+            _stock.HistoricalData = await _downloadService.GetHistoricalData(_stock, _startDate, refresh: true);
 
-            this._trainingSession =
-                new TrainingSession(this._portfolio, this._stock)
+            _trainingSession =
+                new TrainingSession(_portfolio, _stock)
                 {
                     NumberAnns = 5000,
                     NumberHiddenLayers = numberOfHiddenLayers,
@@ -79,28 +79,28 @@
             var timer = new Stopwatch();
             timer.Start();
 
-            this._trainingSession.PropertyChanged += (sender, args) =>
+            _trainingSession.PropertyChanged += (sender, args) =>
                 {
                     if (args.PropertyName == "BestProfitLossCalculator" && timer.ElapsedMilliseconds > 7000)
                     {
-                        Trace.Write($"\n{this._trainingSession.AllNetworksPLsStdDevs.Count:N0}");
-                        Trace.Write($" -> PL: {this._trainingSession.BestProfitLossCalculator.PL:C2}");
-                        Trace.Write($" ({this._trainingSession.BestProfitLossCalculator.PLPercentage:P2})");
-                        Trace.Write($" | median: {this._trainingSession.AllNetworksPL:C2}");
-                        Trace.Write($" | acc: {this._trainingSession.BestProfitLossCalculator.PercentageWinningTransactions:P2}");
-                        Trace.Write($" | study1: {this._trainingSession.BestPrediction.BuyLevel}");
-                        Trace.Write($" | study2: {this._trainingSession.BestPrediction.SellLevel}");
+                        Trace.Write($"\n{_trainingSession.AllNetworksPLsStdDevs.Count:N0}");
+                        Trace.Write($" -> PL: {_trainingSession.BestProfitLossCalculator.PL:C2}");
+                        Trace.Write($" ({_trainingSession.BestProfitLossCalculator.PLPercentage:P2})");
+                        Trace.Write($" | median: {_trainingSession.AllNetworksPL:C2}");
+                        Trace.Write($" | acc: {_trainingSession.BestProfitLossCalculator.PercentageWinningTransactions:P2}");
+                        Trace.Write($" | study1: {_trainingSession.BestPrediction.BuyLevel}");
+                        Trace.Write($" | study2: {_trainingSession.BestPrediction.SellLevel}");
 
                         timer.Restart();
                     }
                 };
 
-            this._trainingSession.FindBestAnn(new CancellationToken());
+            _trainingSession.FindBestAnn(new CancellationToken());
 
-            Console.Write("PL: {0:C2}", this._trainingSession.BestProfitLossCalculator.PL);
-            Console.Write(" ({0:P2})", this._trainingSession.BestProfitLossCalculator.PLPercentage);
-            Console.Write(" | median: {0:C2}", this._trainingSession.AllNetworksPL);
-            Console.Write(" | acc: {0:P2}", this._trainingSession.BestProfitLossCalculator.PercentageWinningTransactions);
+            Console.Write("PL: {0:C2}", _trainingSession.BestProfitLossCalculator.PL);
+            Console.Write(" ({0:P2})", _trainingSession.BestProfitLossCalculator.PLPercentage);
+            Console.Write(" | median: {0:C2}", _trainingSession.AllNetworksPL);
+            Console.Write(" | acc: {0:P2}", _trainingSession.BestProfitLossCalculator.PercentageWinningTransactions);
 
             Assert.Pass();
         }

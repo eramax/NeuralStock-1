@@ -10,10 +10,10 @@
         {
             if (cookie != null)
             {
-                this.Headers.Add(HttpRequestHeader.Cookie, cookie);
+                Headers.Add(HttpRequestHeader.Cookie, cookie);
             }
 
-            this.UseDefaultCredentials = true;
+            UseDefaultCredentials = true;
         }
 
         public Dictionary<Cookie, string> CookiesDictionary { get; set; }
@@ -28,7 +28,7 @@
 
             if (request != null)
             {
-                request.Timeout = this.Timeout;
+                request.Timeout = Timeout;
                 return request;
             }
 
@@ -37,7 +37,7 @@
 
         protected override WebResponse GetWebResponse(WebRequest request)
         {
-            var deepCopiedWebRequest = this.GetWebRequest(request.RequestUri);
+            var deepCopiedWebRequest = GetWebRequest(request.RequestUri);
 
             try
             {
@@ -47,12 +47,12 @@
             {
                 if (ex.Status == WebExceptionStatus.Timeout || ex.Status == WebExceptionStatus.ConnectFailure)
                 {
-                    if (--this.Tries == 0)
+                    if (--Tries == 0)
                     {
                         throw;
                     }
 
-                    return this.GetWebResponse(request);
+                    return GetWebResponse(request);
                 }
 
                 throw;

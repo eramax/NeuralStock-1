@@ -25,32 +25,32 @@
 
         public List<AnnDataPoint> GetAnnData(HistoricalData historicalData, bool recalculateMeans = true)
         {
-            var rawAnnDataPoints = this.GetRawAnnDataPoints(historicalData);
+            var rawAnnDataPoints = GetRawAnnDataPoints(historicalData);
             var numberOfInputs = rawAnnDataPoints.First().Inputs.Length;
             var numberOfOutputs = rawAnnDataPoints.First().Outputs.Length;
 
             // calculate means and stddevs if we are dea
             if (recalculateMeans)
             {
-                this.TrainingMeansInput = new double[numberOfInputs];
-                this.TrainingStdDevsInput = new double[numberOfInputs];
-                this.TrainingMeansOutput = new double[numberOfOutputs];
-                this.TrainingStdDevsOutput = new double[numberOfOutputs];
+                TrainingMeansInput = new double[numberOfInputs];
+                TrainingStdDevsInput = new double[numberOfInputs];
+                TrainingMeansOutput = new double[numberOfOutputs];
+                TrainingStdDevsOutput = new double[numberOfOutputs];
 
                 for (int i = 0; i < numberOfInputs; i++)
                 {
-                    this.TrainingMeansInput[i] = this.StatisticsService.Mean(rawAnnDataPoints.Select(x => x.Inputs[i]).ToArray());
-                    this.TrainingStdDevsInput[i] = this.StatisticsService.StandardDeviation(rawAnnDataPoints.Select(x => x.Inputs[i]).ToArray());
+                    TrainingMeansInput[i] = StatisticsService.Mean(rawAnnDataPoints.Select(x => x.Inputs[i]).ToArray());
+                    TrainingStdDevsInput[i] = StatisticsService.StandardDeviation(rawAnnDataPoints.Select(x => x.Inputs[i]).ToArray());
                 }
 
                 for (int i = 0; i < numberOfOutputs; i++)
                 {
-                    this.TrainingMeansOutput[i] = this.StatisticsService.Mean(rawAnnDataPoints.Select(x => x.Outputs[i]).ToArray());
-                    this.TrainingStdDevsOutput[i] = this.StatisticsService.StandardDeviation(rawAnnDataPoints.Select(x => x.Outputs[i]).ToArray());
+                    TrainingMeansOutput[i] = StatisticsService.Mean(rawAnnDataPoints.Select(x => x.Outputs[i]).ToArray());
+                    TrainingStdDevsOutput[i] = StatisticsService.StandardDeviation(rawAnnDataPoints.Select(x => x.Outputs[i]).ToArray());
                 }
             }
 
-            return this.Normalize(rawAnnDataPoints);
+            return Normalize(rawAnnDataPoints);
         }
 
         protected abstract IList<AnnDataPoint> GetRawAnnDataPoints(HistoricalData historicalData);
@@ -66,8 +66,8 @@
                 result.Add(new AnnDataPoint
                 {
                     Date = annPoint.Date,
-                    Inputs = Enumerable.Range(0, numberOfInputs).Select(i => this.DataProcessorService.Normalize(annPoint.Inputs[i], this.TrainingMeansInput[i], this.TrainingStdDevsInput[i])).ToArray(),
-                    Outputs = Enumerable.Range(0, numberOfOutputs).Select(i => this.DataProcessorService.Normalize(annPoint.Outputs[i], this.TrainingMeansOutput[i], this.TrainingStdDevsOutput[i])).ToArray()
+                    Inputs = Enumerable.Range(0, numberOfInputs).Select(i => DataProcessorService.Normalize(annPoint.Inputs[i], TrainingMeansInput[i], TrainingStdDevsInput[i])).ToArray(),
+                    Outputs = Enumerable.Range(0, numberOfOutputs).Select(i => DataProcessorService.Normalize(annPoint.Outputs[i], TrainingMeansOutput[i], TrainingStdDevsOutput[i])).ToArray()
                 });
             }
 

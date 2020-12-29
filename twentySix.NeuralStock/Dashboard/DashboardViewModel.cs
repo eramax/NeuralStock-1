@@ -34,12 +34,12 @@
 
         protected DashboardViewModel()
         {
-            Messenger.Default.Register<TrainStatusMessage>(this, this.OnTrainMessageStatus);
+            Messenger.Default.Register<TrainStatusMessage>(this, OnTrainMessageStatus);
 
             // ReSharper disable once PossibleNullReferenceException
-            Application.Current.MainWindow.Closing += (sender, args) => this.SaveFavourites();
+            Application.Current.MainWindow.Closing += (sender, args) => SaveFavourites();
 
-            Task.Run(this.LoadData);
+            Task.Run(LoadData);
         }
 
         public virtual bool IsBusy { get; set; }
@@ -71,47 +71,47 @@
         [UsedImplicitly]
         public void NavigateTo(string view)
         {
-            this.NavigationService.Navigate(view, null, true, this, true);
+            NavigationService.Navigate(view, null, true, this, true);
         }
 
         [UsedImplicitly]
         public void NavigateToTrainView(DashboardPrediction prediction)
         {
-            this.NavigationService.Navigate("TrainView", null, prediction, this, true);
+            NavigationService.Navigate("TrainView", null, prediction, this, true);
         }
 
         [UsedImplicitly]
         public async void Refresh()
         {
-            await this.LoadData().ConfigureAwait(false);
+            await LoadData().ConfigureAwait(false);
             CommandManager.InvalidateRequerySuggested();
         }
 
         [UsedImplicitly]
         public bool CanRefresh()
         {
-            return !this.IsBusy;
+            return !IsBusy;
         }
 
         [UsedImplicitly]
         public void Cancel()
         {
-            this._cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Cancel();
         }
 
         [UsedImplicitly]
         public bool CanCancel()
         {
-            return this.IsBusy && this._cancellationTokenSource != null && this._cancellationTokenSource.Token.CanBeCanceled;
+            return IsBusy && _cancellationTokenSource != null && _cancellationTokenSource.Token.CanBeCanceled;
         }
 
         [UsedImplicitly]
         public async void Delete(DashboardPrediction prediction)
         {
-            if (await this.PersistenceService.DeleteStockWithId(prediction.StockId))
+            if (await PersistenceService.DeleteStockWithId(prediction.StockId))
             {
                 Messenger.Default.Send(new TrainStatusMessage($"Deleted {prediction.Name}"));
-                this.Refresh();
+                Refresh();
             }
             else
             {
@@ -130,18 +130,18 @@
             base.OnNavigatedFrom();
 
             // save favourites
-            await Task.Run(this.SaveFavourites);
+            await Task.Run(SaveFavourites);
         }
 
         private void SaveFavourites()
         {
-            this.PersistenceService.DeleteFavourites().Wait();
-            var favourites = this.Predictions.Where(x => x.Favourite)
+            PersistenceService.DeleteFavourites().Wait();
+            var favourites = Predictions.Where(x => x.Favourite)
                 .Select(x => new FavouriteDTO { StockId = x.TrainingSession.Stock.GetUniqueId() }).ToList();
 
             if (favourites.Any())
             {
-                this.PersistenceService.SaveFavourites(favourites).Wait();
+                PersistenceService.SaveFavourites(favourites).Wait();
             }
         }
 
@@ -149,51 +149,51 @@
         {
             try
             {
-                if (this._cancellationTokenSource != null && this._cancellationTokenSource.Token.CanBeCanceled && !this._cancellationTokenSource.IsCancellationRequested)
+                if (_cancellationTokenSource != null && _cancellationTokenSource.Token.CanBeCanceled && !_cancellationTokenSource.IsCancellationRequested)
                 {
-                    this._cancellationTokenSource.Cancel();
+                    _cancellationTokenSource.Cancel();
                     return;
                 }
 
-                this._cancellationTokenSource = new CancellationTokenSource();
+                _cancellationTokenSource = new CancellationTokenSource();
 
-                this.IsBusy = true;
+                IsBusy = true;
 
-                await this.LoadSettings().ConfigureAwait(false);
-                this.SetPortfolio();
+                await LoadSettings().ConfigureAwait(false);
+                SetPortfolio();
 
                 // get list of all saved predictions
-                var listBestPredictionsDtos = await this.PersistenceService.GetBestNetworkDTOs().ConfigureAwait(false);
+                var listBestPredictionsDtos = await PersistenceService.GetBestNetworkDTOs().ConfigureAwait(false);
 
-                this.Predictions = new ObservableCollection<DashboardPrediction>();
+                Predictions = new ObservableCollection<DashboardPrediction>();
 
                 // for each
                 foreach (var dto in listBestPredictionsDtos)
                 {
-                    if (this._cancellationTokenSource.Token.IsCancellationRequested)
+                    if (_cancellationTokenSource.Token.IsCancellationRequested)
                     {
                         return;
                     }
 
-                    var stock = await this.PersistenceService.GetStockFromId(dto.StockId);
-                    stock.HistoricalData = await this.DownloaderService.GetHistoricalData(stock, this._settings.StartDate, DateTime.Now, true).ConfigureAwait(false);
+                    var stock = await PersistenceService.GetStockFromId(dto.StockId);
+                    stock.HistoricalData = await DownloaderService.GetHistoricalData(stock, _settings.StartDate, DateTime.Now, true).ConfigureAwait(false);
 
                     var dashboardPrediction = new DashboardPrediction { Symbol = stock.Symbol, Name = stock.Name, StockId = stock.GetUniqueId() };
 
                     lock (Locker)
                     {
-                        Application.Current.Dispatcher?.Invoke(() => this.Predictions.Add(dashboardPrediction));
+                        Application.Current.Dispatcher?.Invoke(() => Predictions.Add(dashboardPrediction));
                     }
 
                     TrainingSession trainingSession;
                     try
                     {
-                        trainingSession = await Task.Run(() => new TrainingSession(this.Portfolio, stock, dto, this._settings)).ConfigureAwait(false);
+                        trainingSession = await Task.Run(() => new TrainingSession(Portfolio, stock, dto, _settings)).ConfigureAwait(false);
                     }
                     catch (Exception ex)
                     {
                         Messenger.Default.Send(new TrainStatusMessage($"Could setup training session for stock {stock.Name}: {ex.Message}", SeverityEnum.Error));
-                        trainingSession = new TrainingSession(this.Portfolio, stock);
+                        trainingSession = new TrainingSession(Portfolio, stock);
                     }
 
                     dashboardPrediction.TrainingSession = trainingSession;
@@ -208,25 +208,25 @@
             }
             finally
             {
-                this.IsBusy = false;
-                this._cancellationTokenSource = null;
+                IsBusy = false;
+                _cancellationTokenSource = null;
             }
         }
 
         private async Task LoadSettings()
         {
-            this._settings = await this.PersistenceService.GetSettings().ConfigureAwait(false) ?? new NeuralStockSettings();
+            _settings = await PersistenceService.GetSettings().ConfigureAwait(false) ?? new NeuralStockSettings();
         }
 
         private void SetPortfolio()
         {
-            this.Portfolio = new StockPortfolio(this._settings.StartDate, this._settings.InitialCash);
+            Portfolio = new StockPortfolio(_settings.StartDate, _settings.InitialCash);
         }
 
         private void OnTrainMessageStatus(TrainStatusMessage obj)
         {
-            this.Status = obj.Message;
-            this.StatusSeverity = obj.Severity;
+            Status = obj.Message;
+            StatusSeverity = obj.Severity;
         }
     }
 }

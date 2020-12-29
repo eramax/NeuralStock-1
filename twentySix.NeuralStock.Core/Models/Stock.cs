@@ -21,15 +21,15 @@
     {
         public Stock()
         {
-            this.Symbol = string.Empty;
-            this.Name = string.Empty;
-            this.HistoricalData = null;
-            this.Country = new Singapore();
+            Symbol = string.Empty;
+            Name = string.Empty;
+            HistoricalData = null;
+            Country = new Singapore();
         }
 
         ~Stock()
         {
-            this.Dispose(false);
+            Dispose(false);
         }
 
         [Key]
@@ -37,26 +37,26 @@
 
         public string Symbol
         {
-            get => this.GetProperty(() => this.Symbol);
-            set => this.SetProperty(() => this.Symbol, value);
+            get => GetProperty(() => Symbol);
+            set => SetProperty(() => Symbol, value);
         }
 
         public string Name
         {
-            get => this.GetProperty(() => this.Name);
-            set => this.SetProperty(() => this.Name, value);
+            get => GetProperty(() => Name);
+            set => SetProperty(() => Name, value);
         }
 
         public ICountry Country
         {
-            get => this.GetProperty(() => this.Country);
-            set => this.SetProperty(() => this.Country, value);
+            get => GetProperty(() => Country);
+            set => SetProperty(() => Country, value);
         }
 
         public HistoricalData HistoricalData
         {
-            get => this.GetProperty(() => this.HistoricalData);
-            set => this.SetProperty(() => this.HistoricalData, value);
+            get => GetProperty(() => HistoricalData);
+            set => SetProperty(() => HistoricalData, value);
         }
 
         public string Error => null;
@@ -85,7 +85,7 @@
 
         public void Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -93,17 +93,17 @@
         {
             return new StockDTO
             {
-                Id = this.Id,
-                Symbol = this.Symbol,
-                Name = this.Name,
-                CountryId = this.Country.Id,
-                HistoricalDataId = this.HistoricalData.Id
+                Id = Id,
+                Symbol = Symbol,
+                Name = Name,
+                CountryId = Country.Id,
+                HistoricalDataId = HistoricalData.Id
             };
         }
 
         public int GetUniqueId()
         {
-            return (this.Symbol + this.Country?.Name).GetHashCode();
+            return (Symbol + Country?.Name).GetHashCode();
         }
 
         protected virtual void Dispose(bool disposing)
@@ -113,7 +113,7 @@
                 return;
             }
 
-            this.HistoricalData = null;
+            HistoricalData = null;
         }
     }
 }

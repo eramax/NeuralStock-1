@@ -64,14 +64,14 @@
         {
             return new NeuralStockSettingsDTO
             {
-                Id = this.Id,
-                InitialCash = this.InitialCash,
-                StartDate = this.StartDate,
-                PercentageTraining = this.PercentageTraining,
-                NumberANNs = this.NumberANNs,
-                NumberHiddenLayers = this.NumberHiddenLayers,
-                NumberNeuronsHiddenLayer = this.NumberNeuronsHiddenLayer,
-                NumberDaysBetweenTransactions = this.NumberDaysBetweenTransactions
+                Id = Id,
+                InitialCash = InitialCash,
+                StartDate = StartDate,
+                PercentageTraining = PercentageTraining,
+                NumberANNs = NumberANNs,
+                NumberHiddenLayers = NumberHiddenLayers,
+                NumberNeuronsHiddenLayer = NumberNeuronsHiddenLayer,
+                NumberDaysBetweenTransactions = NumberDaysBetweenTransactions
             };
         }
     }

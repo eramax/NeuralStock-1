@@ -24,7 +24,7 @@ namespace twentySix.NeuralStock.Core.Services
         [ImportingConstructor]
         public DataProcessorService(IStatisticsService statisticsService)
         {
-            this._statisticsDataService = statisticsService;
+            _statisticsDataService = statisticsService;
         }
 
         public double[] Normalize(double[] data, double mean, double std)
@@ -63,7 +63,7 @@ namespace twentySix.NeuralStock.Core.Services
                 var numTake = i - period >= 0 ? period : i;
                 var subset = data.Skip(i + 1 - numTake).Take(numTake).ToList();
 
-                result[i] = this._statisticsDataService.StandardDeviation(subset.DefaultIfEmpty().ToArray());
+                result[i] = _statisticsDataService.StandardDeviation(subset.DefaultIfEmpty().ToArray());
             }
 
             return result;
@@ -78,7 +78,7 @@ namespace twentySix.NeuralStock.Core.Services
                 var numTake = i - period >= 0 ? period : i;
                 var subset = data.Skip(i + 1 - numTake).Take(numTake).ToList();
 
-                result[i] = this._statisticsDataService.Median(subset.DefaultIfEmpty().ToArray());
+                result[i] = _statisticsDataService.Median(subset.DefaultIfEmpty().ToArray());
             }
 
             return result;
@@ -93,7 +93,7 @@ namespace twentySix.NeuralStock.Core.Services
                 var numTake = i - period >= 0 ? period : i;
                 var subset = data.Skip(i + 1 - numTake).Take(numTake).ToList();
 
-                result[i] = this._statisticsDataService.Percentile(subset.DefaultIfEmpty().ToArray(), percentile);
+                result[i] = _statisticsDataService.Percentile(subset.DefaultIfEmpty().ToArray(), percentile);
             }
 
             return result;

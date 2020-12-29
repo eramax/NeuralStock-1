@@ -16,7 +16,7 @@
     {
         protected SettingsViewModel()
         {
-            this.LoadSettings();
+            LoadSettings();
         }
 
         public virtual NeuralStockSettings Settings { get; set; }
@@ -32,23 +32,23 @@
 
         public void GoBack()
         {
-            this.NavigationService?.GoBack(false);
+            NavigationService?.GoBack(false);
         }
 
         protected override async void OnNavigatedFrom()
         {
             base.OnNavigatedFrom();
-            await this.SaveSettings();
+            await SaveSettings();
         }
 
         private async void LoadSettings()
         {
-            this.Settings = await this.PersistenceService.GetSettings() ?? NeuralStockSettings.GetDefault();
+            Settings = await PersistenceService.GetSettings() ?? NeuralStockSettings.GetDefault();
         }
 
         private async Task SaveSettings()
         {
-            await this.PersistenceService.SaveSettings(this.Settings);
+            await PersistenceService.SaveSettings(Settings);
         }
     }
 }

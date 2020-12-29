@@ -35,7 +35,7 @@
         [ImportingConstructor]
         public PersistenceService(ILoggingService loggingService)
         {
-            this._loggingService = loggingService;
+            _loggingService = loggingService;
         }
 
         public Task<List<Stock>> GetAllStocks()
@@ -135,7 +135,7 @@
                         }
                         catch (Exception ex)
                         {
-                            _loggingService.Warn($"{nameof(this.DeleteStock)}: {ex}");
+                            _loggingService.Warn($"{nameof(DeleteStock)}: {ex}");
                             return false;
                         }
                     });
@@ -164,7 +164,7 @@
                         }
                         catch (Exception ex)
                         {
-                            this._loggingService.Warn($"{nameof(this.DeleteStockWithId)}: {ex}");
+                            _loggingService.Warn($"{nameof(DeleteStockWithId)}: {ex}");
                             return false;
                         }
                     });
@@ -185,7 +185,7 @@
                             }
                             catch (Exception ex)
                             {
-                                this._loggingService.Warn($"{nameof(GetSettings)}: {ex}");
+                                _loggingService.Warn($"{nameof(GetSettings)}: {ex}");
                             }
                         }
 
@@ -221,17 +221,17 @@
                 {
                     var bestNetworkDtos = new List<BestNetworkDTO>();
 
-                    if (this._db.CollectionExists(DbCollectionStringBestNetwork))
+                    if (_db.CollectionExists(DbCollectionStringBestNetwork))
                     {
                         try
                         {
-                            var dtos = this._db.GetCollection<BestNetworkDTO>(DbCollectionStringBestNetwork).FindAll();
+                            var dtos = _db.GetCollection<BestNetworkDTO>(DbCollectionStringBestNetwork).FindAll();
 
                             bestNetworkDtos.AddRange(dtos);
                         }
                         catch (Exception ex)
                         {
-                            _loggingService.Warn($"{nameof(this.GetBestNetworkDTOs)}: {ex}");
+                            _loggingService.Warn($"{nameof(GetBestNetworkDTOs)}: {ex}");
                         }
                     }
 
@@ -245,15 +245,15 @@
                 {
                     BestNetworkDTO bestNetworkDto = null;
 
-                    if (this._db.CollectionExists(DbCollectionStringBestNetwork))
+                    if (_db.CollectionExists(DbCollectionStringBestNetwork))
                     {
                         try
                         {
-                            bestNetworkDto = this._db.GetCollection<BestNetworkDTO>(DbCollectionStringBestNetwork).FindById(id);
+                            bestNetworkDto = _db.GetCollection<BestNetworkDTO>(DbCollectionStringBestNetwork).FindById(id);
                         }
                         catch (Exception ex)
                         {
-                            _loggingService.Warn($"{nameof(this.GetBestNetworkDTOFromId)}: {ex}");
+                            _loggingService.Warn($"{nameof(GetBestNetworkDTOFromId)}: {ex}");
                         }
                     }
 
@@ -268,7 +268,7 @@
                     {
                         try
                         {
-                            var table = this._db.GetCollection<BestNetworkDTO>(DbCollectionStringBestNetwork);
+                            var table = _db.GetCollection<BestNetworkDTO>(DbCollectionStringBestNetwork);
 
                             table.Delete(x => x.StockId == bestNetwork.StockId);
 
@@ -276,7 +276,7 @@
                         }
                         catch (Exception ex)
                         {
-                            this._loggingService.Warn($"{nameof(this.DeleteBestNetworkDTO)}: {ex}");
+                            _loggingService.Warn($"{nameof(DeleteBestNetworkDTO)}: {ex}");
                             return false;
                         }
                     });
@@ -291,14 +291,14 @@
                         {
                             var dto = trainingSession.GetBestNetworkDTO();
 
-                            var table = this._db.GetCollection<BestNetworkDTO>(DbCollectionStringBestNetwork);
+                            var table = _db.GetCollection<BestNetworkDTO>(DbCollectionStringBestNetwork);
                             table.Upsert(dto);
 
                             return true;
                         }
                         catch (Exception ex)
                         {
-                            _loggingService.Warn($"{nameof(this.SaveBestNetwork)}: {ex}");
+                            _loggingService.Warn($"{nameof(SaveBestNetwork)}: {ex}");
                             return false;
                         }
                     });
@@ -311,14 +311,14 @@
                     {
                         try
                         {
-                            var table = this._db.GetCollection<FavouriteDTO>(DbCollectionStringFavourites);
+                            var table = _db.GetCollection<FavouriteDTO>(DbCollectionStringFavourites);
                             table.Upsert(dto);
 
                             return true;
                         }
                         catch (Exception ex)
                         {
-                            _loggingService.Warn($"{nameof(this.SaveFavourite)}: {ex}");
+                            _loggingService.Warn($"{nameof(SaveFavourite)}: {ex}");
                             return false;
                         }
                     });
@@ -331,14 +331,14 @@
                     {
                         try
                         {
-                            var table = this._db.GetCollection<FavouriteDTO>(DbCollectionStringFavourites);
+                            var table = _db.GetCollection<FavouriteDTO>(DbCollectionStringFavourites);
                             table.Upsert(dtos);
 
                             return true;
                         }
                         catch (Exception ex)
                         {
-                            _loggingService.Warn($"{nameof(this.SaveFavourites)}: {ex}");
+                            _loggingService.Warn($"{nameof(SaveFavourites)}: {ex}");
                             return false;
                         }
                     });
@@ -351,13 +351,13 @@
                     {
                         try
                         {
-                            var table = this._db.GetCollection<FavouriteDTO>(DbCollectionStringFavourites);
+                            var table = _db.GetCollection<FavouriteDTO>(DbCollectionStringFavourites);
                             table.Delete(x => x.StockId == dto.StockId);
                             return true;
                         }
                         catch (Exception ex)
                         {
-                            this._loggingService.Warn($"{nameof(this.DeleteFavourite)}: {ex}");
+                            _loggingService.Warn($"{nameof(DeleteFavourite)}: {ex}");
                             return false;
                         }
                     });
@@ -370,12 +370,12 @@
                     {
                         try
                         {
-                            this._db.DropCollection(DbCollectionStringFavourites);
+                            _db.DropCollection(DbCollectionStringFavourites);
                             return true;
                         }
                         catch (Exception ex)
                         {
-                            this._loggingService.Warn($"{nameof(this.DeleteFavourite)}: {ex}");
+                            _loggingService.Warn($"{nameof(DeleteFavourite)}: {ex}");
                             return false;
                         }
                     });
@@ -387,16 +387,16 @@
                 {
                     var favouriteDtos = new List<FavouriteDTO>();
 
-                    if (this._db.CollectionExists(DbCollectionStringFavourites))
+                    if (_db.CollectionExists(DbCollectionStringFavourites))
                     {
                         try
                         {
-                            var dtos = this._db.GetCollection<FavouriteDTO>(DbCollectionStringFavourites).FindAll();
+                            var dtos = _db.GetCollection<FavouriteDTO>(DbCollectionStringFavourites).FindAll();
                             favouriteDtos.AddRange(dtos);
                         }
                         catch (Exception ex)
                         {
-                            _loggingService.Warn($"{nameof(this.GetFavourites)}: {ex}");
+                            _loggingService.Warn($"{nameof(GetFavourites)}: {ex}");
                         }
                     }
 
@@ -406,7 +406,7 @@
 
         public void Dispose()
         {
-            this._db?.Dispose();
+            _db?.Dispose();
         }
     }
 }

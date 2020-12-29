@@ -26,7 +26,7 @@
             double ret = 0;
             if (data.Any())
             {
-                double avg = this.Mean(data);
+                double avg = Mean(data);
                 double sum = data.Sum(d => Math.Pow(d - avg, 2));
                 ret = Math.Sqrt(sum / (data.Length - 1));
             }

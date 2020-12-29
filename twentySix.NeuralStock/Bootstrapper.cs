@@ -17,8 +17,8 @@
         protected override void ConfigureAggregateCatalog()
         {
             var callingAssemblyLocation = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location);
-            this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(Bootstrapper).Assembly));
-            this.AggregateCatalog.Catalogs.Add(new DirectoryCatalog(callingAssemblyLocation ?? throw new InvalidOperationException(), "twentySix.*.dll"));
+            AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(Bootstrapper).Assembly));
+            AggregateCatalog.Catalogs.Add(new DirectoryCatalog(callingAssemblyLocation ?? throw new InvalidOperationException(), "twentySix.*.dll"));
 
             base.ConfigureAggregateCatalog();
         }
@@ -27,20 +27,20 @@
         {
             base.ConfigureContainer();
 
-            this.Container.ComposeExportedValue(this.AggregateCatalog);
+            Container.ComposeExportedValue(AggregateCatalog);
 
-            ApplicationHelper.StartUp(this.Container.GetExportedValue<ILoggingService>(), this.Container);
+            ApplicationHelper.StartUp(Container.GetExportedValue<ILoggingService>(), Container);
         }
 
         protected override DependencyObject CreateShell()
         {
-            return this.Container.GetExportedValue<Main.Shell>();
+            return Container.GetExportedValue<Main.Shell>();
         }
 
         protected override void InitializeShell()
         {
             base.InitializeShell();
-            Application.Current.MainWindow = (Main.Shell)this.Shell;
+            Application.Current.MainWindow = (Main.Shell)Shell;
             Application.Current.MainWindow?.Show();
         }
     }

@@ -8,11 +8,11 @@
     {
         public Prediction(ProfitLossCalculator profitLossCalculator, StrategyI strategy, NeuralNet net, double buyLevel, double sellLevel)
         {
-            this.ProfitLossCalculator = profitLossCalculator;
-            this.Strategy = strategy;
-            this.Net = net;
-            this.BuyLevel = buyLevel;
-            this.SellLevel = sellLevel;
+            ProfitLossCalculator = profitLossCalculator;
+            Strategy = strategy;
+            Net = net;
+            BuyLevel = buyLevel;
+            SellLevel = sellLevel;
         }
 
         public ProfitLossCalculator ProfitLossCalculator { get; }

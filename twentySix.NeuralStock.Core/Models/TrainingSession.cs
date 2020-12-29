@@ -32,28 +32,43 @@
 
         private DateTime _startTime;
 
+        private static readonly ActivationFunction[] possibleActivationFunctions = {
+            ActivationFunction.ELLIOT,
+            ActivationFunction.GAUSSIAN,
+            ActivationFunction.SIGMOID,
+            ActivationFunction.ELLIOT_SYMMETRIC,
+            ActivationFunction.GAUSSIAN_SYMMETRIC,
+            ActivationFunction.SIGMOID_SYMMETRIC
+        };
+
+        private static readonly TrainingAlgorithm[] possibleTrainingAlgorithms =
+        {
+            TrainingAlgorithm.TRAIN_RPROP,
+            TrainingAlgorithm.TRAIN_QUICKPROP
+        };
+
         public TrainingSession(StockPortfolio portfolio, Stock stock)
         {
-            this._statisticsService = ApplicationHelper.CurrentCompositionContainer.GetExportedValue<IStatisticsService>();
+            _statisticsService = ApplicationHelper.CurrentCompositionContainer.GetExportedValue<IStatisticsService>();
 
-            this.Portfolio = portfolio;
-            this.Stock = stock;
+            Portfolio = portfolio;
+            Stock = stock;
         }
 
         public TrainingSession(StockPortfolio portfolio, Stock stock, BestNetworkDTO dto, NeuralStockSettings settings)
         {
-            this._statisticsService = ApplicationHelper.CurrentCompositionContainer.GetExportedValue<IStatisticsService>();
-            this.Portfolio = portfolio;
-            this.Stock = stock;
+            _statisticsService = ApplicationHelper.CurrentCompositionContainer.GetExportedValue<IStatisticsService>();
+            Portfolio = portfolio;
+            Stock = stock;
 
-            this.TrainSamplePercentage = settings.PercentageTraining;
-            this.NumberAnns = settings.NumberANNs;
-            this.NumberHiddenLayers = settings.NumberHiddenLayers;
-            this.NumberNeuronsPerHiddenLayer = settings.NumberNeuronsHiddenLayer;
-            this.NumberDaysBetweenTransactions = settings.NumberDaysBetweenTransactions;
+            TrainSamplePercentage = settings.PercentageTraining;
+            NumberAnns = settings.NumberANNs;
+            NumberHiddenLayers = settings.NumberHiddenLayers;
+            NumberNeuronsPerHiddenLayer = settings.NumberNeuronsHiddenLayer;
+            NumberDaysBetweenTransactions = settings.NumberDaysBetweenTransactions;
 
-            this.BuyLevel = dto.BuyLevel;
-            this.SellLevel = dto.SellLevel;
+            BuyLevel = dto.BuyLevel;
+            SellLevel = dto.SellLevel;
 
             var strategy = new StrategyI(StrategySettings.FromJson(dto.StrategySettings))
             {
@@ -67,14 +82,14 @@
             File.WriteAllBytes(tmpFileName, dto.BestNeuralNet);
             var net = new NeuralNet(tmpFileName);
 
-            this._cachedPredictions.Clear();
-            this.SplitTrainTestData();
+            _cachedPredictions.Clear();
+            SplitTrainTestData();
 
-            var trainingTestingData = this.PrepareAnnData(strategy, false);
+            var trainingTestingData = PrepareAnnData(strategy, false);
 
-            var prediction = this.Predict(trainingTestingData, net, false);
-            var profitLossCalculator = new ProfitLossCalculator(this.Portfolio.Reset(), this, prediction.Item1);
-            this._cachedPredictions.Add(new Prediction(profitLossCalculator, strategy, net, prediction.Item2, prediction.Item3));
+            var prediction = Predict(trainingTestingData, net, false);
+            var profitLossCalculator = new ProfitLossCalculator(Portfolio.Reset(), this, prediction.Item1);
+            _cachedPredictions.Add(new Prediction(profitLossCalculator, strategy, net, prediction.Item2, prediction.Item3));
         }
 
         public int NumberAnns { get; set; } = 10;
@@ -89,14 +104,14 @@
 
         public double BuyLevel
         {
-            get => this.GetProperty(() => this.BuyLevel);
-            set => this.SetProperty(() => this.BuyLevel, value);
+            get => GetProperty(() => BuyLevel);
+            set => SetProperty(() => BuyLevel, value);
         }
 
         public double SellLevel
         {
-            get => this.GetProperty(() => this.SellLevel);
-            set => this.SetProperty(() => this.SellLevel, value);
+            get => GetProperty(() => SellLevel);
+            set => SetProperty(() => SellLevel, value);
         }
 
         public StockPortfolio Portfolio { get; set; }
@@ -105,29 +120,29 @@
 
         public HistoricalData TrainingHistoricalData
         {
-            get => this.GetProperty(() => this.TrainingHistoricalData);
-            set => this.SetProperty(() => this.TrainingHistoricalData, value);
+            get => GetProperty(() => TrainingHistoricalData);
+            set => SetProperty(() => TrainingHistoricalData, value);
         }
 
         public HistoricalData TestingHistoricalData
         {
-            get => this.GetProperty(() => this.TestingHistoricalData);
-            set => this.SetProperty(() => this.TestingHistoricalData, value);
+            get => GetProperty(() => TestingHistoricalData);
+            set => SetProperty(() => TestingHistoricalData, value);
         }
 
         public double Progress
         {
-            get => this.GetProperty(() => this.Progress);
-            set => this.SetProperty(() => this.Progress, value);
+            get => GetProperty(() => Progress);
+            set => SetProperty(() => Progress, value);
         }
 
         public TimeSpan TimeLeft
         {
-            get => this.GetProperty(() => this.TimeLeft);
-            set => this.SetProperty(() => this.TimeLeft, value);
+            get => GetProperty(() => TimeLeft);
+            set => SetProperty(() => TimeLeft, value);
         }
 
-        public IEnumerable<Prediction> CachePredictions => this._cachedPredictions;
+        public IEnumerable<Prediction> CachePredictions => _cachedPredictions;
 
         public ProfitLossCalculator BestProfitLossCalculator
         {
@@ -135,14 +150,14 @@
             {
                 lock (Locker)
                 {
-                    return this._cachedPredictions?.OrderByDescending(x => x.ProfitLossCalculator.PL).FirstOrDefault()?.ProfitLossCalculator;
+                    return _cachedPredictions?.OrderByDescending(x => x.ProfitLossCalculator.PL * x.ProfitLossCalculator.PercentageWinningTransactions).FirstOrDefault()?.ProfitLossCalculator;
                 }
             }
         }
 
-        public Prediction BestPrediction => this._cachedPredictions.OrderByDescending(x => x.ProfitLossCalculator.PL).FirstOrDefault();
+        public Prediction BestPrediction => _cachedPredictions.OrderByDescending(x => x.ProfitLossCalculator.PL * x.ProfitLossCalculator.PercentageWinningTransactions).FirstOrDefault();
 
-        public Dictionary<string, int> AllNetworksPLs => this._statisticsService.Bucketize(this._cachedPredictions.ToList().Select(x => x.ProfitLossCalculator.PL).ToArray(), 14);
+        public Dictionary<string, int> AllNetworksPLs => _statisticsService.Bucketize(_cachedPredictions.ToList().Select(x => x.ProfitLossCalculator.PL).ToArray(), 14);
 
         public List<Tuple<double, double>> AllNetworksPLsStdDevs
         {
@@ -150,18 +165,18 @@
             {
                 lock (Locker)
                 {
-                    return this._cachedPredictions.Select(x => Tuple.Create(x.ProfitLossCalculator.PL, x.ProfitLossCalculator.StandardDeviationPL)).ToList();
+                    return _cachedPredictions.Select(x => Tuple.Create(x.ProfitLossCalculator.PL, x.ProfitLossCalculator.StandardDeviationPL)).ToList();
                 }
             }
         }
 
-        public double AllNetworksPL => this._statisticsService.Median(this.AllNetworksPLsStdDevs.Select(x => x.Item1).ToArray());
+        public double AllNetworksPL => _statisticsService.Median(AllNetworksPLsStdDevs.Select(x => x.Item1).ToArray());
 
-        public double AllNetworksStdDev => this._statisticsService.StandardDeviation(this.AllNetworksPLsStdDevs.Select(x => x.Item1).ToArray());
+        public double AllNetworksStdDev => _statisticsService.StandardDeviation(AllNetworksPLsStdDevs.Select(x => x.Item1).ToArray());
 
-        public double AllNetworksMin => this.AllNetworksPLsStdDevs.Any() ? this.AllNetworksPLsStdDevs.Select(x => x.Item1).Min() : 0;
+        public double AllNetworksMin => AllNetworksPLsStdDevs.Any() ? AllNetworksPLsStdDevs.Select(x => x.Item1).Min() : 0;
 
-        public double AllNetworksSigma => this.AllNetworksPL != 0 ? this.AllNetworksStdDev / this.AllNetworksPL : 0;
+        public double AllNetworksSigma => AllNetworksPL != 0 ? AllNetworksStdDev / AllNetworksPL : 0;
 
         public void FindBestAnn(CancellationToken token)
         {
@@ -171,14 +186,14 @@
             }
 
             Messenger.Default.Send(new TrainStatusMessage("Preparing data ..."));
-            this._cachedPredictions.Clear();
-            this.SplitTrainTestData();
-            this._startTime = DateTime.Now;
+            _cachedPredictions.Clear();
+            SplitTrainTestData();
+            _startTime = DateTime.Now;
             Messenger.Default.Send(new TrainStatusMessage("Training ..."));
 
             Parallel.For(
                 0,
-                this.NumberAnns,
+                NumberAnns,
                 new ParallelOptions { CancellationToken = token, MaxDegreeOfParallelism = 4 },
                 i =>
                     {
@@ -189,76 +204,76 @@
 
                         var strategy = new StrategyI(new StrategySettings());
 
-                        var trainingTestingData = this.PrepareAnnData(strategy);
+                        var trainingTestingData = PrepareAnnData(strategy);
 
-                        var net = this.Train(trainingTestingData);
-                        var prediction = this.Predict(trainingTestingData, net);
+                        var net = Train(trainingTestingData);
+                        var prediction = Predict(trainingTestingData, net);
 
-                        var profitLossCalculator = new ProfitLossCalculator(this.Portfolio.Reset(), this, prediction.Item1);
+                        var profitLossCalculator = new ProfitLossCalculator(Portfolio.Reset(), this, prediction.Item1);
 
                         _numberPredictionsComplete++;
 
                         lock (Locker)
                         {
-                            this.AddBestNeuralNet(profitLossCalculator, strategy, net, prediction.Item2, prediction.Item3);
+                            AddBestNeuralNet(profitLossCalculator, strategy, net, prediction.Item2, prediction.Item3);
 
-                            var currentPercentage = (this._numberPredictionsComplete + 1) / (double)this.NumberAnns;
-                            this.Progress = currentPercentage * 100d;
+                            var currentPercentage = (_numberPredictionsComplete + 1) / (double)NumberAnns;
+                            Progress = currentPercentage * 100d;
 
-                            var currentTimeTaken = DateTime.Now - this._startTime;
+                            var currentTimeTaken = DateTime.Now - _startTime;
 
-                            this.TimeLeft = currentTimeTaken - TimeSpan.FromSeconds(currentTimeTaken.TotalSeconds / currentPercentage);
+                            TimeLeft = currentTimeTaken - TimeSpan.FromSeconds(currentTimeTaken.TotalSeconds / currentPercentage);
 
-                            this.RaisePropertyChanged(() => this.BestProfitLossCalculator);
-                            this.RaisePropertyChanged(() => this.AllNetworksPLs);
-                            this.RaisePropertyChanged(() => this.AllNetworksPLsStdDevs);
-                            this.RaisePropertyChanged(() => this.AllNetworksPL);
-                            this.RaisePropertyChanged(() => this.AllNetworksStdDev);
-                            this.RaisePropertyChanged(() => this.AllNetworksMin);
-                            this.RaisePropertyChanged(() => this.AllNetworksSigma);
-                            this.RaisePropertyChanged(() => this.BestPrediction);
+                            RaisePropertyChanged(() => BestProfitLossCalculator);
+                            RaisePropertyChanged(() => AllNetworksPLs);
+                            RaisePropertyChanged(() => AllNetworksPLsStdDevs);
+                            RaisePropertyChanged(() => AllNetworksPL);
+                            RaisePropertyChanged(() => AllNetworksStdDev);
+                            RaisePropertyChanged(() => AllNetworksMin);
+                            RaisePropertyChanged(() => AllNetworksSigma);
+                            RaisePropertyChanged(() => BestPrediction);
                         }
                     });
 
-            this.BuyLevel = this.BestPrediction.BuyLevel;
-            this.SellLevel = this.BestPrediction.SellLevel;
+            BuyLevel = BestPrediction.BuyLevel;
+            SellLevel = BestPrediction.SellLevel;
 
             Messenger.Default.Send(new TrainStatusMessage("Done"));
         }
 
         public void SplitTrainTestData()
         {
-            if (this.Stock?.HistoricalData == null)
+            if (Stock?.HistoricalData == null)
             {
                 throw new InvalidOperationException();
             }
 
-            var splitData = SplitHistoricalData(this.Stock?.HistoricalData, this.TrainSamplePercentage);
+            var splitData = SplitHistoricalData(Stock?.HistoricalData, TrainSamplePercentage);
 
-            this.TrainingHistoricalData = splitData.Item1;
-            this.TestingHistoricalData = splitData.Item2;
+            TrainingHistoricalData = splitData.Item1;
+            TestingHistoricalData = splitData.Item2;
         }
 
         public BestNetworkDTO GetBestNetworkDTO()
         {
             var tmpFileName = Path.GetTempFileName();
-            this.BestPrediction.Net.Save(tmpFileName);
+            BestPrediction.Net.Save(tmpFileName);
             var neuralNetBytes = File.ReadAllBytes(tmpFileName);
 
             return new BestNetworkDTO
             {
-                Id = this.Stock.GetUniqueId(),
-                StockId = this.Stock.Id,
-                StrategyId = this.BestPrediction.Strategy.Id,
+                Id = Stock.GetUniqueId(),
+                StockId = Stock.Id,
+                StrategyId = BestPrediction.Strategy.Id,
                 Timestamp = DateTime.Now,
-                BuyLevel = this.BestPrediction.BuyLevel,
-                SellLevel = this.BestPrediction.SellLevel,
-                TrainingMeansInput = this.BestPrediction.Strategy.TrainingMeansInput?.ToArray(),
-                TrainingStdDevsInput = this.BestPrediction.Strategy.TrainingStdDevsInput?.ToArray(),
-                TrainingMeansOutput = this.BestPrediction.Strategy.TrainingMeansOutput?.ToArray(),
-                TrainingStdDevsOutput = this.BestPrediction.Strategy.TrainingStdDevsOutput?.ToArray(),
+                BuyLevel = BestPrediction.BuyLevel,
+                SellLevel = BestPrediction.SellLevel,
+                TrainingMeansInput = BestPrediction.Strategy.TrainingMeansInput?.ToArray(),
+                TrainingStdDevsInput = BestPrediction.Strategy.TrainingStdDevsInput?.ToArray(),
+                TrainingMeansOutput = BestPrediction.Strategy.TrainingMeansOutput?.ToArray(),
+                TrainingStdDevsOutput = BestPrediction.Strategy.TrainingStdDevsOutput?.ToArray(),
                 BestNeuralNet = neuralNetBytes,
-                StrategySettings = this.BestPrediction.Strategy.Settings.GetJson()
+                StrategySettings = BestPrediction.Strategy.Settings.GetJson()
             };
         }
 
@@ -276,13 +291,13 @@
 
         private Tuple<Dictionary<DateTime, SignalEnum>, double, double> Predict(Tuple<List<AnnDataPoint>, List<AnnDataPoint>> trainingTestingData, NeuralNet net, bool resetLevels = true)
         {
-            double buyLevel = this.BuyLevel;
-            double sellLevel = this.SellLevel;
+            double buyLevel = BuyLevel;
+            double sellLevel = SellLevel;
 
             if (resetLevels)
             {
-                buyLevel = RandomExtensions.BetterRandomDouble(0.86, 0.96);
-                sellLevel = RandomExtensions.BetterRandomDouble(-0.65, -0.55);
+                buyLevel = RandomExtensions.BetterRandomDouble(0.80, 0.96);
+                sellLevel = RandomExtensions.BetterRandomDouble(-0.85, -0.60);
             }
 
             var result = new Dictionary<DateTime, SignalEnum>();
@@ -311,18 +326,18 @@
 
         private void AddBestNeuralNet(ProfitLossCalculator profitLossCalculator, StrategyI strategy, NeuralNet net, double buyLevel, double sellLevel)
         {
-            this._cachedPredictions.Add(new Prediction(profitLossCalculator, strategy, net, buyLevel, sellLevel));
+            _cachedPredictions.Add(new Prediction(profitLossCalculator, strategy, net, buyLevel, sellLevel));
         }
 
         private Tuple<List<AnnDataPoint>, List<AnnDataPoint>> PrepareAnnData(StrategyI strategy, bool recalculateMeans = true)
         {
-            if (this.TrainingHistoricalData == null || this.TestingHistoricalData == null)
+            if (TrainingHistoricalData == null || TestingHistoricalData == null)
             {
                 throw new InvalidOperationException();
             }
 
-            var trainingData = strategy.GetAnnData(this.TrainingHistoricalData, recalculateMeans);
-            var testingData = strategy.GetAnnData(this.TestingHistoricalData, false);
+            var trainingData = strategy.GetAnnData(TrainingHistoricalData, recalculateMeans);
+            var testingData = strategy.GetAnnData(TestingHistoricalData, false);
 
             return Tuple.Create(trainingData, testingData);
         }
@@ -337,19 +352,26 @@
                 training.Select(x => x.Outputs.ToArray()).ToArray());
 
             var layers = new List<uint> { (uint)training.First().Inputs.Length };
-            Enumerable.Range(0, this.NumberHiddenLayers)
+            Enumerable.Range(0, NumberHiddenLayers)
                 .ToList()
-                .ForEach(x => layers.Add((uint)this.NumberNeuronsPerHiddenLayer));
+                .ForEach(x => layers.Add((uint)NumberNeuronsPerHiddenLayer));
             layers.Add((uint)training.First().Outputs.Length);
 
             trainData.ShuffleTrainData();
 
             var net = new NeuralNet(NetworkType.LAYER, layers);
 
-            net.ActivationFunctionHidden = ActivationFunction.ELLIOT;
+            net.ActivationFunctionHidden = possibleActivationFunctions[RandomExtensions.BetterRandomInteger(0, possibleActivationFunctions.Length - 1)];
             net.ActivationFunctionOutput = ActivationFunction.LINEAR;
 
-            net.TrainOnData(trainData, (uint)RandomExtensions.BetterRandomInteger(700, 1300), 0, 0.00001f);
+            net.TrainErrorFunction = ErrorFunction.ERRORFUNC_TANH;
+            net.TrainingAlgorithm = possibleTrainingAlgorithms[RandomExtensions.BetterRandomInteger(0, possibleTrainingAlgorithms.Length - 1)];
+            net.RpropIncreaseFactor = 1.05f;
+            net.RpropDecreaseFactor = 0.95f;
+            net.RpropDeltaMax = 500f;
+            net.RpropDeltaZero = 0.01f;
+
+            net.TrainOnData(trainData, (uint)RandomExtensions.BetterRandomInteger(800, 1500), 0, 0.000001f);
 
             trainData.Dispose();
 

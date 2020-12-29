@@ -12,44 +12,44 @@
 
         public bool Favourite
         {
-            get => this.GetProperty(() => this.Favourite);
-            set => this.SetProperty(() => this.Favourite, value);
+            get => GetProperty(() => Favourite);
+            set => SetProperty(() => Favourite, value);
         }
 
         public string Symbol
         {
-            get => this.GetProperty(() => this.Symbol);
-            set => this.SetProperty(() => this.Symbol, value);
+            get => GetProperty(() => Symbol);
+            set => SetProperty(() => Symbol, value);
         }
 
         public string Name
         {
-            get => this.GetProperty(() => this.Name);
-            set => this.SetProperty(() => this.Name, value);
+            get => GetProperty(() => Name);
+            set => SetProperty(() => Name, value);
         }
 
         public DateTime LastUpdate
         {
-            get => this.GetProperty(() => this.LastUpdate);
-            set => this.SetProperty(() => this.LastUpdate, value);
+            get => GetProperty(() => LastUpdate);
+            set => SetProperty(() => LastUpdate, value);
         }
 
         public double Close
         {
-            get => this.GetProperty(() => this.Close);
-            set => this.SetProperty(() => this.Close, value);
+            get => GetProperty(() => Close);
+            set => SetProperty(() => Close, value);
         }
 
         public DateTime LastTrainingDate
         {
-            get => this.GetProperty(() => this.LastTrainingDate);
-            set => this.SetProperty(() => this.LastTrainingDate, value);
+            get => GetProperty(() => LastTrainingDate);
+            set => SetProperty(() => LastTrainingDate, value);
         }
 
         public TrainingSession TrainingSession
         {
-            get => this.GetProperty(() => this.TrainingSession);
-            set => this.SetProperty(() => this.TrainingSession, value);
+            get => GetProperty(() => TrainingSession);
+            set => SetProperty(() => TrainingSession, value);
         }
     }
 }

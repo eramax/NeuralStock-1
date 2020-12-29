@@ -13,12 +13,12 @@
     {
         public HistoricalData()
         {
-            this.Quotes = new SortedList<DateTime, Quote>();
+            Quotes = new SortedList<DateTime, Quote>();
         }
 
         public HistoricalData(SortedList<DateTime, Quote> quotes)
         {
-            this.Quotes = quotes;
+            Quotes = quotes;
         }
 
         [Key]
@@ -26,15 +26,15 @@
 
         public SortedList<DateTime, Quote> Quotes
         {
-            get => this.GetProperty(() => this.Quotes);
-            private set => this.SetProperty(() => this.Quotes, value);
+            get => GetProperty(() => Quotes);
+            private set => SetProperty(() => Quotes, value);
         }
 
-        public DateTime BeginDate => this.Quotes.Keys.FirstOrDefault();
+        public DateTime BeginDate => Quotes.Keys.FirstOrDefault();
 
-        public DateTime EndDate => this.Quotes.Keys.LastOrDefault();
+        public DateTime EndDate => Quotes.Keys.LastOrDefault();
 
-        public Quote this[DateTime date] => this.Quotes[date];
+        public Quote this[DateTime date] => Quotes[date];
 
         public static HistoricalData operator +(HistoricalData first, HistoricalData second)
         {
@@ -132,28 +132,28 @@
         {
             return new HistoricalDataDTO
             {
-                Id = this.Id,
-                DateArray = this.Quotes.Keys.ToArray(),
-                OpenArray = this.Quotes.Values.Select(x => x.Open).ToArray(),
-                CloseArray = this.Quotes.Values.Select(x => x.Close).ToArray(),
-                AdjCloseArray = this.Quotes.Values.Select(x => x.AdjClose).ToArray(),
-                HighArray = this.Quotes.Values.Select(x => x.High).ToArray(),
-                LowArray = this.Quotes.Values.Select(x => x.Low).ToArray(),
-                VolumeArray = this.Quotes.Values.Select(x => x.Volume).ToArray(),
-                DividendArray = this.Quotes.Values.Select(x => x.Dividend).ToArray()
+                Id = Id,
+                DateArray = Quotes.Keys.ToArray(),
+                OpenArray = Quotes.Values.Select(x => x.Open).ToArray(),
+                CloseArray = Quotes.Values.Select(x => x.Close).ToArray(),
+                AdjCloseArray = Quotes.Values.Select(x => x.AdjClose).ToArray(),
+                HighArray = Quotes.Values.Select(x => x.High).ToArray(),
+                LowArray = Quotes.Values.Select(x => x.Low).ToArray(),
+                VolumeArray = Quotes.Values.Select(x => x.Volume).ToArray(),
+                DividendArray = Quotes.Values.Select(x => x.Dividend).ToArray()
             };
         }
 
         public void Clear()
         {
-            this.Quotes.Clear();
+            Quotes.Clear();
         }
 
         public object Clone()
         {
             var result = new HistoricalData
             {
-                Quotes = new SortedList<DateTime, Quote>(this.Quotes.ToDictionary(x => x.Key, x => x.Value))
+                Quotes = new SortedList<DateTime, Quote>(Quotes.ToDictionary(x => x.Key, x => x.Value))
             };
 
             return result;
@@ -161,12 +161,12 @@
 
         public override int GetHashCode()
         {
-            return this.Quotes != null ? this.Quotes.GetHashCode() : 0;
+            return Quotes != null ? Quotes.GetHashCode() : 0;
         }
 
         protected bool Equals(HistoricalData other)
         {
-            return object.Equals(this.Quotes, other.Quotes);
+            return object.Equals(Quotes, other.Quotes);
         }
     }
 }

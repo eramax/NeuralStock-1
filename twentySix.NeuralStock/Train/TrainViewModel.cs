@@ -32,7 +32,7 @@
 
         protected TrainViewModel()
         {
-            Messenger.Default.Register<TrainStatusMessage>(this, this.OnTrainMessageStatus);
+            Messenger.Default.Register<TrainStatusMessage>(this, OnTrainMessageStatus);
         }
 
         public virtual bool IsBusy { get; set; }
@@ -62,7 +62,7 @@
 
         public virtual ICountry SelectedCountry { get; set; }
 
-        public virtual Quote LastQuote => this.Stock?.HistoricalData?.Quotes.LastOrDefault().Value;
+        public virtual Quote LastQuote => Stock?.HistoricalData?.Quotes.LastOrDefault().Value;
 
         public string Error => null;
 
@@ -82,104 +82,104 @@
         [UsedImplicitly]
         public void NavigateTo(string view)
         {
-            this.NavigationService.Navigate(view, null, this);
+            NavigationService.Navigate(view, null, this);
         }
 
         [UsedImplicitly]
         public async Task DownloadData()
         {
-            this.IsBusy = true;
+            IsBusy = true;
 
             try
             {
-                this.ClearStatus();
+                ClearStatus();
 
-                this.Stock = new Stock
+                Stock = new Stock
                 {
-                    Symbol = this.StockSymbol,
-                    Country = this.SelectedCountry
+                    Symbol = StockSymbol,
+                    Country = SelectedCountry
                 };
-                this.Stock.Id = this.Stock.GetUniqueId();
+                Stock.Id = Stock.GetUniqueId();
 
-                this.RaisePropertyChanged(() => this.LastQuote);
+                RaisePropertyChanged(() => LastQuote);
 
                 Messenger.Default.Send(new TrainStatusMessage("Loading settings"));
 
-                await this.LoadSettings().ConfigureAwait(false);
+                await LoadSettings().ConfigureAwait(false);
 
-                Messenger.Default.Send(new TrainStatusMessage($"Downloading data for stock {this.Stock.Symbol}"));
+                Messenger.Default.Send(new TrainStatusMessage($"Downloading data for stock {Stock.Symbol}"));
 
-                var name = await this.DownloaderService.GetName(this.Stock).ConfigureAwait(false);
+                var name = await DownloaderService.GetName(Stock).ConfigureAwait(false);
 
-                if (name.Equals(this.Stock.Symbol))
+                if (name.Equals(Stock.Symbol))
                 {
-                    Messenger.Default.Send(new TrainStatusMessage($"Could not get the name for the stock {this.Stock.Symbol}", SeverityEnum.Warning));
+                    Messenger.Default.Send(new TrainStatusMessage($"Could not get the name for the stock {Stock.Symbol}", SeverityEnum.Warning));
                 }
 
-                this.Stock.Name = name;
-                this.Stock.HistoricalData = await this.DownloaderService.GetHistoricalData(this.Stock, this._settings.StartDate, DateTime.Now)
+                Stock.Name = name;
+                Stock.HistoricalData = await DownloaderService.GetHistoricalData(Stock, _settings.StartDate, DateTime.Now)
                                                 .ConfigureAwait(false);
 
-                this.ResetTrainingSession();
-                this.SplitHistoricalData();
+                ResetTrainingSession();
+                SplitHistoricalData();
 
-                this.RaisePropertyChanged(() => this.LastQuote);
+                RaisePropertyChanged(() => LastQuote);
                 CommandManager.InvalidateRequerySuggested();
 
-                await this.PersistenceService.SaveStock(this.Stock).ConfigureAwait(false);
+                await PersistenceService.SaveStock(Stock).ConfigureAwait(false);
 
-                Messenger.Default.Send(new TrainStatusMessage($"Finished downloading data for stock {this.Stock.Symbol}"));
+                Messenger.Default.Send(new TrainStatusMessage($"Finished downloading data for stock {Stock.Symbol}"));
             }
             catch (Exception ex)
             {
-                Messenger.Default.Send(new TrainStatusMessage($"Could not download data for stock {this.Stock.Symbol}: {ex.Message}", SeverityEnum.Error));
+                Messenger.Default.Send(new TrainStatusMessage($"Could not download data for stock {Stock.Symbol}: {ex.Message}", SeverityEnum.Error));
             }
             finally
             {
-                this.IsBusy = false;
+                IsBusy = false;
             }
         }
 
         [UsedImplicitly]
         public bool CanDownloadData()
         {
-            return !string.IsNullOrEmpty(this.StockSymbol);
+            return !string.IsNullOrEmpty(StockSymbol);
         }
 
         [UsedImplicitly]
         public async void Train()
         {
-            this.IsBusy = true;
-            this.IsTraining = true;
+            IsBusy = true;
+            IsTraining = true;
 
-            if (!this.Stock.HistoricalData.Quotes.Any())
+            if (!Stock.HistoricalData.Quotes.Any())
             {
-                Messenger.Default.Send(new TrainStatusMessage($"Historical data for stock {this.Stock.Name} not downloaded.", SeverityEnum.Error));
+                Messenger.Default.Send(new TrainStatusMessage($"Historical data for stock {Stock.Name} not downloaded.", SeverityEnum.Error));
                 return;
             }
 
             try
             {
-                if (this._cancellationTokenSource != null && this._cancellationTokenSource.Token.CanBeCanceled && !this._cancellationTokenSource.IsCancellationRequested)
+                if (_cancellationTokenSource != null && _cancellationTokenSource.Token.CanBeCanceled && !_cancellationTokenSource.IsCancellationRequested)
                 {
-                    this._cancellationTokenSource.Cancel();
+                    _cancellationTokenSource.Cancel();
                     return;
                 }
 
-                await this.DownloadData().ConfigureAwait(false);
+                await DownloadData().ConfigureAwait(false);
 
-                this._cancellationTokenSource = new CancellationTokenSource();
-                await Task.Run(() => this.TrainingSession.FindBestAnn(this._cancellationTokenSource.Token)).ConfigureAwait(false);
+                _cancellationTokenSource = new CancellationTokenSource();
+                await Task.Run(() => TrainingSession.FindBestAnn(_cancellationTokenSource.Token)).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                Messenger.Default.Send(new TrainStatusMessage($"Could not train {this.Stock.Name}. Exception: {ex.Message}", SeverityEnum.Error));
+                Messenger.Default.Send(new TrainStatusMessage($"Could not train {Stock.Name}. Exception: {ex.Message}", SeverityEnum.Error));
             }
             finally
             {
-                this.IsTraining = false;
-                this.IsBusy = false;
-                this._cancellationTokenSource = null;
+                IsTraining = false;
+                IsBusy = false;
+                _cancellationTokenSource = null;
                 CommandManager.InvalidateRequerySuggested();
             }
         }
@@ -187,7 +187,7 @@
         [UsedImplicitly]
         public bool CanTrain()
         {
-            return !string.IsNullOrEmpty(this.StockSymbol) && (this.Stock?.HistoricalData?.Quotes.Any() ?? false);
+            return !string.IsNullOrEmpty(StockSymbol) && (Stock?.HistoricalData?.Quotes.Any() ?? false);
         }
 
         [UsedImplicitly]
@@ -195,95 +195,95 @@
         {
             try
             {
-                this.IsBusy = true;
-                if (!await this.PersistenceService.SaveBestNetwork(this.TrainingSession).ConfigureAwait(false))
+                IsBusy = true;
+                if (!await PersistenceService.SaveBestNetwork(TrainingSession).ConfigureAwait(false))
                 {
                     throw new Exception("Error found while saving the best network");
                 }
 
-                Messenger.Default.Send(new TrainStatusMessage($"Saved best network for {this.Stock.Symbol}"));
+                Messenger.Default.Send(new TrainStatusMessage($"Saved best network for {Stock.Symbol}"));
             }
             catch (Exception ex)
             {
-                Messenger.Default.Send(new TrainStatusMessage($"Could not save {this.Stock.Symbol}: {ex.Message}", SeverityEnum.Error));
+                Messenger.Default.Send(new TrainStatusMessage($"Could not save {Stock.Symbol}: {ex.Message}", SeverityEnum.Error));
             }
             finally
             {
-                this.IsBusy = false;
+                IsBusy = false;
             }
         }
 
         [UsedImplicitly]
         public bool CanSave()
         {
-            return !this.IsBusy && !this.IsTraining && this.TrainingSession?.BestPrediction != null;
+            return !IsBusy && !IsTraining && TrainingSession?.BestPrediction != null;
         }
 
         protected override void OnNavigatedTo()
         {
-            if (this.Parameter is DashboardPrediction dashboardPrediction)
+            if (Parameter is DashboardPrediction dashboardPrediction)
             {
-                this.Stock = dashboardPrediction.TrainingSession.Stock;
-                this.StockSymbol = this.Stock.Symbol;
-                this.SelectedCountry = this.Stock.Country;
-                this.TrainingSession = dashboardPrediction.TrainingSession;
-                this.TrainingData = this.TrainingSession.TrainingHistoricalData;
-                this.TestingData = this.TrainingSession.TestingHistoricalData;
-                this.RaisePropertyChanged(() => this.LastQuote);
+                Stock = dashboardPrediction.TrainingSession.Stock;
+                StockSymbol = Stock.Symbol;
+                SelectedCountry = Stock.Country;
+                TrainingSession = dashboardPrediction.TrainingSession;
+                TrainingData = TrainingSession.TrainingHistoricalData;
+                TestingData = TrainingSession.TestingHistoricalData;
+                RaisePropertyChanged(() => LastQuote);
             }
 
-            if (this.Parameter is bool clearData)
+            if (Parameter is bool clearData)
             {
                 // ReSharper disable once StyleCop.SA1126
                 if (clearData)
                 {
-                    this.ClearStatus();
-                    this.StockSymbol = string.Empty;
-                    this.Stock = null;
-                    this.SelectedCountry = this.AvailableCountries.FirstOrDefault();
-                    this.TrainingSession = null;
-                    this.RaisePropertyChanged(() => this.LastQuote);
+                    ClearStatus();
+                    StockSymbol = string.Empty;
+                    Stock = null;
+                    SelectedCountry = AvailableCountries.FirstOrDefault();
+                    TrainingSession = null;
+                    RaisePropertyChanged(() => LastQuote);
                 }
             }
         }
 
         private void ClearStatus()
         {
-            this.TrainingData = null;
-            this.TestingData = null;
+            TrainingData = null;
+            TestingData = null;
 
             Messenger.Default.Send(new TrainStatusMessage(string.Empty));
         }
 
         private void ResetTrainingSession()
         {
-            this.Portfolio = new StockPortfolio(this._settings.StartDate, this._settings.InitialCash);
+            Portfolio = new StockPortfolio(_settings.StartDate, _settings.InitialCash);
 
-            this.TrainingSession = new TrainingSession(this.Portfolio, this.Stock)
+            TrainingSession = new TrainingSession(Portfolio, Stock)
             {
-                TrainSamplePercentage = this._settings.PercentageTraining,
-                NumberAnns = this._settings.NumberANNs,
-                NumberHiddenLayers = this._settings.NumberHiddenLayers,
-                NumberNeuronsPerHiddenLayer = this._settings.NumberNeuronsHiddenLayer
+                TrainSamplePercentage = _settings.PercentageTraining,
+                NumberAnns = _settings.NumberANNs,
+                NumberHiddenLayers = _settings.NumberHiddenLayers,
+                NumberNeuronsPerHiddenLayer = _settings.NumberNeuronsHiddenLayer
             };
         }
 
         private void SplitHistoricalData()
         {
-            this.TrainingSession.SplitTrainTestData();
-            this.TrainingData = this.TrainingSession.TrainingHistoricalData;
-            this.TestingData = this.TrainingSession.TestingHistoricalData;
+            TrainingSession.SplitTrainTestData();
+            TrainingData = TrainingSession.TrainingHistoricalData;
+            TestingData = TrainingSession.TestingHistoricalData;
         }
 
         private async Task LoadSettings()
         {
-            this._settings = await this.PersistenceService.GetSettings().ConfigureAwait(false) ?? new NeuralStockSettings();
+            _settings = await PersistenceService.GetSettings().ConfigureAwait(false) ?? new NeuralStockSettings();
         }
 
         private void OnTrainMessageStatus(TrainStatusMessage obj)
         {
-            this.Status = obj.Message;
-            this.StatusSeverity = obj.Severity;
+            Status = obj.Message;
+            StatusSeverity = obj.Severity;
         }
     }
 }
