@@ -14,13 +14,13 @@
 
     using JetBrains.Annotations;
 
-    using twentySix.NeuralStock.Common;
-    using twentySix.NeuralStock.Core.Data.Countries;
-    using twentySix.NeuralStock.Core.Enums;
-    using twentySix.NeuralStock.Core.Messages;
-    using twentySix.NeuralStock.Core.Models;
-    using twentySix.NeuralStock.Core.Services.Interfaces;
-    using twentySix.NeuralStock.Dashboard;
+    using Common;
+    using Core.Data.Countries;
+    using Core.Enums;
+    using Core.Messages;
+    using Core.Models;
+    using Core.Services.Interfaces;
+    using Dashboard;
 
     [POCOViewModel]
     // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global

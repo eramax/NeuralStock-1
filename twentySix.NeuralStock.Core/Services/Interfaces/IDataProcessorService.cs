@@ -38,5 +38,7 @@
         double[] CalculateLV(double[] data, int period);
 
         double[] CalculateStochK(double[] high, double[] low, double[] close, int fastKPeriod, int fastDPeriod);
+
+        double[] CalculateIndicator(double[] data, int period);
     }
 }

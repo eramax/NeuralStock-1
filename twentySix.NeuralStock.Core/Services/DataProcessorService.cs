@@ -303,5 +303,21 @@ namespace twentySix.NeuralStock.Core.Services
                 slowd);
             return slowk;
         }
+
+        public double[] CalculateIndicator(double[] data, int period)
+        {
+            var reversed = data.Reverse().ToArray();
+            double[] result = new double[reversed.Length];
+
+            Core.Dema(
+                0,
+                reversed.Length - 1,
+                reversed,
+                period,
+                out _,
+                out _,
+                result);
+            return result.Reverse().ToArray();
+        }
     }
 }

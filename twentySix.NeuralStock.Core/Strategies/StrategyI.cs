@@ -51,6 +51,7 @@ namespace twentySix.NeuralStock.Core.Strategies
             var fitClose = DataProcessorService.CalculateMovingLinearFit(close, Settings.FitClose);
             var fitOfFit = DataProcessorService.CalculateMovingLinearFit(fitClose.Item2, Settings.FitOfFit);
             var fitRSI = DataProcessorService.CalculateMovingLinearFit(DataProcessorService.CalculateRSI(close, Settings.RSI1Fit), Settings.RSI2Fit);
+            var indicator1 = DataProcessorService.CalculateIndicator(close, Settings.MovingAverageHighFast);
 
             int fwdDays = Settings.FwdDays;
             int yesterdayStep = 1;
@@ -99,8 +100,7 @@ namespace twentySix.NeuralStock.Core.Strategies
                                      fitOfFit.Item2[i],
                                      fitRSI.Item2[i],
                                      (today.Close * yesterday.Volume - yesterday.Close * today.Volume) * today.Dividend,
-                                     coordinatesCache[today.Date].CelestialInfo.SunAltitude,
-                                     coordinatesCache[today.Date].CelestialInfo.SunAzimuth
+                                     indicator1[i]
                                  },
                     Outputs = new[]
                                   {

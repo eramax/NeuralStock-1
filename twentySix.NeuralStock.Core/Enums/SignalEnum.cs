@@ -2,8 +2,8 @@
 {
     public enum SignalEnum
     {
-        Buy,
-        Sell,
-        Neutral
+        Buy = 1,
+        Sell = 2,
+        Neutral = 3
     }
 }

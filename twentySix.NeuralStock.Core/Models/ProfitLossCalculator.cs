@@ -4,9 +4,9 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using twentySix.NeuralStock.Core.Enums;
-    using twentySix.NeuralStock.Core.Helpers;
-    using twentySix.NeuralStock.Core.Services.Interfaces;
+    using Enums;
+    using Helpers;
+    using Services.Interfaces;
 
     public class ProfitLossCalculator
     {
