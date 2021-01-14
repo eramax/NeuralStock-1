@@ -40,6 +40,7 @@ namespace twentySix.NeuralStock.Core.Strategies
             var close = historicalQuotes.Select(x => x.Close).ToArray();
             var volume = historicalQuotes.Select(x => x.Volume).ToArray();
             var high = historicalQuotes.Select(x => x.High).ToArray();
+            var low = historicalQuotes.Select(x => x.Low).ToArray();
 
             var movingAverageCloseFast = DataProcessorService.CalculateMovingAverage(close, Settings.MovingAverageCloseFast);
             var movingAverageCloseSlow = DataProcessorService.CalculateMovingAverage(close, Settings.MovingAverageCloseSlow);
@@ -47,11 +48,11 @@ namespace twentySix.NeuralStock.Core.Strategies
             var rsi = DataProcessorService.CalculateRSI(close, Settings.RSI);
             var rsi2 = DataProcessorService.CalculateRSI(high, Settings.RSI2);
             var macD = DataProcessorService.CalculateMacD(close, Settings.MacdFast, Settings.MacdSlow, Settings.MacdSignal);
-            var hv = DataProcessorService.CalculateHV(close, Settings.Hv1);
-            var fitClose = DataProcessorService.CalculateMovingLinearFit(close, Settings.FitClose);
-            var fitOfFit = DataProcessorService.CalculateMovingLinearFit(fitClose.Item2, Settings.FitOfFit);
-            var fitRSI = DataProcessorService.CalculateMovingLinearFit(DataProcessorService.CalculateRSI(close, Settings.RSI1Fit), Settings.RSI2Fit);
-            var indicator1 = DataProcessorService.CalculateIndicator(close, Settings.MovingAverageHighFast);
+            var atr = DataProcessorService.CalculateAtr(high, low, close, Settings.Atr);
+            var ema = DataProcessorService.CalculateEMA(high, Settings.Ema);
+            var wr = DataProcessorService.CalculateWR(historicalQuotes, Settings.Wr);
+            var kama = DataProcessorService.CalculateKama(close, Settings.Kama);
+            var aroon = DataProcessorService.CalculateAroon(high, low, Settings.Aroon);
 
             int fwdDays = Settings.FwdDays;
             int yesterdayStep = 1;
@@ -90,17 +91,15 @@ namespace twentySix.NeuralStock.Core.Strategies
                                      movingAverageCloseFast[i],
                                      movingAverageCloseSlow[i],
                                      cci[i],
-                                     today.Date.Month,
-                                     (int)today.Date.DayOfWeek,
                                      macD.Item1[i],
                                      macD.Item2[i],
+                                     macD.Item3[i],
                                      rsi[i],
-                                     hv[i],
-                                     fitClose.Item2[i],
-                                     fitOfFit.Item2[i],
-                                     fitRSI.Item2[i],
-                                     (today.Close * yesterday.Volume - yesterday.Close * today.Volume) * today.Dividend,
-                                     indicator1[i]
+                                     atr[i],
+                                     ema[i],
+                                     wr[i],
+                                     kama[i],
+                                     aroon[i]
                                  },
                     Outputs = new[]
                                   {

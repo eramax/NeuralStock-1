@@ -37,7 +37,7 @@
 
             // adjust cash
             Add(trade.Date, -trade.TotalValue);
-
+            
             Trades.Add(trade.Date, trade);
         }
 

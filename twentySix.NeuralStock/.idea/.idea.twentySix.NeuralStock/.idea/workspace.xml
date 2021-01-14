@@ -26,20 +26,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b6ca1e60-1f48-48f9-a3e0-a9ce8245472f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Enums/SignalEnum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Enums/SignalEnum.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Models/ProfitLossCalculator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Models/ProfitLossCalculator.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Extensions/SortedListExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Models/StockPortfolio.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Models/StockPortfolio.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Models/TrainingSession.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Models/TrainingSession.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Services/DataProcessorService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Services/DataProcessorService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Services/Interfaces/IDataProcessorService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Services/Interfaces/IDataProcessorService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Strategies/StrategyI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Strategies/StrategyI.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Strategies/StrategySettings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Strategies/StrategySettings.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/twentySix.NeuralStock.Core.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/twentySix.NeuralStock.Core.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../twentySix.NeuralStock.CoreTests/twentySix.NeuralStock.CoreTests.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../twentySix.NeuralStock.CoreTests/twentySix.NeuralStock.CoreTests.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.twentySix.NeuralStock/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.twentySix.NeuralStock/.idea/contentModel.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.twentySix.NeuralStock/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.twentySix.NeuralStock/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.twentySix.NeuralStock/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.twentySix.NeuralStock/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Train/TrainViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Train/TrainViewModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/twentySix.NeuralStock.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/twentySix.NeuralStock.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/twentySix.NeuralStock.csproj.bak" beforeDir="false" afterPath="$PROJECT_DIR$/twentySix.NeuralStock.csproj.bak" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,15 +45,31 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/62FFEEB7-EC02-4BEA-B61E-5FBF8D44AC5B/6b/7d188908/Task.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/62FFEEB7-EC02-4BEA-B61E-5FBF8D44AC5B/45/bf6342de/Tuple`3.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/62FFEEB7-EC02-4BEA-B61E-5FBF8D44AC5B/47/a1731ace/IList`1.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
       <option value="$PROJECT_DIR$/Train/TrainViewModel.cs" />
       <option value="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Enums/SignalEnum.cs" />
-      <option value="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Models/TrainingSession.cs" />
       <option value="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Models/ProfitLossCalculator.cs" />
+      <option value="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Extensions/SortedListExtensions.cs" />
+      <option value="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Models/StockPortfolio.cs" />
+      <option value="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Strategies/StrategySettings.cs" />
+      <option value="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Services/DataProcessorService.cs" />
+      <option value="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Services/Interfaces/IDataProcessorService.cs" />
+      <option value="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Models/TrainingSession.cs" />
+      <option value="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Strategies/StrategyI.cs" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1lKvmjOJ332I9K2l2j2wEQXSORm" />
@@ -114,7 +126,7 @@
       <workItem from="1607599716921" duration="2839000" />
       <workItem from="1610560485862" duration="896000" />
       <workItem from="1610561412224" duration="29000" />
-      <workItem from="1610623948047" duration="1733000" />
+      <workItem from="1610623948047" duration="12661000" />
     </task>
     <servers />
   </component>

@@ -15,7 +15,6 @@
 
             MovingAverageCloseFast = RandomExtensions.BetterRandomInteger(10, 21);
             MovingAverageCloseSlow = RandomExtensions.BetterRandomInteger(33, 64);
-            MovingAverageHighFast = RandomExtensions.BetterRandomInteger(3, 21);
 
             CCI = RandomExtensions.BetterRandomInteger(6, 21);
             RSI = RandomExtensions.BetterRandomInteger(3, 21);
@@ -25,13 +24,11 @@
             MacdSlow = RandomExtensions.BetterRandomInteger(26, 42);
             MacdSignal = RandomExtensions.BetterRandomInteger(24, 36);
 
-            Hv1 = RandomExtensions.BetterRandomInteger(5, 50);
-
-            FitClose = RandomExtensions.BetterRandomInteger(9, 21);
-            FitOfFit = RandomExtensions.BetterRandomInteger(7, 17);
-
-            RSI1Fit = RandomExtensions.BetterRandomInteger(7, 14);
-            RSI2Fit = RandomExtensions.BetterRandomInteger(9, 15);
+            Atr = RandomExtensions.BetterRandomInteger(3, 21);
+            Ema = RandomExtensions.BetterRandomInteger(3, 21);
+            Wr = RandomExtensions.BetterRandomInteger(3, 21);
+            Kama = RandomExtensions.BetterRandomInteger(3, 21);
+            Aroon = RandomExtensions.BetterRandomInteger(13, 32);
         }
 
         public int FwdDays { get; set; }
@@ -43,31 +40,29 @@
         public int MovingAverageCloseFast { get; set; }
 
         public int MovingAverageCloseSlow { get; set; }
-
-        public int MovingAverageHighFast { get; set; }
-
+        
         public int CCI { get; set; }
 
         public int RSI { get; set; }
 
         public int RSI2 { get; set; }
 
-        public int FitClose { get; set; }
-
-        public int FitOfFit { get; set; }
-
         public int MacdFast { get; set; }
 
         public int MacdSlow { get; set; }
 
         public int MacdSignal { get; set; }
-
-        public int Hv1 { get; set; }
-
-        public int RSI1Fit { get; set; }
-
-        public int RSI2Fit { get; set; }
-
+        
+        public int Atr { get; set; }
+        
+        public int Ema { get; set; }
+        
+        public int Wr { get; set; }
+        
+        public int Kama { get; set; }
+        
+        public int Aroon { get; set; }
+        
         public static StrategySettings FromJson(string json)
         {
             try

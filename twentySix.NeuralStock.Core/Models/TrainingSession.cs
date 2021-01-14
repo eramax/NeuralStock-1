@@ -268,8 +268,8 @@ namespace twentySix.NeuralStock.Core.Models
 
             Parallel.For(
                 0,
-                3000,
-                new ParallelOptions {CancellationToken = token, MaxDegreeOfParallelism = 5},
+                100,
+                new ParallelOptions {CancellationToken = token, MaxDegreeOfParallelism = 4},
                 i =>
                 {
                     if (token.IsCancellationRequested)
@@ -344,8 +344,8 @@ namespace twentySix.NeuralStock.Core.Models
 
             if (resetLevels)
             {
-                buyLevel = RandomExtensions.BetterRandomDouble(0.80, 0.96);
-                sellLevel = RandomExtensions.BetterRandomDouble(-0.85, -0.60);
+                buyLevel = RandomExtensions.BetterRandomDouble(0.70, 0.98);
+                sellLevel = RandomExtensions.BetterRandomDouble(-0.95, -0.60);
             }
 
             var result = new Dictionary<DateTime, SignalEnum>();
@@ -420,12 +420,12 @@ namespace twentySix.NeuralStock.Core.Models
             net.TrainingAlgorithm =
                 possibleTrainingAlgorithms[
                     RandomExtensions.BetterRandomInteger(0, possibleTrainingAlgorithms.Length - 1)];
-            //net.RpropIncreaseFactor = 1.05f;
-            //net.RpropDecreaseFactor = 0.95f;
-            //net.RpropDeltaMax = 500f;
-            //net.RpropDeltaZero = 0.01f;
+            net.RpropIncreaseFactor = 1.05f;
+            net.RpropDecreaseFactor = 0.95f;
+            net.RpropDeltaMax = 500f;
+            net.RpropDeltaZero = 0.01f;
 
-            net.TrainOnData(trainData, (uint) RandomExtensions.BetterRandomInteger(700, 900), 0, 0.000001f);
+            net.TrainOnData(trainData, (uint) RandomExtensions.BetterRandomInteger(750, 2000), 0, 0.000001f);
 
             trainData.Dispose();
 

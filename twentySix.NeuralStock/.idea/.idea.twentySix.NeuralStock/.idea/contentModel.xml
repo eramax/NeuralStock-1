@@ -26,7 +26,7 @@
         <e p="ShellViewModel.cs" t="Include" />
       </e>
       <e p="obj" t="ExcludeRecursive">
-        <e p="Debug" t="Include">
+        <e p="Release" t="Include">
           <e p="App.g.cs" t="Include" />
           <e p="Dashboard" t="Include">
             <e p="DashboardView.g.cs" t="Include" />
@@ -119,6 +119,7 @@
       </e>
       <e p="Extensions" t="Include">
         <e p="RandomExtensions.cs" t="Include" />
+        <e p="SortedListExtensions.cs" t="Include" />
       </e>
       <e p="Helpers" t="Include">
         <e p="ApplicationHelper.cs" t="Include" />

@@ -122,6 +122,7 @@
     <Compile Include="Enums\SeverityEnum.cs" />
     <Compile Include="Enums\SignalEnum.cs" />
     <Compile Include="Extensions\RandomExtensions.cs" />
+    <Compile Include="Extensions\SortedListExtensions.cs" />
     <Compile Include="Messages\TrainStatusMessage.cs" />
     <Compile Include="Models\AnnDataPoint.cs" />
     <Compile Include="Models\CompleteTransaction.cs" />
