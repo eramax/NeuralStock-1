@@ -1,4 +1,7 @@
 ﻿// ReSharper disable StyleCop.SA1407
+
+using NetTrader.Indicator;
+
 namespace twentySix.NeuralStock.Core.Services
 {
     using System;

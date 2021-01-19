@@ -46,11 +46,15 @@
                 (s, q) => new KeyValuePair<Quote, SignalEnum>(q, s.Value)).Where(x => x.Value == SignalEnum.Buy)
             .ToDictionary(x => x.Key.Date, x => x.Key.Low);
 
-        public SignalEnum LatestSignal => Signals.LastOrDefault().Value;
+        public SignalEnum S1 => Signals.LastOrDefault().Value;
 
-        public SignalEnum SecondLastSignal => Signals.ElementAtOrDefault(Signals.Count - 2).Value;
+        public SignalEnum S2 => Signals.ElementAtOrDefault(Signals.Count - 2).Value;
 
-        public SignalEnum ThirdLastSignal => Signals.ElementAtOrDefault(Signals.Count - 3).Value;
+        public SignalEnum S3 => Signals.ElementAtOrDefault(Signals.Count - 3).Value;
+        
+        public SignalEnum S4 => Signals.ElementAtOrDefault(Signals.Count - 4).Value;
+        
+        public SignalEnum S5 => Signals.ElementAtOrDefault(Signals.Count - 5).Value;
 
         public Dictionary<DateTime, double> PortfolioTotalValue =>
             TrainingSession.TestingHistoricalData.Quotes.Values.ToDictionary(

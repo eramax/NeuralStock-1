@@ -12,13 +12,13 @@ namespace twentySix.NeuralStock.Core.Models
     using DevExpress.Mvvm;
     using FANNCSharp;
     using FANNCSharp.Double;
-    using twentySix.NeuralStock.Core.DTOs;
-    using twentySix.NeuralStock.Core.Enums;
-    using twentySix.NeuralStock.Core.Extensions;
-    using twentySix.NeuralStock.Core.Helpers;
-    using twentySix.NeuralStock.Core.Messages;
-    using twentySix.NeuralStock.Core.Services.Interfaces;
-    using twentySix.NeuralStock.Core.Strategies;
+    using DTOs;
+    using Enums;
+    using Extensions;
+    using Helpers;
+    using Messages;
+    using Services.Interfaces;
+    using Strategies;
 
     public class TrainingSession : BindableBase
     {
@@ -35,7 +35,7 @@ namespace twentySix.NeuralStock.Core.Models
         private static readonly ActivationFunction[] possibleActivationFunctions =
         {
             ActivationFunction.ELLIOT,
-            ActivationFunction.GAUSSIAN,
+            //ActivationFunction.GAUSSIAN,
             ActivationFunction.SIGMOID,
             ActivationFunction.ELLIOT_SYMMETRIC,
             ActivationFunction.GAUSSIAN_SYMMETRIC,
@@ -45,7 +45,7 @@ namespace twentySix.NeuralStock.Core.Models
         private static readonly TrainingAlgorithm[] possibleTrainingAlgorithms =
         {
             TrainingAlgorithm.TRAIN_RPROP,
-            TrainingAlgorithm.TRAIN_QUICKPROP
+            //TrainingAlgorithm.TRAIN_QUICKPROP
         };
 
         public TrainingSession(StockPortfolio portfolio, Stock stock)
@@ -232,7 +232,7 @@ namespace twentySix.NeuralStock.Core.Models
                     lock (Locker)
                     {
                         // compare prediction with random walk and only add network if better
-                        if (profitLossCalculator.PL >= randomPL)
+                        if (profitLossCalculator.PL >= randomPL && profitLossCalculator.PercentageWinningTransactions > 0.6d)
                         {
                             AddBestNeuralNet(profitLossCalculator, strategy, net, prediction.Item2, prediction.Item3);
                         }
@@ -268,7 +268,7 @@ namespace twentySix.NeuralStock.Core.Models
 
             Parallel.For(
                 0,
-                100,
+                250,
                 new ParallelOptions {CancellationToken = token, MaxDegreeOfParallelism = 4},
                 i =>
                 {
@@ -277,14 +277,15 @@ namespace twentySix.NeuralStock.Core.Models
                         token.ThrowIfCancellationRequested();
                     }
 
-                    var randomSignals = dates.ToDictionary(x => x, x => (SignalEnum) RandomExtensions.BetterRandomInteger(1, 3));
+                    var randomSignals = dates.ToDictionary(x => x,
+                        x => (SignalEnum) RandomExtensions.BetterRandomInteger(1, 3));
                     var randomProfitLostCalculator = new ProfitLossCalculator(Portfolio.Reset(), this, randomSignals);
 
                     pls.Add(randomProfitLostCalculator.PL);
                 });
 
 
-            return pls.Average();
+            return pls.Percentile(68);
         }
 
         public void SplitTrainTestData()
@@ -344,8 +345,8 @@ namespace twentySix.NeuralStock.Core.Models
 
             if (resetLevels)
             {
-                buyLevel = RandomExtensions.BetterRandomDouble(0.70, 0.98);
-                sellLevel = RandomExtensions.BetterRandomDouble(-0.95, -0.60);
+                buyLevel = RandomExtensions.BetterRandomDouble(0.65, 0.99);
+                sellLevel = RandomExtensions.BetterRandomDouble(-0.98, -0.55);
             }
 
             var result = new Dictionary<DateTime, SignalEnum>();
@@ -420,12 +421,12 @@ namespace twentySix.NeuralStock.Core.Models
             net.TrainingAlgorithm =
                 possibleTrainingAlgorithms[
                     RandomExtensions.BetterRandomInteger(0, possibleTrainingAlgorithms.Length - 1)];
-            net.RpropIncreaseFactor = 1.05f;
-            net.RpropDecreaseFactor = 0.95f;
-            net.RpropDeltaMax = 500f;
-            net.RpropDeltaZero = 0.01f;
-
-            net.TrainOnData(trainData, (uint) RandomExtensions.BetterRandomInteger(750, 2000), 0, 0.000001f);
+            // net.RpropIncreaseFactor = 1.05f;
+            // net.RpropDecreaseFactor = 0.95f;
+            // net.RpropDeltaMax = 500f;
+            // net.RpropDeltaZero = 0.01f;
+            
+            net.TrainOnData(trainData, (uint) RandomExtensions.BetterRandomInteger(800, 1800), 0, 0.000001f);
 
             trainData.Dispose();
 

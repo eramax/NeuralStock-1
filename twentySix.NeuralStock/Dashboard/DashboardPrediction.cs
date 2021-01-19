@@ -27,6 +27,12 @@
             get => GetProperty(() => Name);
             set => SetProperty(() => Name, value);
         }
+        
+        public string Country
+        {
+            get => GetProperty(() => Country);
+            set => SetProperty(() => Country, value);
+        }
 
         public DateTime LastUpdate
         {

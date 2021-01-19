@@ -10,8 +10,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:navigation="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
     Title="Neural Stock"
-    Width="600"
-    Height="400"
+    Width="1024"
+    Height="768"
     d:DataContext="{d:DesignInstance Type=main:ShellViewModel}"
     DataContext="{dxmvvm:ViewModelSource Type=main:ShellViewModel}"
     SnapsToDevicePixels="True"
@@ -39,8 +39,8 @@
                     x:Name="MainNavigationFrame"
                     Padding="0"
                     AnimationSpeedRatio="1.5"
-                    AnimationType="Fade"
-                    NavigationCacheMode="Enabled">
+                    AnimationType="None"
+                    NavigationCacheMode="Required">
                     <dxmvvm:Interaction.Behaviors>
                         <navigation:FrameDocumentUIService x:Name="FrameDocumentUiService" ShowSplashScreen="True">
                             <navigation:FrameDocumentUIService.SplashScreenService>

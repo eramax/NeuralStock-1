@@ -9,12 +9,9 @@
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
-
     using DevExpress.Mvvm;
     using DevExpress.Mvvm.DataAnnotations;
-
     using JetBrains.Annotations;
-
     using twentySix.NeuralStock.Common;
     using twentySix.NeuralStock.Core.DTOs;
     using twentySix.NeuralStock.Core.Enums;
@@ -44,8 +41,7 @@
 
         public virtual bool IsBusy { get; set; }
 
-        [UsedImplicitly]
-        public virtual StockPortfolio Portfolio { get; set; }
+        [UsedImplicitly] public virtual StockPortfolio Portfolio { get; set; }
 
         public virtual ObservableCollection<DashboardPrediction> Predictions { get; set; }
 
@@ -137,7 +133,7 @@
         {
             PersistenceService.DeleteFavourites().Wait();
             var favourites = Predictions.Where(x => x.Favourite)
-                .Select(x => new FavouriteDTO { StockId = x.TrainingSession.Stock.GetUniqueId() }).ToList();
+                .Select(x => new FavouriteDTO {StockId = x.TrainingSession.Stock.GetUniqueId()}).ToList();
 
             if (favourites.Any())
             {
@@ -149,7 +145,8 @@
         {
             try
             {
-                if (_cancellationTokenSource != null && _cancellationTokenSource.Token.CanBeCanceled && !_cancellationTokenSource.IsCancellationRequested)
+                if (_cancellationTokenSource != null && _cancellationTokenSource.Token.CanBeCanceled &&
+                    !_cancellationTokenSource.IsCancellationRequested)
                 {
                     _cancellationTokenSource.Cancel();
                     return;
@@ -176,9 +173,14 @@
                     }
 
                     var stock = await PersistenceService.GetStockFromId(dto.StockId);
-                    stock.HistoricalData = await DownloaderService.GetHistoricalData(stock, _settings.StartDate, DateTime.Now, true).ConfigureAwait(false);
+                    stock.HistoricalData = await DownloaderService
+                        .GetHistoricalData(stock, _settings.StartDate, DateTime.Now, true).ConfigureAwait(false);
 
-                    var dashboardPrediction = new DashboardPrediction { Symbol = stock.Symbol, Name = stock.Name, StockId = stock.GetUniqueId() };
+                    var dashboardPrediction = new DashboardPrediction
+                    {
+                        Symbol = stock.Symbol, Name = stock.Name, StockId = stock.GetUniqueId(),
+                        Country = stock.Country.Name
+                    };
 
                     lock (Locker)
                     {
@@ -188,16 +190,19 @@
                     TrainingSession trainingSession;
                     try
                     {
-                        trainingSession = await Task.Run(() => new TrainingSession(Portfolio, stock, dto, _settings)).ConfigureAwait(false);
+                        trainingSession = await Task.Run(() => new TrainingSession(Portfolio, stock, dto, _settings))
+                            .ConfigureAwait(false);
                     }
                     catch (Exception ex)
                     {
-                        Messenger.Default.Send(new TrainStatusMessage($"Could setup training session for stock {stock.Name}: {ex.Message}", SeverityEnum.Error));
+                        Messenger.Default.Send(new TrainStatusMessage(
+                            $"Could setup training session for stock {stock.Name}: {ex.Message}", SeverityEnum.Error));
                         trainingSession = new TrainingSession(Portfolio, stock);
                     }
 
                     dashboardPrediction.TrainingSession = trainingSession;
-                    dashboardPrediction.Close = trainingSession.Stock.HistoricalData?.Quotes?.LastOrDefault().Value?.Close ?? 0d;
+                    dashboardPrediction.Close =
+                        trainingSession.Stock.HistoricalData?.Quotes?.LastOrDefault().Value?.Close ?? 0d;
                     dashboardPrediction.LastTrainingDate = dto.Timestamp;
 
                     if (trainingSession.Stock.HistoricalData != null)

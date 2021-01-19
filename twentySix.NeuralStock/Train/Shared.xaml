@@ -4,7 +4,7 @@
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors">
 
     <Style x:Key="TextEditReadOnlyStyle" TargetType="dxe:TextEdit">
-        <Setter Property="FontFamily" Value="Work Sans Light" />
+        <Setter Property="FontFamily" Value="Roboto" />
         <Setter Property="IsReadOnly" Value="True" />
         <Setter Property="ShowBorder" Value="False" />
     </Style>
@@ -13,8 +13,8 @@
         x:Key="TextEditReadOnlyBoldStyle"
         BasedOn="{StaticResource TextEditReadOnlyStyle}"
         TargetType="dxe:TextEdit">
-        <Setter Property="FontFamily" Value="Work Sans" />
-        <Setter Property="FontSize" Value="22" />
+        <Setter Property="FontFamily" Value="Roboto" />
+        <Setter Property="FontSize" Value="18" />
     </Style>
 
 </ResourceDictionary>

@@ -1,20 +1,14 @@
-﻿using CoordinateSharp;
-
-namespace twentySix.NeuralStock.Core.Strategies
+﻿namespace twentySix.NeuralStock.Core.Strategies
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
     using Helpers;
     using Models;
     using Services.Interfaces;
 
     public class StrategyI : StrategyBase
     {
-        private static readonly Tuple<double, double> coordinates = new Tuple<double, double>(38.766667, -9.15);
-        private static readonly Dictionary<DateTime, Coordinate> coordinatesCache = new Dictionary<DateTime, Coordinate>();
-
         private static readonly object Locker = new object();
 
         public StrategyI(StrategySettings settings)
@@ -23,8 +17,10 @@ namespace twentySix.NeuralStock.Core.Strategies
 
             lock (Locker)
             {
-                StatisticsService = ApplicationHelper.CurrentCompositionContainer.GetExportedValue<IStatisticsService>();
-                DataProcessorService = ApplicationHelper.CurrentCompositionContainer.GetExportedValue<IDataProcessorService>();
+                StatisticsService =
+                    ApplicationHelper.CurrentCompositionContainer.GetExportedValue<IStatisticsService>();
+                DataProcessorService =
+                    ApplicationHelper.CurrentCompositionContainer.GetExportedValue<IDataProcessorService>();
             }
         }
 
@@ -42,14 +38,17 @@ namespace twentySix.NeuralStock.Core.Strategies
             var high = historicalQuotes.Select(x => x.High).ToArray();
             var low = historicalQuotes.Select(x => x.Low).ToArray();
 
-            var movingAverageCloseFast = DataProcessorService.CalculateMovingAverage(close, Settings.MovingAverageCloseFast);
-            var movingAverageCloseSlow = DataProcessorService.CalculateMovingAverage(close, Settings.MovingAverageCloseSlow);
+            var movingAverageCloseFast =
+                DataProcessorService.CalculateMovingAverage(close, Settings.MovingAverageCloseFast);
+            var movingAverageCloseSlow =
+                DataProcessorService.CalculateMovingAverage(high, Settings.MovingAverageCloseSlow);
+            var movingAverageVolume = DataProcessorService.CalculateMovingAverage(volume, Settings.MovingAverageVolume);
             var cci = DataProcessorService.CalculateCCI(historicalQuotes, Settings.CCI);
             var rsi = DataProcessorService.CalculateRSI(close, Settings.RSI);
-            var rsi2 = DataProcessorService.CalculateRSI(high, Settings.RSI2);
-            var macD = DataProcessorService.CalculateMacD(close, Settings.MacdFast, Settings.MacdSlow, Settings.MacdSignal);
+            var macD = DataProcessorService.CalculateMacD(close, Settings.MacdFast, Settings.MacdSlow,
+                Settings.MacdSignal);
             var atr = DataProcessorService.CalculateAtr(high, low, close, Settings.Atr);
-            var ema = DataProcessorService.CalculateEMA(high, Settings.Ema);
+            var ema = DataProcessorService.CalculateEMA(close, Settings.Ema);
             var wr = DataProcessorService.CalculateWR(historicalQuotes, Settings.Wr);
             var kama = DataProcessorService.CalculateKama(close, Settings.Kama);
             var aroon = DataProcessorService.CalculateAroon(high, low, Settings.Aroon);
@@ -60,8 +59,8 @@ namespace twentySix.NeuralStock.Core.Strategies
             for (int i = 0; i < historicalQuotes.Count; i++)
             {
                 var fwdDate = i + fwdDays >= historicalQuotes.Count
-                                  ? historicalQuotes.Count - 1
-                                  : i + fwdDays;
+                    ? historicalQuotes.Count - 1
+                    : i + fwdDays;
 
                 var yesterdayIndex = i - yesterdayStep >= 0 ? i - yesterdayStep : 0;
                 var yesterday = historicalQuotes[yesterdayIndex];
@@ -70,41 +69,34 @@ namespace twentySix.NeuralStock.Core.Strategies
 
                 var percentageChange = (future.Close - today.Close) / today.Close * 100d;
 
-                if (!coordinatesCache.ContainsKey(today.Date))
-                {
-                    coordinatesCache.Add(today.Date, new Coordinate(coordinates.Item1, coordinates.Item2, new DateTime(today.Date.Year, today.Date.Month, today.Date.Day, 10, 0, 0)));
-                }
-                if (!coordinatesCache.ContainsKey(yesterday.Date))
-                {
-                    coordinatesCache.Add(yesterday.Date, new Coordinate(coordinates.Item1, coordinates.Item2, new DateTime(yesterday.Date.Year, yesterday.Date.Month, yesterday.Date.Day, 10, 0, 0)));
-                }
-
                 var annDataPoint = new AnnDataPoint
                 {
                     Date = today.Date,
                     Inputs = new[]
-                                 {
-                                     Math.Sinh(rsi[i]) / (Math.Sinh(rsi2[i])+1.0E-6),
-                                     today.Close/today.High,
-                                     yesterday.Close/yesterday.High,
-                                     volume[i]/(volume[yesterdayIndex] + 1.0E-6),
-                                     movingAverageCloseFast[i],
-                                     movingAverageCloseSlow[i],
-                                     cci[i],
-                                     macD.Item1[i],
-                                     macD.Item2[i],
-                                     macD.Item3[i],
-                                     rsi[i],
-                                     atr[i],
-                                     ema[i],
-                                     wr[i],
-                                     kama[i],
-                                     aroon[i]
-                                 },
+                    {
+                        today.Close,
+                        today.High,
+                        today.Open,
+                        volume[i],
+                        movingAverageVolume[i],
+                        movingAverageCloseFast[i],
+                        movingAverageCloseSlow[i],
+                        cci[i],
+                        macD.Item1[i],
+                        macD.Item2[i],
+                        macD.Item3[i],
+                        rsi[i],
+                        atr[i],
+                        ema[i],
+                        wr[i],
+                        kama[i],
+                        aroon[i]
+                    },
                     Outputs = new[]
-                                  {
-                                      percentageChange > Settings.PercentageChangeHigh ? 1d : percentageChange < Settings.PercentageChangeLow ? -1d : 0d
-                                  }
+                    {
+                        percentageChange > Settings.PercentageChangeHigh ? 1d :
+                        percentageChange < Settings.PercentageChangeLow ? -1d : 0d
+                    }
                 };
 
                 result.Add(annDataPoint);

@@ -2,6 +2,7 @@
     x:Class="twentySix.NeuralStock.Dashboard.DashboardView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dashboard="clr-namespace:twentySix.NeuralStock.Dashboard"
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
@@ -9,7 +10,10 @@
     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
     xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
     xmlns:enums="clr-namespace:twentySix.NeuralStock.Core.Enums;assembly=twentySix.NeuralStock.Core"
-    DataContext="{dxmvvm:ViewModelSource Type=dashboard:DashboardViewModel}">
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance dashboard:DashboardViewModel}"
+    DataContext="{dxmvvm:ViewModelSource Type=dashboard:DashboardViewModel}"
+    mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -61,26 +65,25 @@
                 HorizontalAlignment="Right"
                 Orientation="Horizontal">
                 <StackPanel.Resources>
-                    <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
-                        <Setter Property="Margin" Value="0,0,3,0" />
+                    <Style TargetType="dx:SimpleButton">
+                        <Setter Property="Margin" Value="0,0,2,0" />
                     </Style>
                 </StackPanel.Resources>
-                <dxe:HyperlinkEdit
-                    Margin="0,0,10,0"
+                <dx:SimpleButton
                     Command="{Binding NavigateToCommand}"
                     CommandParameter="SettingsView"
-                    EditValue="Settings" />
-                <dxe:HyperlinkEdit
+                    Content="Settings" />
+                <dx:SimpleButton
                     Command="{Binding DeleteCommand}"
                     CommandParameter="{Binding SelectedItem, ElementName=StocksTable}"
-                    EditValue="Delete" />
-                <dxe:HyperlinkEdit Command="{Binding CancelCommand}" EditValue="Cancel" />
-                <dxe:HyperlinkEdit Command="{Binding RefreshCommand}" EditValue="Refresh" />
-                <dxe:HyperlinkEdit
+                    Content="Delete" />
+                <dx:SimpleButton Command="{Binding CancelCommand}" Content="Cancel" />
+                <dx:SimpleButton Command="{Binding RefreshCommand}" Content="Refresh" />
+                <dx:SimpleButton
                     Margin="0"
                     Command="{Binding NavigateToCommand}"
                     CommandParameter="TrainView"
-                    EditValue="Train" />
+                    Content="Train" />
             </StackPanel>
 
             <dxg:GridControl
@@ -116,7 +119,10 @@
                     <dxg:GridColumn
                         Width="150"
                         FieldName="Name"
-                        Header="Name"
+                        Header="Name" />
+                    <dxg:GridColumn
+                        FieldName="Country"
+                        Header="Country"
                         SortIndex="0"
                         SortOrder="Ascending" />
                     <dxg:GridColumn
@@ -127,7 +133,10 @@
                             <dxe:TextSettings DisplayFormat="d" />
                         </dxg:GridColumn.EditSettings>
                     </dxg:GridColumn>
-                    <dxg:GridColumn FieldName="LastTrainingDate" Header="Last training">
+                    <dxg:GridColumn
+                        FieldName="LastTrainingDate"
+                        Header="Last training"
+                        Visible="False">
                         <dxg:GridColumn.EditSettings>
                             <dxe:TextSettings DisplayFormat="d" />
                         </dxg:GridColumn.EditSettings>
@@ -147,7 +156,7 @@
                             <dxe:TextSettings DisplayFormat="p" />
                         </dxg:GridColumn.EditSettings>
                     </dxg:GridColumn>
-                    <dxg:GridColumn FieldName="TrainingSession.BestProfitLossCalculator.LatestSignal" Header="Latest signals">
+                    <dxg:GridColumn FieldName="TrainingSession.BestProfitLossCalculator.S1" Header="Latest signals">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
                                 <DataTemplate.Resources>
@@ -161,19 +170,29 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Orientation="Horizontal">
-                                    <Rectangle Fill="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.ThirdLastSignal, Converter={StaticResource SignalToColourConverter}}" Opacity="0.2">
+                                    <Rectangle Fill="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.S5, Converter={StaticResource SignalToColourConverter}}" Opacity="0.2">
                                         <Rectangle.OpacityMask>
-                                            <ImageBrush ImageSource="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.ThirdLastSignal, Converter={StaticResource SignalToImageConverter}}" />
+                                            <ImageBrush ImageSource="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.S5, Converter={StaticResource SignalToImageConverter}}" />
                                         </Rectangle.OpacityMask>
                                     </Rectangle>
-                                    <Rectangle Fill="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.SecondLastSignal, Converter={StaticResource SignalToColourConverter}}" Opacity="0.4">
+                                    <Rectangle Fill="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.S4, Converter={StaticResource SignalToColourConverter}}" Opacity="0.4">
                                         <Rectangle.OpacityMask>
-                                            <ImageBrush ImageSource="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.SecondLastSignal, Converter={StaticResource SignalToImageConverter}}" />
+                                            <ImageBrush ImageSource="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.S4, Converter={StaticResource SignalToImageConverter}}" />
                                         </Rectangle.OpacityMask>
                                     </Rectangle>
-                                    <Rectangle Fill="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.LatestSignal, Converter={StaticResource SignalToColourConverter}}">
+                                    <Rectangle Fill="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.S3, Converter={StaticResource SignalToColourConverter}}" Opacity="0.6">
                                         <Rectangle.OpacityMask>
-                                            <ImageBrush ImageSource="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.LatestSignal, Converter={StaticResource SignalToImageConverter}}" />
+                                            <ImageBrush ImageSource="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.S3, Converter={StaticResource SignalToImageConverter}}" />
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                    <Rectangle Fill="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.S2, Converter={StaticResource SignalToColourConverter}}" Opacity="0.8">
+                                        <Rectangle.OpacityMask>
+                                            <ImageBrush ImageSource="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.S2, Converter={StaticResource SignalToImageConverter}}" />
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                    <Rectangle Fill="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.S1, Converter={StaticResource SignalToColourConverter}}">
+                                        <Rectangle.OpacityMask>
+                                            <ImageBrush ImageSource="{Binding RowData.Row.TrainingSession.BestProfitLossCalculator.S1, Converter={StaticResource SignalToImageConverter}}" />
                                         </Rectangle.OpacityMask>
                                     </Rectangle>
                                 </StackPanel>
@@ -188,7 +207,8 @@
                         AutoWidth="True"
                         EnableImmediatePosting="True"
                         FontFamily="Roboto"
-                        FontSize="14"
+                        FontSize="15"
+                        FontWeight="Light"
                         HeaderPanelMinHeight="32"
                         NavigationStyle="Row"
                         RowMinHeight="26"
@@ -197,13 +217,13 @@
                         <dxg:TableView.FormatConditions>
                             <dxg:FormatCondition
                                 ApplyToRow="True"
-                                FieldName="TrainingSession.BestProfitLossCalculator.LatestSignal"
+                                FieldName="TrainingSession.BestProfitLossCalculator.S1"
                                 PredefinedFormatName="LightRedFill"
                                 Value1="{x:Static enums:SignalEnum.Sell}"
                                 ValueRule="Equal" />
                             <dxg:FormatCondition
                                 ApplyToRow="True"
-                                FieldName="TrainingSession.BestProfitLossCalculator.LatestSignal"
+                                FieldName="TrainingSession.BestProfitLossCalculator.S1"
                                 PredefinedFormatName="LightGreenFill"
                                 Value1="{x:Static enums:SignalEnum.Buy}"
                                 ValueRule="Equal" />
@@ -229,10 +249,3 @@
         </Grid>
     </dxwui:PageAdornerControl>
 </UserControl>
-
-
-
-
-
-
-

@@ -8,27 +8,27 @@
     {
         public StrategySettings()
         {
-            FwdDays = RandomExtensions.BetterRandomInteger(7, 29);
+            FwdDays = RandomExtensions.BetterRandomInteger(4, 14);
 
-            PercentageChangeHigh = RandomExtensions.BetterRandomDouble(0.6, 1.6);
-            PercentageChangeLow = RandomExtensions.BetterRandomDouble(-2.0, -0.8);
+            PercentageChangeHigh = RandomExtensions.BetterRandomDouble(0.5, 1.6);
+            PercentageChangeLow = RandomExtensions.BetterRandomDouble(-2.5, -0.6);
 
-            MovingAverageCloseFast = RandomExtensions.BetterRandomInteger(10, 21);
-            MovingAverageCloseSlow = RandomExtensions.BetterRandomInteger(33, 64);
+            MovingAverageCloseFast = RandomExtensions.BetterRandomInteger(3, 26);
+            MovingAverageCloseSlow = RandomExtensions.BetterRandomInteger(18, 40);
+            MovingAverageVolume = RandomExtensions.BetterRandomInteger(10, 26);
 
-            CCI = RandomExtensions.BetterRandomInteger(6, 21);
+            CCI = RandomExtensions.BetterRandomInteger(3, 21);
             RSI = RandomExtensions.BetterRandomInteger(3, 21);
-            RSI2 = RandomExtensions.BetterRandomInteger(3, 21);
 
             MacdFast = RandomExtensions.BetterRandomInteger(3, 8);
-            MacdSlow = RandomExtensions.BetterRandomInteger(26, 42);
+            MacdSlow = RandomExtensions.BetterRandomInteger(21, 42);
             MacdSignal = RandomExtensions.BetterRandomInteger(24, 36);
 
             Atr = RandomExtensions.BetterRandomInteger(3, 21);
-            Ema = RandomExtensions.BetterRandomInteger(3, 21);
+            Ema = RandomExtensions.BetterRandomInteger(3, 40);
             Wr = RandomExtensions.BetterRandomInteger(3, 21);
             Kama = RandomExtensions.BetterRandomInteger(3, 21);
-            Aroon = RandomExtensions.BetterRandomInteger(13, 32);
+            Aroon = RandomExtensions.BetterRandomInteger(3, 26);
         }
 
         public int FwdDays { get; set; }
@@ -41,11 +41,11 @@
 
         public int MovingAverageCloseSlow { get; set; }
         
+        public int MovingAverageVolume { get; set; }
+        
         public int CCI { get; set; }
 
         public int RSI { get; set; }
-
-        public int RSI2 { get; set; }
 
         public int MacdFast { get; set; }
 

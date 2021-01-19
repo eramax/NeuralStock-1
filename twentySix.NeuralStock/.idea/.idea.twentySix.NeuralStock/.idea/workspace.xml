@@ -27,7 +27,18 @@
   <component name="ChangeListManager">
     <list default="true" id="b6ca1e60-1f48-48f9-a3e0-a9ce8245472f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Models/ProfitLossCalculator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Models/ProfitLossCalculator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Models/TrainingSession.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Models/TrainingSession.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Services/DataProcessorService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Services/DataProcessorService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Strategies/StrategyI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Strategies/StrategyI.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Strategies/StrategySettings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Strategies/StrategySettings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.twentySix.NeuralStock/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.twentySix.NeuralStock/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.twentySix.NeuralStock/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.twentySix.NeuralStock/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/App.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/App.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dashboard/DashboardPrediction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Dashboard/DashboardPrediction.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dashboard/DashboardView.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/Dashboard/DashboardView.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dashboard/DashboardViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Dashboard/DashboardViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main/Shell.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/Main/Shell.xaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Train/DataView.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/Train/DataView.xaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -57,13 +68,19 @@
       <option value="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Enums/SignalEnum.cs" />
       <option value="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Extensions/SortedListExtensions.cs" />
       <option value="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Models/StockPortfolio.cs" />
-      <option value="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Strategies/StrategySettings.cs" />
+      <option value="$PROJECT_DIR$/Dashboard/DashboardPrediction.cs" />
+      <option value="$PROJECT_DIR$/Dashboard/DashboardViewModel.cs" />
       <option value="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Services/DataProcessorService.cs" />
       <option value="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Services/Interfaces/IDataProcessorService.cs" />
       <option value="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Models/TrainingSession.cs" />
       <option value="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Strategies/StrategyI.cs" />
-      <option value="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Models/ProfitLossCalculator.cs" />
       <option value="$PROJECT_DIR$/Train/DataView.xaml" />
+      <option value="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Strategies/StrategySettings.cs" />
+      <option value="$PROJECT_DIR$/../twentySix.NeuralStock.Core/Models/ProfitLossCalculator.cs" />
+      <option value="$PROJECT_DIR$/Main/Shell.xaml" />
+      <option value="$PROJECT_DIR$/App.xaml" />
+      <option value="$PROJECT_DIR$/App.xaml.cs" />
+      <option value="$PROJECT_DIR$/Dashboard/DashboardView.xaml" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1lKvmjOJ332I9K2l2j2wEQXSORm" />
@@ -79,7 +96,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="settings.editor.selected.configurable" value="XamlPreviewOptionsPage" />
+    <property name="settings.editor.selected.configurable" value="liveEdit" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager">
@@ -124,6 +141,14 @@
       <workItem from="1610649410021" duration="1430000" />
       <workItem from="1610665560321" duration="444000" />
       <workItem from="1610666061108" duration="46000" />
+      <workItem from="1610723970565" duration="281000" />
+      <workItem from="1610726393787" duration="10860000" />
+      <workItem from="1610745639314" duration="11306000" />
+      <workItem from="1610793909735" duration="1811000" />
+      <workItem from="1610805641373" duration="7825000" />
+      <workItem from="1610932359979" duration="35000" />
+      <workItem from="1611008813123" duration="106000" />
+      <workItem from="1611091571323" duration="1201000" />
     </task>
     <servers />
   </component>

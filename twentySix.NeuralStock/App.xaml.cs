@@ -4,10 +4,7 @@
     using System.Reflection;
     using System.Threading.Tasks;
     using System.Windows;
-
-    using DevExpress.Xpf.Core;
-
-    using twentySix.NeuralStock.Core.Helpers;
+    using Core.Helpers;
 
     public partial class App
     {
@@ -37,11 +34,6 @@
             {
                 ApplicationHelper.HandleExceptions(ex);
             }
-        }
-
-        private void OnAppStartup_UpdateThemeName(object sender, StartupEventArgs e)
-        {
-            ApplicationThemeHelper.UpdateApplicationThemeName();
         }
 
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
