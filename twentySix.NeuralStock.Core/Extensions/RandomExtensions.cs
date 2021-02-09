@@ -29,6 +29,14 @@
             return minimumValue + ((randUint / (uint.MaxValue + 1.0)) * (maximumValue - minimumValue));
         }
 
+        public static decimal BetterRandomDecimal(decimal minimumValue, decimal maximumValue)
+        {
+            var data = new byte[sizeof(uint)];
+            CryptoServiceProvider.GetBytes(data);
+            var randUint = BitConverter.ToUInt32(data, 0);
+            return minimumValue + (randUint / (uint.MaxValue + 1.0m)) * (maximumValue - minimumValue);
+        }
+
         public static double NextGaussian(this Random r, double mu = 0, double sigma = 1)
         {
             var u1 = r.NextDouble();

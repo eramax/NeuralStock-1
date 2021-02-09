@@ -137,10 +137,8 @@
                 var indexTomorrow = indexOfToday < TrainingSession.TestingHistoricalData.Quotes.Count - 2
                     ? indexOfToday + 1
                     : indexOfToday;
-                var transactionBuyPrice =
-                    TrainingSession.TestingHistoricalData.Quotes.ElementAt(indexOfToday).Value.Close;
-                var transactionSellPrice =
-                    TrainingSession.TestingHistoricalData.Quotes.ElementAt(indexOfToday).Value.Close;
+                var transactionBuyPrice = TrainingSession.TestingHistoricalData.Quotes.ElementAt(indexOfToday).Value.Close;
+                var transactionSellPrice = TrainingSession.TestingHistoricalData.Quotes.ElementAt(indexOfToday).Value.Close;
 
                 if (lastSellTrade == null || (quote.Key.Date - lastSellTrade.Date.Date).Days >=
                     TrainingSession.NumberDaysBetweenTransactions)
@@ -191,8 +189,7 @@
                     Date = TrainingSession.TestingHistoricalData.EndDate,
                     NumberOfShares =
                         Portfolio.GetHoldings(TrainingSession.TestingHistoricalData.EndDate)[TrainingSession.Stock],
-                    Price = TrainingSession.TestingHistoricalData.Quotes[TrainingSession.TestingHistoricalData.EndDate]
-                        .Close
+                    Price = TrainingSession.TestingHistoricalData.Quotes[TrainingSession.TestingHistoricalData.EndDate].Close
                 };
 
                 CompleteTransactions.Add(new CompleteTransaction(Portfolio.Trades.Last().Value, trade));

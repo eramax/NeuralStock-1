@@ -13,6 +13,7 @@
     using DevExpress.Mvvm.DataAnnotations;
     using JetBrains.Annotations;
     using twentySix.NeuralStock.Common;
+    using twentySix.NeuralStock.Core.Data.Countries;
     using twentySix.NeuralStock.Core.DTOs;
     using twentySix.NeuralStock.Core.Enums;
     using twentySix.NeuralStock.Core.Messages;
@@ -173,8 +174,7 @@
                     }
 
                     var stock = await PersistenceService.GetStockFromId(dto.StockId);
-                    stock.HistoricalData = await DownloaderService
-                        .GetHistoricalData(stock, _settings.StartDate, DateTime.Now, true).ConfigureAwait(false);
+                    stock.HistoricalData = await DownloaderService.GetHistoricalData(stock, _settings.StartDate, DateTime.Now, true).ConfigureAwait(false);
 
                     var dashboardPrediction = new DashboardPrediction
                     {
@@ -201,8 +201,7 @@
                     }
 
                     dashboardPrediction.TrainingSession = trainingSession;
-                    dashboardPrediction.Close =
-                        trainingSession.Stock.HistoricalData?.Quotes?.LastOrDefault().Value?.Close ?? 0d;
+                    dashboardPrediction.Close = (double?)trainingSession.Stock.HistoricalData?.Quotes?.LastOrDefault().Value?.Close ?? 0d;
                     dashboardPrediction.LastTrainingDate = dto.Timestamp;
 
                     if (trainingSession.Stock.HistoricalData != null)

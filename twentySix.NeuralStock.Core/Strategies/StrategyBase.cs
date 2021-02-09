@@ -21,11 +21,13 @@
 
         protected IDataProcessorService DataProcessorService { get; set; }
 
-        protected IStatisticsService StatisticsService { get; set;  }
+        protected IStatisticsService StatisticsService { get; set; }
 
-        public List<AnnDataPoint> GetAnnData(HistoricalData historicalData, bool recalculateMeans = true)
+        protected IDownloaderService DownloaderService {get; set; }
+
+        public List<AnnDataPoint> GetAnnData(Stock stock, HistoricalData historicalData, bool recalculateMeans = true)
         {
-            var rawAnnDataPoints = GetRawAnnDataPoints(historicalData);
+            var rawAnnDataPoints = GetRawAnnDataPoints(stock, historicalData);
             var numberOfInputs = rawAnnDataPoints.First().Inputs.Length;
             var numberOfOutputs = rawAnnDataPoints.First().Outputs.Length;
 
@@ -53,7 +55,7 @@
             return Normalize(rawAnnDataPoints);
         }
 
-        protected abstract IList<AnnDataPoint> GetRawAnnDataPoints(HistoricalData historicalData);
+        protected abstract IList<AnnDataPoint> GetRawAnnDataPoints(Stock stock, HistoricalData historicalData);
 
         private List<AnnDataPoint> Normalize(IList<AnnDataPoint> data)
         {

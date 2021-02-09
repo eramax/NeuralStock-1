@@ -18,6 +18,6 @@
 
         double[] TrainingStdDevsOutput { get; set; }
 
-        List<AnnDataPoint> GetAnnData(HistoricalData historical, bool recalculateMeans = true);
+        List<AnnDataPoint> GetAnnData(Stock stock, HistoricalData historical, bool recalculateMeans = true);
     }
 }

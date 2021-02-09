@@ -1,17 +1,10 @@
-﻿// ReSharper disable StyleCop.SA1407
-
-using NetTrader.Indicator;
-
-namespace twentySix.NeuralStock.Core.Services
+﻿namespace twentySix.NeuralStock.Core.Services
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.Linq;
-    using TicTacTec.TA.Library;
-
-    using Models;
     using Interfaces;
+    using Skender.Stock.Indicators;
 
     [Export(typeof(IDataProcessorService))]
     [PartCreationPolicy(CreationPolicy.Shared)]
@@ -27,162 +20,79 @@ namespace twentySix.NeuralStock.Core.Services
             return (data - mean) / std;
         }
 
-        public double[] CalculateMovingAverage(double[] data, int period)
+        public SmaResult[] CalculateMovingAverage(IEnumerable<IQuote> quotes, int period)
         {
-            double[] result = new double[data.Length];
-
-            Core.MovingAverage(
-                0,
-                data.Length - 1,
-                data,
-                period,
-                Core.MAType.Sma,
-                out _,
-                out _,
-                result);
-            
-            return result;
+            return Indicator.GetSma(quotes, period).ToArray();
         }
 
-        public double[] CalculateCCI(ICollection<Quote> quotes, int period)
+        public EmaResult[] CalculateEMA(IEnumerable<IQuote> quotes, int period)
         {
-            double[] result = new double[quotes.Count];
-
-            Core.Cci(
-                0,
-                quotes.Count - 1,
-                quotes.Select(x => x.High).ToArray(),
-                quotes.Select(x => x.Low).ToArray(),
-                quotes.Select(x => x.Close).ToArray(),
-                period,
-                out _,
-                out _,
-                result);
-            
-            return result;
+            return Indicator.GetEma(quotes, period).ToArray();
         }
 
-        public double[] CalculateWR(ICollection<Quote> quotes, int period)
+        public CciResult[] CalculateCci(IEnumerable<IQuote> quotes, int period)
         {
-            double[] result = new double[quotes.Count];
-
-            Core.WillR(
-                0,
-                quotes.Count - 1,
-                quotes.Select(x => x.High).ToArray(),
-                quotes.Select(x => x.Low).ToArray(),
-                quotes.Select(x => x.Close).ToArray(),
-                period,
-                out _,
-                out _,
-                result);
-            
-            return result;
+            return Indicator.GetCci(quotes, period).ToArray();
         }
 
-        public double[] CalculateEMA(double[] data, int period)
+        public RsiResult[] CalculateRsi(IEnumerable<IQuote> quotes, int period)
         {
-            double[] result = new double[data.Length];
-
-            Core.Ema(
-                0,
-                data.Length - 1,
-                data,
-                period,
-                out _,
-                out _,
-                result);
-
-            return result;
+            return Indicator.GetRsi(quotes, period).ToArray();
         }
 
-        public Tuple<double[], double[], double[]> CalculateMacD(double[] close, int periodFast, int periodSlow, int signal)
+        public AtrResult[] CalculateAtr(IEnumerable<IQuote> quotes, int period)
         {
-            double[] macd = new double[close.Length];
-            double[] macdSignal = new double[close.Length];
-            double[] macdHist = new double[close.Length];
-
-            Core.Macd(
-                0,
-                close.Length - 1,
-                close,
-                periodFast,
-                periodSlow,
-                signal,
-                out _,
-                out _,
-                macd,
-                macdSignal,
-                macdHist
-            );
-
-            return Tuple.Create(macd, macdSignal, macdHist);
+            return Indicator.GetAtr(quotes, period).ToArray();
         }
 
-        public double[] CalculateRSI(double[] data, int period)
+        public MacdResult[] CalculateMacd(IEnumerable<IQuote> quotes, int fast, int slow, int signal)
         {
-            double[] result = new double[data.Length];
-
-            Core.Rsi(
-                0,
-                data.Length - 1,
-                data,
-                period,
-                out _,
-                out _,
-                result);
-
-            return result;
+            return Indicator.GetMacd(quotes, fast, slow, signal).ToArray();
         }
 
-        public double[] CalculateKama(double[] data, int period)
+        public ObvResult[] CalculateObv(IEnumerable<IQuote> quotes, int period)
         {
-            double[] result = new double[data.Length];
-
-            Core.Kama(
-                0,
-                data.Length - 1,
-                data,
-                period,
-                out _,
-                out _,
-                result);
-
-            return result;
-        }
-        
-        public double[] CalculateAroon(double[] high, double[] low, int period)
-        {
-            double[] result = new double[high.Length];
-
-            Core.AroonOsc(
-                0,
-                high.Length - 1,
-                high,
-                low,
-                period,
-                out _,
-                out _,
-                result);
-            
-            return result;
+            return Indicator.GetObv(quotes, period).ToArray();
         }
 
-        public double[] CalculateAtr(double[] high, double[] low, double[] close, int period)
+        public ConnorsRsiResult[] CalculateConnorsRsi(IEnumerable<IQuote> quotes, int period)
         {
-            double[] result = new double[high.Length];
-            
-            Core.Atr(
-                0,
-                high.Length - 1,
-                high,
-                low,
-                close,
-                period,
-                out _,
-                out _,
-                result);
-            return result;
+            return Indicator.GetConnorsRsi(quotes, period).ToArray();
+        }
+
+        public PmoResult[] CalculatePmo(IEnumerable<IQuote> quotes, int period)
+        {
+            return Indicator.GetPmo(quotes, period).ToArray();
+        }
+
+        public BetaResult[] CalculateBeta(IEnumerable<IQuote> market, IEnumerable<IQuote> quotes, int period)
+        {
+            return Indicator.GetBeta(market, quotes, period).ToArray();
+        }
+
+        public VolSmaResult[] CalculateVolSma(IEnumerable<IQuote> quotes, int period)
+        {
+            return Indicator.GetVolSma(quotes, period).ToArray();
+        }
+
+        public MfiResult[] CalculateMfi(IEnumerable<IQuote> quotes, int period)
+        {
+            return Indicator.GetMfi(quotes, period).ToArray();
+        }
+
+        public PivotPointsResult[] CalculatePivotPoints(IEnumerable<IQuote> quotes, PeriodSize period)
+        {
+            return Indicator.GetPivotPoints(quotes, period).ToArray();
+        }
+
+        public SlopeResult[] CalculateSlope(IEnumerable<IQuote> quotes, int period)
+        {
+            return Indicator.GetSlope(quotes, period).ToArray();
+        }
+
+        public StdDevResult[] CalculateStdDev(IEnumerable<IQuote> quotes, int period, int? sma = null)
+        {
+            return Indicator.GetStdDev(quotes, period, sma).ToArray();
         }
     }
 }

@@ -53,7 +53,6 @@
                         Date = x.Date,
                         Open = x.Open,
                         Close = x.Close,
-                        AdjClose = x.AdjClose,
                         Low = x.Low,
                         High = x.High,
                         Volume = x.Volume

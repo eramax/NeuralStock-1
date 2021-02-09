@@ -1,32 +1,42 @@
-﻿namespace twentySix.NeuralStock.Core.Services.Interfaces
+﻿using System.Collections.Generic;
+using Skender.Stock.Indicators;
+
+namespace twentySix.NeuralStock.Core.Services.Interfaces
 {
-    using System;
-    using System.Collections.Generic;
-
-    using Models;
-
     public interface IDataProcessorService
     {
         double[] Normalize(double[] data, double mean, double std);
 
         double Normalize(double data, double mean, double std);
 
-        double[] CalculateMovingAverage(double[] data, int period);
+        SmaResult[] CalculateMovingAverage(IEnumerable<IQuote> quotes, int period);
 
-        double[] CalculateCCI(ICollection<Quote> quotes, int period);
+        EmaResult[] CalculateEMA(IEnumerable<IQuote> quotes, int period);
 
-        Tuple<double[], double[], double[]> CalculateMacD(double[] close, int periodFast, int periodSlow, int signal);
+        CciResult[] CalculateCci(IEnumerable<IQuote> quotes, int period);
 
-        double[] CalculateRSI(double[] data, int period);
-        
-        double[] CalculateKama(double[] data, int period);
+        RsiResult[] CalculateRsi(IEnumerable<IQuote> quotes, int period);
 
-        double[] CalculateWR(ICollection<Quote> quotes, int period);
+        AtrResult[] CalculateAtr(IEnumerable<IQuote> quotes, int period);
 
-        double[] CalculateEMA(double[] data, int period);
+        MacdResult[] CalculateMacd(IEnumerable<IQuote> quotes, int fast, int slow, int signal);
 
-        double[] CalculateAroon(double[] high, double[] low, int period);
+        ObvResult[] CalculateObv(IEnumerable<IQuote> quotes, int period);
 
-        double[] CalculateAtr(double[] high, double[] low, double[] close, int period);
+        ConnorsRsiResult[] CalculateConnorsRsi(IEnumerable<IQuote> quotes, int period);
+
+        PmoResult[] CalculatePmo(IEnumerable<IQuote> quotes, int period);
+
+        BetaResult[] CalculateBeta(IEnumerable<IQuote> market, IEnumerable<IQuote> quotes, int period);
+
+        VolSmaResult[] CalculateVolSma(IEnumerable<IQuote> quotes, int period);
+
+        MfiResult[] CalculateMfi(IEnumerable<IQuote> quotes, int period);
+
+        PivotPointsResult[] CalculatePivotPoints(IEnumerable<IQuote> quotes, PeriodSize period);
+
+        SlopeResult[] CalculateSlope(IEnumerable<IQuote> quotes, int period);
+
+        StdDevResult[] CalculateStdDev(IEnumerable<IQuote> quotes, int period, int? sma = null);
     }
 }

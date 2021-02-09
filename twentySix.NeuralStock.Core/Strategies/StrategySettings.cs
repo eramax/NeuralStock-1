@@ -8,27 +8,28 @@
     {
         public StrategySettings()
         {
-            FwdDays = RandomExtensions.BetterRandomInteger(4, 14);
+            FwdDays = RandomExtensions.BetterRandomInteger(7, 11);
 
-            PercentageChangeHigh = RandomExtensions.BetterRandomDouble(0.5, 1.6);
-            PercentageChangeLow = RandomExtensions.BetterRandomDouble(-2.5, -0.6);
+            PercentageChangeHigh = RandomExtensions.BetterRandomDouble(0.8, 1.6);
+            PercentageChangeLow = RandomExtensions.BetterRandomDouble(-1.8, -0.8);
 
-            MovingAverageCloseFast = RandomExtensions.BetterRandomInteger(3, 26);
-            MovingAverageCloseSlow = RandomExtensions.BetterRandomInteger(18, 40);
-            MovingAverageVolume = RandomExtensions.BetterRandomInteger(10, 26);
+            MovingAverageCloseFast = RandomExtensions.BetterRandomInteger(5, 21);
 
-            CCI = RandomExtensions.BetterRandomInteger(3, 21);
-            RSI = RandomExtensions.BetterRandomInteger(3, 21);
+            CCI = RandomExtensions.BetterRandomInteger(13, 24);
+            RSI = RandomExtensions.BetterRandomInteger(13, 26);
 
-            MacdFast = RandomExtensions.BetterRandomInteger(3, 8);
-            MacdSlow = RandomExtensions.BetterRandomInteger(21, 42);
-            MacdSignal = RandomExtensions.BetterRandomInteger(24, 36);
+            MacdFast = RandomExtensions.BetterRandomInteger(2, 7);
+            MacdSlow = RandomExtensions.BetterRandomInteger(9, 21);
+            MacdSignal = RandomExtensions.BetterRandomInteger(13, 30);
 
-            Atr = RandomExtensions.BetterRandomInteger(3, 21);
-            Ema = RandomExtensions.BetterRandomInteger(3, 40);
-            Wr = RandomExtensions.BetterRandomInteger(3, 21);
-            Kama = RandomExtensions.BetterRandomInteger(3, 21);
-            Aroon = RandomExtensions.BetterRandomInteger(3, 26);
+            Atr = RandomExtensions.BetterRandomInteger(3, 10);
+            Ema = RandomExtensions.BetterRandomInteger(3, 10);
+            Obv = RandomExtensions.BetterRandomInteger(3, 10);
+            ConnorsRsi = RandomExtensions.BetterRandomInteger(5, 13);
+            Pmo = RandomExtensions.BetterRandomInteger(7, 21);
+
+            //Beta = RandomExtensions.BetterRandomInteger(3, 21);
+            //StDev = RandomExtensions.BetterRandomInteger(3, 30);
         }
 
         public int FwdDays { get; set; }
@@ -39,10 +40,6 @@
 
         public int MovingAverageCloseFast { get; set; }
 
-        public int MovingAverageCloseSlow { get; set; }
-        
-        public int MovingAverageVolume { get; set; }
-        
         public int CCI { get; set; }
 
         public int RSI { get; set; }
@@ -57,12 +54,16 @@
         
         public int Ema { get; set; }
         
-        public int Wr { get; set; }
+        public int Obv { get; set; }
         
-        public int Kama { get; set; }
+        public int ConnorsRsi { get; set; }
         
-        public int Aroon { get; set; }
-        
+        public int Pmo { get; set; }
+
+        public int Beta { get; set; }
+
+        public int StDev { get; set; }
+
         public static StrategySettings FromJson(string json)
         {
             try

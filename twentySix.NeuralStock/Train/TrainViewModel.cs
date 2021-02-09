@@ -169,7 +169,7 @@
                 await DownloadData().ConfigureAwait(false);
 
                 _cancellationTokenSource = new CancellationTokenSource();
-                await Task.Run(() => TrainingSession.FindBestAnn(_cancellationTokenSource.Token)).ConfigureAwait(false);
+                await Task.Run(() => TrainingSession.FindBestAnn(_cancellationTokenSource.Token, _settings));
             }
             catch (Exception ex)
             {

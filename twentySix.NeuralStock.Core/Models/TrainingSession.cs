@@ -1,7 +1,4 @@
-﻿using System.Collections.Concurrent;
-using MathNet.Numerics.Statistics;
-
-namespace twentySix.NeuralStock.Core.Models
+﻿namespace twentySix.NeuralStock.Core.Models
 {
     using System;
     using System.Collections.Generic;
@@ -34,11 +31,11 @@ namespace twentySix.NeuralStock.Core.Models
 
         private static readonly ActivationFunction[] possibleActivationFunctions =
         {
-            ActivationFunction.ELLIOT,
+            //ActivationFunction.ELLIOT,
             //ActivationFunction.GAUSSIAN,
-            ActivationFunction.SIGMOID,
+            //ActivationFunction.SIGMOID,
             ActivationFunction.ELLIOT_SYMMETRIC,
-            ActivationFunction.GAUSSIAN_SYMMETRIC,
+            //ActivationFunction.GAUSSIAN_SYMMETRIC,
             ActivationFunction.SIGMOID_SYMMETRIC
         };
 
@@ -71,7 +68,7 @@ namespace twentySix.NeuralStock.Core.Models
             BuyLevel = dto.BuyLevel;
             SellLevel = dto.SellLevel;
 
-            var strategy = new StrategyI(StrategySettings.FromJson(dto.StrategySettings))
+            var strategy = new StrategyI(StrategySettings.FromJson(dto.StrategySettings), settings)
             {
                 TrainingMeansInput = dto.TrainingMeansInput?.ToArray(),
                 TrainingStdDevsInput = dto.TrainingStdDevsInput?.ToArray(),
@@ -190,7 +187,7 @@ namespace twentySix.NeuralStock.Core.Models
 
         public double AllNetworksSigma => AllNetworksPL != 0 ? AllNetworksStdDev / AllNetworksPL : 0;
 
-        public void FindBestAnn(CancellationToken token)
+        public void FindBestAnn(CancellationToken token, NeuralStockSettings settings)
         {
             if (token.IsCancellationRequested)
             {
@@ -203,7 +200,14 @@ namespace twentySix.NeuralStock.Core.Models
             _startTime = DateTime.Now;
             Messenger.Default.Send(new TrainStatusMessage("Calculating random walk profit ..."));
 
-            var randomPL = GetRandomPL(TestingHistoricalData.Quotes.Select(x => x.Key), token);
+            var buyHoldSignals = TestingHistoricalData.Quotes.ToDictionary(
+                x => x.Key,
+                x => x.Key == TestingHistoricalData.Quotes.First().Key ? SignalEnum.Buy :
+                    x.Key == TestingHistoricalData.Quotes.Last().Key ? SignalEnum.Sell :
+                    SignalEnum.Neutral);
+
+            var buyHoldCalculator = new ProfitLossCalculator(Portfolio.Reset(), this, buyHoldSignals);
+            // GetRandomPL(TestingHistoricalData.Quotes.Select(x => x.Key), token);
 
             Messenger.Default.Send(new TrainStatusMessage("Training ..."));
 
@@ -218,7 +222,7 @@ namespace twentySix.NeuralStock.Core.Models
                         token.ThrowIfCancellationRequested();
                     }
 
-                    var strategy = new StrategyI(new StrategySettings());
+                    var strategy = new StrategyI(new StrategySettings(), settings);
 
                     var trainingTestingData = PrepareAnnData(strategy);
 
@@ -232,7 +236,8 @@ namespace twentySix.NeuralStock.Core.Models
                     lock (Locker)
                     {
                         // compare prediction with random walk and only add network if better
-                        if (profitLossCalculator.PL >= randomPL && profitLossCalculator.PercentageWinningTransactions > 0.6d)
+                        if (profitLossCalculator.PL >= buyHoldCalculator.PL &&
+                            profitLossCalculator.PercentageWinningTransactions > 0.6d)
                         {
                             AddBestNeuralNet(profitLossCalculator, strategy, net, prediction.Item2, prediction.Item3);
                         }
@@ -260,32 +265,6 @@ namespace twentySix.NeuralStock.Core.Models
             SellLevel = BestPrediction.SellLevel;
 
             Messenger.Default.Send(new TrainStatusMessage("Done"));
-        }
-
-        public double GetRandomPL(IEnumerable<DateTime> dates, CancellationToken token)
-        {
-            var pls = new ConcurrentBag<double>();
-
-            Parallel.For(
-                0,
-                250,
-                new ParallelOptions {CancellationToken = token, MaxDegreeOfParallelism = 4},
-                i =>
-                {
-                    if (token.IsCancellationRequested)
-                    {
-                        token.ThrowIfCancellationRequested();
-                    }
-
-                    var randomSignals = dates.ToDictionary(x => x,
-                        x => (SignalEnum) RandomExtensions.BetterRandomInteger(1, 3));
-                    var randomProfitLostCalculator = new ProfitLossCalculator(Portfolio.Reset(), this, randomSignals);
-
-                    pls.Add(randomProfitLostCalculator.PL);
-                });
-
-
-            return pls.Percentile(68);
         }
 
         public void SplitTrainTestData()
@@ -345,8 +324,8 @@ namespace twentySix.NeuralStock.Core.Models
 
             if (resetLevels)
             {
-                buyLevel = RandomExtensions.BetterRandomDouble(0.65, 0.99);
-                sellLevel = RandomExtensions.BetterRandomDouble(-0.98, -0.55);
+                buyLevel = RandomExtensions.BetterRandomDouble(0.60, 0.9);
+                sellLevel = RandomExtensions.BetterRandomDouble(-0.9, -0.60);
             }
 
             var result = new Dictionary<DateTime, SignalEnum>();
@@ -387,8 +366,8 @@ namespace twentySix.NeuralStock.Core.Models
                 throw new InvalidOperationException();
             }
 
-            var trainingData = strategy.GetAnnData(TrainingHistoricalData, recalculateMeans);
-            var testingData = strategy.GetAnnData(TestingHistoricalData, false);
+            var trainingData = strategy.GetAnnData(Stock, TrainingHistoricalData, recalculateMeans);
+            var testingData = strategy.GetAnnData(Stock, TestingHistoricalData, false);
 
             return Tuple.Create(trainingData, testingData);
         }
@@ -421,12 +400,13 @@ namespace twentySix.NeuralStock.Core.Models
             net.TrainingAlgorithm =
                 possibleTrainingAlgorithms[
                     RandomExtensions.BetterRandomInteger(0, possibleTrainingAlgorithms.Length - 1)];
-            // net.RpropIncreaseFactor = 1.05f;
-            // net.RpropDecreaseFactor = 0.95f;
-            // net.RpropDeltaMax = 500f;
-            // net.RpropDeltaZero = 0.01f;
-            
-            net.TrainOnData(trainData, (uint) RandomExtensions.BetterRandomInteger(800, 1800), 0, 0.000001f);
+
+            net.RpropIncreaseFactor = 1.05f;
+            net.RpropDecreaseFactor = 0.95f;
+            net.RpropDeltaMax = 500f;
+            net.RpropDeltaZero = 0.01f;
+
+            net.TrainOnData(trainData, 750, 0, 0.000001f);
 
             trainData.Dispose();
 

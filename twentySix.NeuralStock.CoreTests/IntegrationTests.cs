@@ -95,7 +95,7 @@
                     }
                 };
 
-            _trainingSession.FindBestAnn(new CancellationToken());
+            _trainingSession.FindBestAnn(new CancellationToken(), new NeuralStockSettings());
 
             Console.Write("PL: {0:C2}", _trainingSession.BestProfitLossCalculator.PL);
             Console.Write(" ({0:P2})", _trainingSession.BestProfitLossCalculator.PLPercentage);
