@@ -6,4 +6,3 @@ The program can predict price movements for stocks listed any exchange (provided
 ![alt text](http://i.imgur.com/XjoGzsA.png "NeuralStock")
 ![alt text](http://i.imgur.com/F5c50A5.png "NeuralStock")
 
-You can download the latest version (v1.2.1) [here](https://github.com/cesarioalmeida/NeuralStock/releases/download/v1.2.1/NeuralStock.exe).
