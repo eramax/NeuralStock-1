@@ -88,6 +88,13 @@
                     Header="Neural network"
                     Orientation="Vertical"
                     View="GroupBox">
+                    <dxlc:LayoutItem Label="threads">
+                        <dxe:TextEdit
+                            EditValue="{Binding Settings.Threads}"
+                            Mask="d"
+                            MaskType="Numeric"
+                            MaskUseAsDisplayFormat="True" />
+                    </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="number of networks to train">
                         <dxe:TextEdit
                             EditValue="{Binding Settings.NumberANNs}"

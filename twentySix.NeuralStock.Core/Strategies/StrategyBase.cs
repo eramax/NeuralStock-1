@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using twentySix.NeuralStock.Core.Models;
-    using twentySix.NeuralStock.Core.Services.Interfaces;
+    using Models;
+    using Services.Interfaces;
 
     public abstract class StrategyBase : IStrategy
     {

@@ -38,5 +38,7 @@ namespace twentySix.NeuralStock.Core.Services.Interfaces
         SlopeResult[] CalculateSlope(IEnumerable<IQuote> quotes, int period);
 
         StdDevResult[] CalculateStdDev(IEnumerable<IQuote> quotes, int period, int? sma = null);
+
+        RocResult[] CalculateRoc(IEnumerable<IQuote> quotes, int period);
     }
 }

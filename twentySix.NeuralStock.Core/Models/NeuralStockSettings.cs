@@ -3,7 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    using twentySix.NeuralStock.Core.DTOs;
+    using DTOs;
 
     public class NeuralStockSettings
     {
@@ -24,6 +24,8 @@
 
         public int NumberDaysBetweenTransactions { get; set; }
 
+        public int Threads { get; set; }
+
         public static NeuralStockSettings FromDTO(NeuralStockSettingsDTO dto)
         {
             if (dto == null)
@@ -40,7 +42,8 @@
                 NumberANNs = dto.NumberANNs,
                 NumberHiddenLayers = dto.NumberHiddenLayers,
                 NumberNeuronsHiddenLayer = dto.NumberNeuronsHiddenLayer,
-                NumberDaysBetweenTransactions = dto.NumberDaysBetweenTransactions
+                NumberDaysBetweenTransactions = dto.NumberDaysBetweenTransactions,
+                Threads = dto.Threads
             };
         }
 
@@ -54,7 +57,8 @@
                 NumberANNs = 100,
                 NumberHiddenLayers = 1,
                 NumberNeuronsHiddenLayer = 15,
-                NumberDaysBetweenTransactions = 3
+                NumberDaysBetweenTransactions = 3,
+                Threads = 4
             };
 
             return obj;
@@ -71,7 +75,8 @@
                 NumberANNs = NumberANNs,
                 NumberHiddenLayers = NumberHiddenLayers,
                 NumberNeuronsHiddenLayer = NumberNeuronsHiddenLayer,
-                NumberDaysBetweenTransactions = NumberDaysBetweenTransactions
+                NumberDaysBetweenTransactions = NumberDaysBetweenTransactions,
+                Threads = Threads
             };
         }
     }

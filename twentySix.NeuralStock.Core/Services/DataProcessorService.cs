@@ -94,5 +94,10 @@
         {
             return Indicator.GetStdDev(quotes, period, sma).ToArray();
         }
+
+        public RocResult[] CalculateRoc(IEnumerable<IQuote> quotes, int period)
+        {
+            return Indicator.GetRoc(quotes, period).ToArray();
+        }
     }
 }

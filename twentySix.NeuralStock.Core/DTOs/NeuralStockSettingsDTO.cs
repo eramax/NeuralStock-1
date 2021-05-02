@@ -21,5 +21,7 @@
         public int MaxEpochs { get; set; }
 
         public int NumberDaysBetweenTransactions { get; set; }
+
+        public int Threads { get; set; }
     }
 }

@@ -51,6 +51,7 @@ namespace twentySix.NeuralStock.Core.Strategies
             var obv = DataProcessorService.CalculateObv(data[historicalData].Quotes, Settings.Obv);
             var crsi = DataProcessorService.CalculateConnorsRsi(data[historicalData].Quotes, Settings.ConnorsRsi);
             var pmo = DataProcessorService.CalculatePmo(data[historicalData].Quotes, Settings.Pmo);
+            var roc = DataProcessorService.CalculateRoc(data[historicalData].Quotes, Settings.Roc);
 
             int fwdDays = Settings.FwdDays;
             int yesterdayStep = 1;
@@ -88,7 +89,8 @@ namespace twentySix.NeuralStock.Core.Strategies
                         (double)macD.Single(x => x.Date.Date == today.Date.Date).Macd.GetValueOrDefault(),
                         (double)obv.Single(x => x.Date.Date == today.Date.Date).Obv,
                         (double)crsi.Single(x => x.Date.Date == today.Date.Date).ConnorsRsi.GetValueOrDefault(),
-                        (double)pmo.Single(x => x.Date.Date == today.Date.Date).Pmo.GetValueOrDefault()
+                        (double)pmo.Single(x => x.Date.Date == today.Date.Date).Pmo.GetValueOrDefault(),
+                        (double)roc.Single(x => x.Date.Date == today.Date.Date).Roc.GetValueOrDefault()
                     },
                     Outputs = new[]
                     {

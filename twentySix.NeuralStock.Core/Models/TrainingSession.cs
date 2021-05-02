@@ -214,7 +214,7 @@
             Parallel.For(
                 0,
                 NumberAnns,
-                new ParallelOptions {CancellationToken = token, MaxDegreeOfParallelism = 4},
+                new ParallelOptions {CancellationToken = token, MaxDegreeOfParallelism = settings.Threads},
                 i =>
                 {
                     if (token.IsCancellationRequested)

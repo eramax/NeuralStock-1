@@ -28,8 +28,7 @@
             ConnorsRsi = RandomExtensions.BetterRandomInteger(5, 13);
             Pmo = RandomExtensions.BetterRandomInteger(7, 21);
 
-            //Beta = RandomExtensions.BetterRandomInteger(3, 21);
-            //StDev = RandomExtensions.BetterRandomInteger(3, 30);
+            Roc = RandomExtensions.BetterRandomInteger(1, 21);
         }
 
         public int FwdDays { get; set; }
@@ -60,9 +59,7 @@
         
         public int Pmo { get; set; }
 
-        public int Beta { get; set; }
-
-        public int StDev { get; set; }
+        public int Roc { get; set; }
 
         public static StrategySettings FromJson(string json)
         {
